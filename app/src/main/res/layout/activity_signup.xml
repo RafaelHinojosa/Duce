@@ -44,7 +44,7 @@
         android:inputType="textPassword"
         android:maxLength="32" />
 
-    <!-- Country -->
+    <!-- Language -->
     <Spinner
         android:id="@+id/spFirstLanguage"
         android:layout_width="wrap_content"
@@ -55,6 +55,7 @@
         android:entries="@array/languages_array"
         android:prompt="@string/sp_first_language_prompt"
         android:spinnerMode="dialog" />
+
     <!-- Sign up -->
     <Button
         android:id="@+id/btnSignUp"

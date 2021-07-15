@@ -2,12 +2,14 @@ package com.example.duce;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.duce.fragments.FinderFragment;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -38,5 +40,8 @@ public class LoginActivity extends AppCompatActivity {
         String password = etPassword.getText().toString();
 
         Toast.makeText(this, "Username = " + username + " Password = " + password, Toast.LENGTH_SHORT).show();
+
+        Intent toMainActivity = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(toMainActivity);
     }
 }

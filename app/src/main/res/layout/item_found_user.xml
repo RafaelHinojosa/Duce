@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="7dp">
+
+    <!-- Profile Picture -->
+    <ImageView
+        android:id="@+id/ivProfilePicture"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_margin="15dp"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <!-- Username -->
+    <TextView
+        android:id="@+id/tvUsername"
+        android:layout_width="108dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="40dp"
+        android:layout_toEndOf="@+id/ivProfilePicture"
+        android:layout_marginStart="13dp"
+        android:hint="cris07"
+        android:textSize="22dp" />
+
+    <!-- Message Button -->
+
+    <!-- Call Button -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnCall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="97dp"
+        android:layout_marginTop="28dp"
+        android:layout_toEndOf="@+id/tvUsername"
+        android:clickable="true"
+        app:srcCompat="@android:drawable/stat_sys_phone_call" />
+
+    <!-- Friend Status Button -->
+
+    <!-- My Languages -->
+    <TextView
+        android:id="@+id/tvMyLanguages"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivProfilePicture"
+        android:layout_alignStart="@+id/ivProfilePicture"
+        android:text="My Languages"/>
+    <!-- Horizontal https://stackoverflow.com/questions/28460300/how-to-build-a-horizontal-listview-with-recyclerview -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvMyLanguages"
+        android:layout_width="175dp"
+        android:layout_height="25dp"
+        android:layout_below="@id/tvMyLanguages"
+        android:layout_alignStart="@+id/tvMyLanguages"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal"
+        android:scrollIndicators="bottom" />
+
+    <!-- Language Divider -->
+    <View
+        android:id="@+id/divider"
+        android:layout_width="1dp"
+        android:layout_height="50dp"
+        android:layout_alignTop="@+id/tvMyLanguages"
+        android:layout_marginStart="15dp"
+        android:layout_toEndOf="@+id/rvMyLanguages"
+        android:background="?android:attr/listDivider" />
+
+    <!-- Language Interests -->
+    <TextView
+        android:id="@+id/tvLanguageInterests"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivProfilePicture"
+        android:layout_alignStart="@+id/divider"
+        android:layout_marginStart="5dp"
+        android:text="My Languages"/>
+
+    <!-- Horizontal https://stackoverflow.com/questions/28460300/how-to-build-a-horizontal-listview-with-recyclerview -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvLanguageInterests"
+        android:layout_width="175dp"
+        android:layout_height="25dp"
+        android:layout_below="@id/tvLanguageInterests"
+        android:layout_alignStart="@+id/tvLanguageInterests"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal"
+        android:scrollIndicators="bottom" />
+
+</RelativeLayout>

@@ -2,6 +2,7 @@ package com.example.duce;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.example.duce.fragments.ProfileFragment;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -45,6 +48,8 @@ public class SignupActivity extends AppCompatActivity {
             Toast.makeText(this, "Username and password must contain at least 1 character", Toast.LENGTH_SHORT).show();
             return;
         }
-        Toast.makeText(this, "Your First Language is... " + firstLanguage, Toast.LENGTH_SHORT).show();
+
+        Intent toMainActivity = new Intent(SignupActivity.this, MainActivity.class);
+        startActivity(toMainActivity);
     }
 }
