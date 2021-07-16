@@ -1,10 +1,30 @@
 <resources>
     <string name="app_name">Duce</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_finder">Finder</string>
+    <string name="title_profile">Profile</string>
     <string name="duce">Duce</string>
-    <string name="title_activity_login2">LoginActivity2</string>
+    <string name="login_welcome">Welcome Back!</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Log In</string>
+    <string name="signup">Sign Up</string>
+    <string name="signup_welcome">Welcome to Duce</string>
+    <string name="sp_country_prompt">"Select your Country"</string>
+    <string name="sp_first_language_prompt">"Select your First Language"</string>
+    <string name="basic_conversation">Hello! How are you?</string>
+    <string name="username_sample_1">cristiano07</string>
+    <string name="age_sample_1">38 years</string>
+    <string name="description_sample">Hi! Call me to talk about soccer and cars</string>
+    <string name="my_languages">My Languages</string>
+    <string name="my_interests">My Interests</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="language_demo">Mexican Sign Language</string>
+    <string name="proficiency_demo">14</string>
+    <string name="select_languages">Select Languages</string>
+    <string name="sending_language">Sending Language</string>
+    <string name="transcription_language">Transcription Language</string>
+    <string name="save">Save</string>
+    <string name="find_prompt">Find User</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>
@@ -13,8 +33,6 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
-    <string name="sp_country_prompt">"Select your Country"</string>
-    <string name="sp_first_language_prompt">"Select your First Language"</string>
     <string-array name="languages_array">
         <item>Afrikaans</item>
         <item>Albanian</item>
@@ -411,8 +429,4 @@
         <item>Zambia</item>
         <item>Zimbabwe</item>
     </string-array>
-    <string name="title_finder">Finder</string>
-    <string name="title_profile">Profile</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

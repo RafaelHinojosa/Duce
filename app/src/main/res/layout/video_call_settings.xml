@@ -1,0 +1,82 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#9DD893"
+    >
+    <!-- Title of Dialog -->
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#9DD893"
+        android:layout_centerHorizontal="true"
+        android:text="@string/select_languages"
+        android:textSize="25dp"
+        />
+    <!-- Speaking In Text -->
+    <TextView
+        android:id="@+id/tvSpeakingIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvTitle"
+        android:layout_marginTop="20dp"
+        android:contentDescription="@string/app_name"
+        android:scaleType="center"
+        android:text="@string/sending_language"
+        android:textSize="18dp"
+        />
+    <!-- SpeakingIn -->
+    <Spinner
+        android:id="@+id/spSpeakingIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvTitle"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="20dp"
+        android:layout_toEndOf="@+id/tvSpeakingIn"
+        android:entries="@array/languages_array"
+        android:prompt="@string/sp_first_language_prompt"
+        android:spinnerMode="dialog"
+        />
+    <!-- Transcription Text -->
+    <TextView
+        android:id="@+id/tvTranscription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvSpeakingIn"
+        android:layout_marginTop="20dp"
+        android:contentDescription="@string/app_name"
+        android:scaleType="center"
+        android:text="@string/transcription_language"
+        android:textSize="18dp"
+        />
+    <!-- Transcription -->
+    <Spinner
+        android:id="@+id/spTranscription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvSpeakingIn"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="20dp"
+        android:layout_toEndOf="@+id/tvTranscription"
+        android:entries="@array/languages_array"
+        android:prompt="@string/sp_first_language_prompt"
+        android:spinnerMode="dialog"
+        />
+    <!-- Save Changes -->
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spTranscription"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="17dp"
+        android:layout_marginEnd="33dp"
+        android:layout_marginBottom="15dp"
+        android:text="@string/save"
+        />
+</RelativeLayout>

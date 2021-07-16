@@ -9,7 +9,7 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/action_profile"
+        android:id="@+id/profile_navigation"
         android:icon="@android:drawable/ic_menu_myplaces"
         android:title="@string/title_profile"
         app:showAsAction="always" />

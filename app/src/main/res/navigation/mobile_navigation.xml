@@ -3,17 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_finder">
+    app:startDestination="@+id/finder_navigation">
 
     <fragment
-        android:id="@+id/navigation_finder"
+        android:id="@+id/finder_navigation"
         android:name="com.example.duce.fragments.FinderFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_finder" />
+        android:label="@string/title_finder"
+        tools:layout="@layout/finder_fragment" />
 
     <fragment
-        android:id="@+id/action_profile"
+        android:id="@+id/profile_navigation"
         android:name="com.example.duce.fragments.ProfileFragment"
         android:label="@string/title_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/profile_fragment" />
 </navigation>

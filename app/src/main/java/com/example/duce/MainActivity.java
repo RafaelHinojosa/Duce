@@ -1,7 +1,6 @@
 package com.example.duce;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,12 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
-import com.example.duce.databinding.ActivityMainBinding;
+import com.example.duce.databinding.MainActivityBinding;
 import com.example.duce.fragments.FinderFragment;
 import com.example.duce.fragments.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -30,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
+        MainActivityBinding binding = MainActivityBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
 
@@ -44,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.action_finder:
                         fragment = new FinderFragment();
                         break;
-                    case R.id.action_profile:
+                    case R.id.profile_navigation:
                     default:
                         fragment = new ProfileFragment();
                         break;

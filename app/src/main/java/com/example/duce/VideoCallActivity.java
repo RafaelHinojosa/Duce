@@ -9,6 +9,6 @@ public class VideoCallActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_video_call);
+        setContentView(R.layout.video_call_activity);
     }
 }
