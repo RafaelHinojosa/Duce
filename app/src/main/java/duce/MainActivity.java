@@ -1,4 +1,4 @@
-package com.example.duce;
+package duce;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -10,10 +10,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.example.duce.databinding.MainActivityBinding;
-import com.example.duce.fragments.ChatsFragment;
-import com.example.duce.fragments.FinderFragment;
-import com.example.duce.fragments.ProfileFragment;
+import com.duce.databinding.MainActivityBinding;
+import duce.fragments.ChatsFragment;
+import duce.fragments.FinderFragment;
+import duce.fragments.ProfileFragment;
+
+import com.duce.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {

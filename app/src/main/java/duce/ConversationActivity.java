@@ -1,8 +1,10 @@
-package com.example.duce;
+package duce;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.duce.R;
 
 public class ConversationActivity extends AppCompatActivity {
 

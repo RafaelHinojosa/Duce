@@ -1,4 +1,4 @@
-package com.example.duce;
+package duce;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,20 +7,22 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.duce.R;
+
 public class StartActivity extends AppCompatActivity {
 
-    Button btnToLogIn;
-    Button btnToSignUp;
+    private Button mBtnToLogIn;
+    private Button mBtnToSignUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.start_activity);
 
-        btnToLogIn = findViewById(R.id.btnToLogIn);
-        btnToSignUp = findViewById(R.id.btnToSignUp);
+        mBtnToLogIn = findViewById(R.id.btnToLogIn);
+        mBtnToSignUp = findViewById(R.id.btnToSignUp);
 
-        btnToLogIn.setOnClickListener(new View.OnClickListener() {
+        mBtnToLogIn.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -29,7 +31,7 @@ public class StartActivity extends AppCompatActivity {
             }
         });
 
-        btnToSignUp.setOnClickListener(new View.OnClickListener() {
+        mBtnToSignUp.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {

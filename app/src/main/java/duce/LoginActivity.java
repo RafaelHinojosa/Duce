@@ -1,4 +1,4 @@
-package com.example.duce;
+package duce;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,22 +9,24 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.duce.R;
+
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText etUsername;
-    private EditText etPassword;
-    private Button btnLogIn;
+    private EditText mEtUsername;
+    private EditText mEtPassword;
+    private Button mBtnLogIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
 
-        etUsername = findViewById(R.id.etUsername);
-        etPassword = findViewById(R.id.etPassword);
-        btnLogIn = findViewById(R.id.btnLogIn);
+        mEtUsername = findViewById(R.id.etUsername);
+        mEtPassword = findViewById(R.id.etPassword);
+        mBtnLogIn = findViewById(R.id.btnLogIn);
 
-        btnLogIn.setOnClickListener(new View.OnClickListener() {
+        mBtnLogIn.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -34,8 +36,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     protected void checkCredentials() {
-        String username = etUsername.getText().toString();
-        String password = etPassword.getText().toString();
+        String username = mEtUsername.getText().toString();
+        String password = mEtPassword.getText().toString();
 
         Toast.makeText(this, "Username = " + username + " Password = " + password, Toast.LENGTH_SHORT).show();
 

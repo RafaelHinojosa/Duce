@@ -1,4 +1,4 @@
-package com.example.duce;
+package duce;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.duce.R;
 
 public class SignupActivity extends AppCompatActivity {
 

@@ -7,18 +7,18 @@
 
     <fragment
         android:id="@+id/finder_navigation"
-        android:name="com.example.duce.fragments.FinderFragment"
+        android:name="duce.fragments.FinderFragment"
         android:label="@string/title_finder"
         tools:layout="@layout/finder_fragment" />
 
     <fragment
         android:id="@+id/chats_action"
-        android:name="com.example.duce.fragments.ChatsFragment"
+        android:name="duce.fragments.ChatsFragment"
         android:label="@string/chats_title"
         tools:layout="@layout/chats_fragment" />
     <fragment
         android:id="@+id/profile_navigation"
-        android:name="com.example.duce.fragments.ProfileFragment"
+        android:name="duce.fragments.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/profile_fragment" />
 </navigation>

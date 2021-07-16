@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".StartActivity"
+    tools:context="duce.StartActivity"
     >
     <!-- Layout Title -->
     <TextView
@@ -39,7 +39,7 @@
         android:layout_marginStart="60dp"
         android:layout_marginTop="150dp"
         android:layout_toEndOf="@+id/btnToLogIn"
-        android:backgroundTint="#D61313"
+        android:backgroundTint="@color/signup_red"
         android:text="@string/signup"
         />
 </RelativeLayout>
