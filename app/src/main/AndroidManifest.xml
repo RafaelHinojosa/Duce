@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Duce">
-        <activity android:name=".VideoCallActivity"></activity>
+        <activity android:name=".ConversationActivity"></activity>
+        <activity android:name=".VideoCallActivity" />
         <activity android:name=".SignupActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".MainActivity" />
