@@ -1,16 +1,18 @@
 <!-- Is the background of the language proficency of a user -->
-<shape xmlns:android="http://schemas.android.com/apk/res/android" >
+<shape
+    xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <solid android:color="#98AFC7" />
+    <solid android:color="@color/proficiency" />
 
     <stroke
         android:width="2dp"
-        android:color="#98AFC7" />
+        android:color="@color/proficiency"
+        />
 
     <corners
         android:bottomLeftRadius="20dp"
         android:bottomRightRadius="20dp"
         android:topLeftRadius="20dp"
-        android:topRightRadius="20dp" />
-
+        android:topRightRadius="20dp"
+        />
 </shape>
