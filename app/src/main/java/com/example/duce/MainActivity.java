@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.duce.databinding.MainActivityBinding;
+import com.example.duce.fragments.ChatsFragment;
 import com.example.duce.fragments.FinderFragment;
 import com.example.duce.fragments.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -40,8 +41,11 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new FinderFragment();
                         break;
                     case R.id.profile_navigation:
-                    default:
                         fragment = new ProfileFragment();
+                        break;
+                    case R.id.chats_action:
+                    default:
+                        fragment = new ChatsFragment();
                         break;
                 }
                 // Replace the flContainer with the selected fragment layout
@@ -50,6 +54,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         // Set default selection in bottom menu
-        navView.setSelectedItemId(R.id.action_finder);
+        navView.setSelectedItemId(R.id.chats_action);
     }
 }

@@ -2,6 +2,7 @@
     <string name="app_name">Duce</string>
     <string name="title_finder">Finder</string>
     <string name="title_profile">Profile</string>
+    <string name="chats_title">Chats</string>
     <string name="duce">Duce</string>
     <string name="login_welcome">Welcome Back!</string>
     <string name="username">Username</string>
@@ -25,6 +26,8 @@
     <string name="transcription_language">Transcription Language</string>
     <string name="save">Save</string>
     <string name="find_prompt">Find User</string>
+    <string name="find_chats_prompt">Find Chats</string>
+    <string name="flag_hint">POR</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>
@@ -429,4 +432,6 @@
         <item>Zambia</item>
         <item>Zimbabwe</item>
     </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

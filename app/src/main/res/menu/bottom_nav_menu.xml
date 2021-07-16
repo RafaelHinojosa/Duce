@@ -9,6 +9,11 @@
         app:showAsAction="always" />
 
     <item
+        android:id="@+id/chats_action"
+        android:icon="@drawable/chat_bubble"
+        android:title="@string/chats_title"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/profile_navigation"
         android:icon="@android:drawable/ic_menu_myplaces"
         android:title="@string/title_profile"

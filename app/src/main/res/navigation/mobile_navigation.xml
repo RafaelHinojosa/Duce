@@ -12,6 +12,11 @@
         tools:layout="@layout/finder_fragment" />
 
     <fragment
+        android:id="@+id/chats_action"
+        android:name="com.example.duce.fragments.ChatsFragment"
+        android:label="@string/chats_title"
+        tools:layout="@layout/chats_fragment" />
+    <fragment
         android:id="@+id/profile_navigation"
         android:name="com.example.duce.fragments.ProfileFragment"
         android:label="@string/title_profile"

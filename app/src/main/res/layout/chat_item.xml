@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <!-- Profile Picture -->
+    <ImageView
+        android:id="@+id/ivProfilePicture"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_margin="15dp"
+        tools:srcCompat="@tools:sample/avatars"
+        />
+    <!-- Flag -->
+    <TextView
+        android:id="@+id/tvFlag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/ivProfilePicture"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"
+        android:hint="@string/flag_hint"
+        android:textColor="@color/black"
+        />
+    <!-- Username -->
+    <TextView
+        android:id="@+id/tvUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/tvFlag"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@+id/tvFlag"
+        android:hint="@string/username_sample_1"
+        android:textColor="@color/black"
+        />
+    <!-- Sender Last Message -->
+    <TextView
+        android:id="@+id/tvLastMessageSender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvFlag"
+        android:layout_marginTop="15dp"
+        android:layout_toEndOf="@+id/ivProfilePicture"
+        android:hint="@string/username_sample_1"
+        />
+    <!-- Last Message -->
+    <TextView
+        android:id="@+id/tvLastMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/tvLastMessageSender"
+        android:layout_marginStart="2dp"
+        android:layout_alignTop="@+id/tvLastMessageSender"
+        android:maxLines="1"
+        android:hint="@string/description_sample"
+        />
+    <!-- Conversation Divider -->
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/ivProfilePicture"
+        android:layout_marginStart="15dp"
+        android:background="?android:attr/listDivider"
+        />
+</RelativeLayout>
