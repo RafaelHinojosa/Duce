@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">Duce</string>
-    <string name="title_finder">Finder</string>
-    <string name="title_profile">Profile</string>
+    <string name="finder_title">Finder</string>
+    <string name="profile_title">Profile</string>
     <string name="chats_title">Chats</string>
+    <string name="friends_title">Friends</string>
     <string name="duce">Duce</string>
     <string name="login_welcome">Welcome Back!</string>
     <string name="username">Username</string>

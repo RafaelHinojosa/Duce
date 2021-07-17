@@ -3,20 +3,20 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/action_finder"
-        android:icon="?android:attr/actionModeWebSearchDrawable"
-        android:title="@string/title_finder"
+        android:id="@+id/finder_action"
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="@string/finder_title"
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/chats_action"
+        android:id="@+id/chats_navigation"
         android:icon="@drawable/chat_bubble"
         android:title="@string/chats_title"
         app:showAsAction="always" />
     <item
         android:id="@+id/profile_navigation"
         android:icon="@android:drawable/ic_menu_myplaces"
-        android:title="@string/title_profile"
+        android:title="@string/profile_title"
         app:showAsAction="always" />
 
 </menu>

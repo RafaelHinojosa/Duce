@@ -8,17 +8,17 @@
     <fragment
         android:id="@+id/finder_navigation"
         android:name="duce.fragments.FinderFragment"
-        android:label="@string/title_finder"
+        android:label="@string/finder_title"
         tools:layout="@layout/finder_fragment" />
 
     <fragment
-        android:id="@+id/chats_action"
+        android:id="@+id/chats_navigation"
         android:name="duce.fragments.ChatsFragment"
         android:label="@string/chats_title"
         tools:layout="@layout/chats_fragment" />
     <fragment
         android:id="@+id/profile_navigation"
-        android:name="duce.fragments.ProfileFragment"
-        android:label="@string/title_profile"
-        tools:layout="@layout/profile_fragment" />
+        android:name="duce.fragments.ProfileMainFragment"
+        android:label="@string/profile_title"
+        tools:layout="@layout/profile_main_fragment" />
 </navigation>

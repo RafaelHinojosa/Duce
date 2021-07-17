@@ -13,7 +13,7 @@ import androidx.fragment.app.FragmentManager;
 import com.duce.databinding.MainActivityBinding;
 import duce.fragments.ChatsFragment;
 import duce.fragments.FinderFragment;
-import duce.fragments.ProfileFragment;
+import duce.fragments.ProfileMainFragment;
 
 import com.duce.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -39,13 +39,13 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Fragment fragment;
                 switch (item.getItemId()) {
-                    case R.id.action_finder:
+                    case R.id.finder_action:
                         fragment = new FinderFragment();
                         break;
                     case R.id.profile_navigation:
-                        fragment = new ProfileFragment();
+                        fragment = new ProfileMainFragment();
                         break;
-                    case R.id.chats_action:
+                    case R.id.chats_navigation:
                     default:
                         fragment = new ChatsFragment();
                         break;
@@ -56,6 +56,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         // Set default selection in bottom menu
-        navView.setSelectedItemId(R.id.chats_action);
+        navView.setSelectedItemId(R.id.chats_navigation);
     }
 }
