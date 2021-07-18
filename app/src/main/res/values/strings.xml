@@ -439,4 +439,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="receiving_language">I want to read incoming messages in...</string>
     <string name="sp_select_language_prompt">Select Language</string>
+    <string name="flag_hint_2">ARG</string>
+    <string name="username_sample_2">messi10</string>
+    <string name="languages_sample">Portuguese, Spanish, English</string>
+    <string name="interests_sample">French, English, Italian</string>
 </resources>

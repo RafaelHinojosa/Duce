@@ -19,7 +19,7 @@
         android:hint="@string/find_prompt"
         android:inputType="textPersonName"
         />
-    <!-- Results in Recycler View -->
+    <!-- Results in Recycler View
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvUsers"
         android:layout_width="match_parent"
@@ -28,6 +28,120 @@
         android:layout_marginTop="20dp"
         >
     </androidx.recyclerview.widget.RecyclerView>
+    -->
+
+    <RelativeLayout
+        android:id="@+id/rlCristianoItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etSearch"
+        android:layout_marginTop="30dp"
+        >
+
+        <!-- Profile Picture -->
+        <ImageView
+            android:id="@+id/ivProfilePicture"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            app:srcCompat="@drawable/cristiano"
+            tools:srcCompat="@tools:sample/avatars"
+            />
+
+        <!-- Username -->
+        <TextView
+            android:id="@+id/tvUsername"
+            android:layout_width="108dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="40dp"
+            android:layout_toEndOf="@+id/ivProfilePicture"
+            android:layout_marginStart="13dp"
+            android:hint="@string/username_sample_1"
+            android:textSize="20dp"
+            />
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnAddFriend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="62dp"
+            android:layout_marginTop="28dp"
+            android:layout_toEndOf="@+id/tvUsername"
+            android:clickable="true"
+            app:srcCompat="@android:drawable/ic_input_add"
+            />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnChat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="28dp"
+            android:layout_toEndOf="@+id/tvUsername"
+            android:clickable="true"
+            app:srcCompat="@drawable/message"
+            />
+
+        <TextView
+            android:id="@+id/tvMyLanguages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ivProfilePicture"
+            android:layout_alignStart="@+id/ivProfilePicture"
+            android:text="@string/my_languages"
+            />
+
+        <TextView
+            android:id="@+id/tvLanguages"
+            android:layout_width="175dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvMyLanguages"
+            android:layout_alignStart="@+id/tvMyLanguages"
+            android:layout_marginTop="5dp"
+            android:text="@string/languages_sample"
+            />
+
+        <!-- Language Divider -->
+        <View
+            android:id="@+id/divider"
+            android:layout_width="1dp"
+            android:layout_height="50dp"
+            android:layout_alignTop="@+id/tvMyLanguages"
+            android:layout_marginStart="15dp"
+            android:layout_toEndOf="@+id/tvLanguages"
+            android:background="?android:attr/listDivider"
+            />
+
+        <!-- Language Interests -->
+        <TextView
+            android:id="@+id/tvLanguageInterests"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ivProfilePicture"
+            android:layout_alignStart="@+id/divider"
+            android:layout_marginStart="5dp"
+            android:text="@string/my_interests"
+            />
+
+        <TextView
+            android:id="@+id/tvInterests"
+            android:layout_width="175dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvLanguageInterests"
+            android:layout_alignStart="@+id/tvLanguageInterests"
+            android:layout_marginTop="5dp"
+            android:text="@string/interests_sample"
+            />
+
+    </RelativeLayout>
+
     <!-- MatchGen Algo -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnMatchGen"

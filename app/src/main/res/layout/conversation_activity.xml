@@ -65,7 +65,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvMessages"
         android:layout_width="match_parent"
-        android:layout_height="575dp"
+        android:layout_height="450dp"
         android:layout_below="@+id/ivProfilePicture"
         />
 
@@ -73,10 +73,11 @@
     <EditText
         android:id="@+id/etComposeMessage"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="58dp"
         android:layout_below="@+id/rvMessages"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="0dp"
+        android:layout_marginTop="-1dp"
+        android:layout_marginBottom="84dp"
         android:hint="@string/compose_message"
         />
 

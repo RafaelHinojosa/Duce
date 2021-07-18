@@ -21,6 +21,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="70dp"
             android:background="@android:color/darker_gray"
+            app:srcCompat="@drawable/cristiano"
             tools:srcCompat="@tools:sample/avatars"
             />
 
@@ -73,6 +74,7 @@
             android:text="@string/my_languages"
             />
 
+        <!--
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvMyLanguages"
             android:layout_width="match_parent"
@@ -82,7 +84,20 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp" />
+        -->
+
+        <TextView
+            android:id="@+id/tvLanguages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvMyLanguages"
+            android:layout_alignStart="@+id/tvMyLanguages"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
             android:layout_marginBottom="15dp"
+            android:text="@string/languages_sample"
             />
 
         <!-- Language Interests -->
@@ -90,7 +105,7 @@
             android:id="@+id/tvLanguageInterests"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/rvMyLanguages"
+            android:layout_below="@+id/tvLanguages"
             android:layout_marginTop="15dp"
             android:layout_alignParentStart="true"
             android:layout_marginStart="15dp"
@@ -98,6 +113,7 @@
             android:text="@string/my_interests"
             />
 
+        <!--
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvLanguageInterests"
             android:layout_width="match_parent"
@@ -108,6 +124,19 @@
             android:layout_marginTop="15dp"
             android:layout_marginEnd="15dp"
             android:layout_marginBottom="15dp"
+            />
+        -->
+        <TextView
+            android:id="@+id/rvLanguageInterests"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvLanguageInterests"
+            android:layout_alignStart="@+id/tvLanguageInterests"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:text="@string/interests_sample"
             />
 
         <!-- Edit Button -->

@@ -16,10 +16,8 @@ public class MyProfileTabFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static MyProfileTabFragment newInstance(String param1, String param2) {
+    public static MyProfileTabFragment newInstance() {
         MyProfileTabFragment fragment = new MyProfileTabFragment();
-        Bundle args = new Bundle();
-
         return fragment;
     }
 
