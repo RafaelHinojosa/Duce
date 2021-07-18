@@ -12,13 +12,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Duce"
         >
-        <activity android:name="duce.ConversationActivity" />
+        <activity android:name="duce.StartActivity" />
         <activity android:name="duce.VideoCallActivity" />
         <activity android:name="duce.SignupActivity" />
         <activity android:name="duce.LoginActivity" />
         <activity android:name="duce.MainActivity" />
         <activity
-            android:name="duce.StartActivity"
+            android:name="duce.ConversationActivity"
             android:label="@string/app_name"
             >
             <intent-filter>
