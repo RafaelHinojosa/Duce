@@ -443,4 +443,5 @@
     <string name="username_sample_2">messi10</string>
     <string name="languages_sample">Portuguese, Spanish, English</string>
     <string name="interests_sample">French, English, Italian</string>
+    <string name="logout">Log Out</string>
 </resources>
