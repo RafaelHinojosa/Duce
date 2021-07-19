@@ -8,6 +8,9 @@ import android.view.View;
 import android.widget.Button;
 
 import com.duce.R;
+import com.duce.databinding.LoginActivityBinding;
+import com.duce.databinding.StartActivityBinding;
+import com.parse.ParseUser;
 
 public class StartActivity extends AppCompatActivity {
 
@@ -17,10 +20,18 @@ public class StartActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.start_activity);
 
-        mBtnToLogIn = findViewById(R.id.btnToLogIn);
-        mBtnToSignUp = findViewById(R.id.btnToSignUp);
+        if (ParseUser.getCurrentUser() != null) {
+            Intent toMainActivity = new Intent(StartActivity.this, MainActivity.class);
+            startActivity(toMainActivity);
+        }
+
+        StartActivityBinding binding = StartActivityBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
+
+        mBtnToLogIn = binding.btnToLogIn;
+        mBtnToSignUp = binding.btnToSignUp;
 
         mBtnToLogIn.setOnClickListener(new View.OnClickListener() {
 
