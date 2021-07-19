@@ -30,12 +30,12 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                checkCredentials();
+                loginUser();
             }
         });
     }
 
-    protected void checkCredentials() {
+    protected void loginUser() {
         String username = mEtUsername.getText().toString();
         String password = mEtPassword.getText().toString();
 
