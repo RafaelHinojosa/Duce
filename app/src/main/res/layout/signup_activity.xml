@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context="duce.SignupActivity"
     >
+
     <!-- Layout Title -->
     <TextView
         android:id="@+id/tvTitle"
@@ -19,6 +20,7 @@
         android:textColor="@color/black"
         android:textSize="40dp"
         />
+
     <!-- Username -->
     <EditText
         android:id="@+id/etUsername"
@@ -32,6 +34,19 @@
         android:inputType="textPersonName"
         android:maxLength="32"
         />
+
+    <!-- Username already exists -->
+    <TextView
+        android:id="@+id/tvUsernameHelp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etUsername"
+        android:layout_alignStart="@+id/etUsername"
+        android:text="@string/username_help"
+        android:textSize="10dp"
+        android:visibility="invisible"
+        />
+
     <!-- Password -->
     <EditText
         android:id="@+id/etPassword"
@@ -45,26 +60,76 @@
         android:inputType="textPassword"
         android:maxLength="32"
         />
+
+    <!-- Password help -->
+    <TextView
+        android:id="@+id/tvPasswordHelp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etPassword"
+        android:layout_alignStart="@+id/etPassword"
+        android:text="@string/password_help"
+        android:textSize="10dp"
+        />
+
+    <!--Text View -->
+    <TextView
+        android:id="@+id/tvSelectLanguage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etPassword"
+        android:layout_alignStart="@+id/etPassword"
+        android:layout_marginTop="60dp"
+        android:text="@string/select_first_language"
+        />
+
     <!-- Language -->
     <Spinner
         android:id="@+id/spFirstLanguage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/etPassword"
+        android:layout_below="@+id/tvSelectLanguage"
+        android:layout_alignStart="@+id/tvSelectLanguage"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="10dp"
+        android:prompt="@string/sp_first_language_prompt"
+        android:spinnerMode="dialog"
+        />
+
+    <!--Text View -->
+    <TextView
+        android:id="@+id/tvSelectInterests"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spFirstLanguage"
+        android:layout_alignStart="@+id/etPassword"
+        android:layout_marginTop="20dp"
+        android:text="@string/select_interests"
+        />
+
+    <!-- Language -->
+    <Spinner
+        android:id="@+id/spInterests"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvSelectInterests"
+        android:layout_alignStart="@+id/tvSelectLanguage"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
         android:entries="@array/languages_array"
         android:prompt="@string/sp_first_language_prompt"
         android:spinnerMode="dialog"
         />
+
     <!-- Sign up -->
     <Button
         android:id="@+id/btnSignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/spFirstLanguage"
+        android:layout_below="@id/spInterests"
         android:layout_marginTop="50dp"
         android:text="@string/signup"
         />
+
 </RelativeLayout>

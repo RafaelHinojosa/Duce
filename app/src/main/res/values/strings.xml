@@ -435,7 +435,6 @@
         <item>Zambia</item>
         <item>Zimbabwe</item>
     </string-array>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="receiving_language">I want to read incoming messages in...</string>
     <string name="sp_select_language_prompt">Select Language</string>
@@ -444,4 +443,9 @@
     <string name="languages_sample">Portuguese, Spanish, English</string>
     <string name="interests_sample">French, English, Italian</string>
     <string name="logout">Log Out</string>
+    <string name="select_first_language">Select First Language</string>
+    <string name="select_interests">Select 1 Language you are interested in</string>
+    <string name="password_help">Password must contain at least 8 characters</string>
+    <string name="username_help">Username already exists</string>
+    <string name="must_fill">This field must be filled</string>
 </resources>
