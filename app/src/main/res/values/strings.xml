@@ -444,8 +444,9 @@
     <string name="interests_sample">French, English, Italian</string>
     <string name="logout">Log Out</string>
     <string name="select_first_language">Select First Language</string>
-    <string name="select_interests">Select 1 Language you are interested in</string>
+    <string name="select_interests">Select Languages you are interested in</string>
     <string name="password_help">Password must contain at least 8 characters</string>
     <string name="username_help">Username already exists</string>
     <string name="must_fill">This field must be filled</string>
+    <string name="select_first_languages">Select First Languages</string>
 </resources>

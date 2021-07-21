@@ -23,16 +23,20 @@ public class UserLanguages extends ParseObject {
         return getParseUser(KEY_USER);
     }
 
-    public void setUser(ParseUser author) {
-        put(KEY_USER, author);
+    public void setUser(ParseUser user) {
+        put(KEY_USER, user);
     }
 
-    public String getKeyLanguage() {
+    public String getLanguage() {
         return getString(KEY_LANGUAGE);
     }
 
     public void setLanguage(String language) {
         put(KEY_LANGUAGE, language);
+    }
+
+    public void setLanguageObject(Languages languageObject) {
+        put(KEY_LANGUAGE, languageObject);
     }
 
     public int getProficiency() {

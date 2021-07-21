@@ -72,7 +72,7 @@
         android:textSize="10dp"
         />
 
-    <!--Text View -->
+    <!-- Select First Language -->
     <TextView
         android:id="@+id/tvSelectLanguage"
         android:layout_width="wrap_content"
@@ -80,45 +80,24 @@
         android:layout_below="@+id/etPassword"
         android:layout_alignStart="@+id/etPassword"
         android:layout_marginTop="60dp"
-        android:text="@string/select_first_language"
+        android:text="@string/select_first_languages"
         />
 
-    <!-- Language -->
-    <Spinner
-        android:id="@+id/spFirstLanguage"
+    <!-- Select First Language -->
+    <TextView
+        android:id="@+id/tvFirstLanguage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvSelectLanguage"
         android:layout_alignStart="@+id/tvSelectLanguage"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:prompt="@string/sp_first_language_prompt"
-        android:spinnerMode="dialog"
-        />
-
-    <!--Text View -->
-    <TextView
-        android:id="@+id/tvSelectInterests"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/spFirstLanguage"
-        android:layout_alignStart="@+id/etPassword"
-        android:layout_marginTop="20dp"
-        android:text="@string/select_interests"
-        />
-
-    <!-- Language -->
-    <Spinner
-        android:id="@+id/spInterests"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvSelectInterests"
-        android:layout_alignStart="@+id/tvSelectLanguage"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:entries="@array/languages_array"
-        android:prompt="@string/sp_first_language_prompt"
-        android:spinnerMode="dialog"
+        android:padding="10dp"
+        android:drawablePadding="16dp"
+        android:hint="@string/select_languages"
+        android:drawableEnd="@android:drawable/arrow_down_float"
+        android:background="@android:drawable/editbox_background"
+        android:maxLines="3"
         />
 
     <!-- Sign up -->
@@ -127,7 +106,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/spInterests"
+        android:layout_below="@id/tvFirstLanguage"
         android:layout_marginTop="50dp"
         android:text="@string/signup"
         />
