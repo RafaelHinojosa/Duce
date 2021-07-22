@@ -10,33 +10,25 @@ public class UserLanguages extends ParseObject {
 
     public static final String TAG = "UserLanguages";
 
-    public static final String KEY_USER = "user_id";
-    public static final String KEY_LANGUAGE = "language_id";
+    public static final String USER_ID = "user_id";
+    public static final String LANGUAGE_ID = "language_id";
     public static final String PROFICIENCY = "proficiency";
     public static final String INTERESTED_IN = "interested_in";
 
-    public UserLanguages() {
-        super();
-    }
-
     public ParseUser getUser() {
-        return getParseUser(KEY_USER);
+        return getParseUser(USER_ID);
     }
 
     public void setUser(ParseUser user) {
-        put(KEY_USER, user);
+        put(USER_ID, user);
     }
 
-    public String getLanguage() {
-        return getString(KEY_LANGUAGE);
+    public Languages getLanguage() {
+        return (Languages) getParseObject(LANGUAGE_ID);
     }
 
-    public void setLanguage(String language) {
-        put(KEY_LANGUAGE, language);
-    }
-
-    public void setLanguageObject(Languages languageObject) {
-        put(KEY_LANGUAGE, languageObject);
+    public void setLanguage(Languages language) {
+        put(LANGUAGE_ID, language);
     }
 
     public int getProficiency() {

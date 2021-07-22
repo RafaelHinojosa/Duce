@@ -127,7 +127,7 @@ public class SignupActivity extends AppCompatActivity {
             if (languageObject != null) {
                 UserLanguages userLanguages = new UserLanguages();
                 userLanguages.setUser(ParseUser.getCurrentUser());
-                userLanguages.setLanguageObject(languageObject);
+                userLanguages.setLanguage(languageObject);
                 userLanguages.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {

@@ -13,24 +13,12 @@ public class User extends ParseObject {
 
     public static final String TAG = "User";
 
-    public static final String KEY_USER = "user_id";
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
     public static final String PROFILE_PICTURE = "profile_picture";
     public static final String SELF_DESCRIPTION = "self_description";
-    public static final String KEY_COUNTRY = "country_id";
+    public static final String COUNTRY_ID = "country_id";
 
-    public User() {
-        super();
-    }
-
-    public ParseUser getUser() {
-        return getParseUser(KEY_USER);
-    }
-
-    public void setUser(ParseUser user) {
-        put(KEY_USER, user);
-    }
 
     public String getUsername() {
         return getString(USERNAME);
@@ -60,11 +48,11 @@ public class User extends ParseObject {
         put(SELF_DESCRIPTION, selfDescription);
     }
 
-    public String getKeyCountry() {
-        return getString(KEY_COUNTRY);
+    public Countries getCountryId() {
+        return (Countries) getParseObject(COUNTRY_ID);
     }
 
-    public void setKeyCountry(String countryId) {
-        put(KEY_COUNTRY, countryId);
+    public void setCountryId(String countryId) {
+        put(COUNTRY_ID, countryId);
     }
 }
