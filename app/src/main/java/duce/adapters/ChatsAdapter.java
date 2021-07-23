@@ -29,6 +29,7 @@ import com.parse.ParseUser;
 import org.jetbrains.annotations.NotNull;
 import org.parceler.Parcels;
 
+import java.util.Date;
 import java.util.List;
 
 import duce.ConversationActivity;
@@ -70,6 +71,17 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ViewHolder> 
     @Override
     public int getItemCount() {
         return mLastMessages.size();
+    }
+
+    public void clear() {
+        mLastMessages.clear();
+        notifyDataSetChanged();
+    }
+
+    // Adds a List to the posts List and adapter
+    public void addAll(List<Messages> newList) {
+        mLastMessages.addAll(newList);
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -131,9 +143,10 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ViewHolder> 
                     }
                 }
             });
-
             mTvDescription.setText(message.getDescription());
-            mTvDate.setText((CharSequence) message.getCreatedAt());
+            Date createdAt = message.getCreatedAt();
+            String timeAgo = Messages.calculateTimeAgo(createdAt);
+            mTvDate.setText(timeAgo);
         }
 
         @Override

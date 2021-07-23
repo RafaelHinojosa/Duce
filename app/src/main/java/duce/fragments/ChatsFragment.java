@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Message;
@@ -47,6 +48,7 @@ public class ChatsFragment extends Fragment {
     private RecyclerView mRvChats;
     private EditText mEtSearch;
     private ChatsAdapter mChatsAdapter;
+    protected SwipeRefreshLayout mSwipeContainer;
 
     public static ChatsFragment newInstance() {
         return new ChatsFragment();
@@ -63,6 +65,7 @@ public class ChatsFragment extends Fragment {
 
         mRvChats = (RecyclerView) view.findViewById(R.id.rvChats);
         mEtSearch = (EditText) view.findViewById(R.id.etSearch);
+        mSwipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
 
         return view;
     }
@@ -76,11 +79,23 @@ public class ChatsFragment extends Fragment {
         mRvChats.setLayoutManager(new LinearLayoutManager(getContext()));
         mRvChats.setAdapter(mChatsAdapter);
 
-        getLastMessages();
+        mSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getLastMessages(true);
+                mSwipeContainer.setRefreshing(false);
+            }
+        });
+        mSwipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
+        getLastMessages(false);
     }
 
     // Select the last messages from conversations where the user appears
-    public void getLastMessages() {
+    public void getLastMessages(boolean refreshChats) {
         ParseQuery<Messages> sender = ParseQuery.getQuery("Messages");
         sender.whereEqualTo(Messages.SENDER, ParseUser.getCurrentUser());
 
@@ -94,6 +109,7 @@ public class ChatsFragment extends Fragment {
         ParseQuery<Messages> mainQuery = ParseQuery.or(queries);
         mainQuery.whereEqualTo(Messages.LAST_MESSAGE, true);
         mainQuery.addDescendingOrder(Messages.CREATED_AT);
+        mainQuery.setLimit(20);
 
         mainQuery.findInBackground(new FindCallback<Messages>() {
             public void done(List<Messages> messages, ParseException e) {
@@ -105,8 +121,13 @@ public class ChatsFragment extends Fragment {
                 for (Messages message : messages) {
                     Log.i(TAG, String.valueOf(message));
                 }
-                mLastMessages.addAll(messages);
-                mChatsAdapter.notifyDataSetChanged();
+                if (refreshChats) {
+                    mChatsAdapter.clear();
+                    mChatsAdapter.addAll(messages);
+                } else {
+                    mLastMessages.addAll(messages);
+                    mChatsAdapter.notifyDataSetChanged();
+                }
             }
         });
     }

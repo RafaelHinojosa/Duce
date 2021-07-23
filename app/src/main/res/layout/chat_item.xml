@@ -29,7 +29,6 @@
         android:visibility="invisible"
         />
 
-
     <!-- Username -->
     <TextView
         android:id="@+id/tvUsername"
@@ -56,7 +55,7 @@
     <!-- Last Message -->
     <TextView
         android:id="@+id/tvDescription"
-        android:layout_width="130dp"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/tvSender"
         android:layout_marginStart="2dp"

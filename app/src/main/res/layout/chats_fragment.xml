@@ -21,15 +21,25 @@
         android:inputType="textPersonName"
         />
 
-    <!-- Results in Recycler View -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvChats"
+    <!-- SwipeRefresh + RecyclerView -->
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/etSearch"
         android:layout_marginTop="20dp"
         >
-    </androidx.recyclerview.widget.RecyclerView>
+
+        <!-- Results in Recycler View -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvChats"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/etSearch"
+            android:layout_marginTop="20dp"
+            />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
     <!-- MatchGen Algo -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
