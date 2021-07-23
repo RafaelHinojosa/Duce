@@ -1,5 +1,6 @@
 package duce.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
@@ -18,9 +19,11 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.duce.R;
 import com.duce.databinding.ChatItemBinding;
+import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import org.jetbrains.annotations.NotNull;
@@ -91,7 +94,43 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ViewHolder> 
 
         public void bind(Messages message) {
 
-            // TODO: Get sender and other user (not me) and access their attributes (profile pic, description, etc)
+            String senderId = message.getSender().getObjectId();
+            String receiverId = message.getReceiver().getObjectId();
+            // If I am the sender, the other's the receiver. If I am the receiver, the other is the sender.
+            String otherId = (senderId.equals(ParseUser.getCurrentUser().getObjectId()))
+                ? receiverId
+                : senderId;
+
+            CustomUser senderUser = new CustomUser();
+            CustomUser otherUser = new CustomUser();
+
+            // Set other user's photo, username and sender name
+            ParseQuery<ParseUser> getOtherUser = ParseQuery.getQuery("_User");
+            getOtherUser.whereEqualTo("objectId", otherId);
+            getOtherUser.findInBackground(new FindCallback<ParseUser>() {
+                @Override
+                public void done(List<ParseUser> objects, ParseException e) {
+                    if (e != null) {
+                        Log.d(TAG, "Error: " + e.getMessage());
+                        return;
+                    }
+                    if (objects.size() > 0) {
+                        otherUser.setCustomUser(objects.get(0));
+                        // Set values to the chat Item
+                        Glide.with(mContext)
+                            .load(otherUser.getProfilePicture().getUrl())
+                            .centerCrop()
+                            .transform(new CircleCrop())
+                            .into(mIvProfilePicture);
+                        mTvUsername.setText(otherUser.getUsername());
+                        if (senderId.equals(otherId)) {
+                            mTvSender.setText(otherUser.getUsername() + ":");
+                        } else {
+                            mTvSender.setText(R.string.you);
+                        }
+                    }
+                }
+            });
 
             mTvDescription.setText(message.getDescription());
             mTvDate.setText((CharSequence) message.getCreatedAt());

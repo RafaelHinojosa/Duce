@@ -19,7 +19,7 @@ public class Messages extends ParseObject {
     public static final String CREATED_AT = "createdAt";
 
     public Chats getChatsId() {
-        return (Chats) getParseObject(CHATS_ID);
+            return (Chats) getParseObject(CHATS_ID);
     }
 
     public void setChatsId(Chats chat) {

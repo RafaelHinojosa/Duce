@@ -103,7 +103,7 @@ public class ChatsFragment extends Fragment {
                 }
                 Log.i(TAG, String.valueOf(messages.size()));
                 for (Messages message : messages) {
-                    Log.i(TAG, message.getSender().toString());
+                    Log.i(TAG, String.valueOf(message));
                 }
                 mLastMessages.addAll(messages);
                 mChatsAdapter.notifyDataSetChanged();

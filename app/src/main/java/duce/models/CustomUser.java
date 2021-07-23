@@ -1,6 +1,7 @@
 package duce.models;
 
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -21,15 +22,15 @@ public class CustomUser {
     public static final String COUNTRY_ID = "countryId";
 
     public CustomUser() {
-        mParseUser = new ParseUser();
+        this.mParseUser = new ParseUser();
     }
 
     public CustomUser(ParseUser user) {
-        mParseUser = user;
+        this.mParseUser = user;
     }
 
     public void setCustomUser(ParseUser user) {
-        mParseUser = user;
+        this.mParseUser = user;
     }
 
     public String getObjectId() {
