@@ -8,8 +8,8 @@ public class Countries extends ParseObject {
 
     public static final String TAG = "Countries";
 
-    public static final String COUNTRY_NAME = "country_name";
-    public static final String FLAG = "flag_emoji_code";
+    public static final String COUNTRY_NAME = "countryName";
+    public static final String FLAG = "countryFlag";
 
     public String getCountryName() {
         return getString(COUNTRY_NAME);

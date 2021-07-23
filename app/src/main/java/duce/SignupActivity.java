@@ -35,7 +35,6 @@ import java.util.List;
 
 import duce.adapters.LanguagesAdapter;
 import duce.models.Languages;
-import duce.models.User;
 import duce.models.UserLanguages;
 
 import static com.duce.R.color.signup_red;

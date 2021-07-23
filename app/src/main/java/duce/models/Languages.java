@@ -8,7 +8,7 @@ public class Languages extends ParseObject {
 
     public static final String TAG = "Languages";
 
-    public static final String LANGUAGE_NAME = "language_name";
+    public static final String LANGUAGE_NAME = "languageName";
 
     public String getLanguageName() {
         return getString(LANGUAGE_NAME);

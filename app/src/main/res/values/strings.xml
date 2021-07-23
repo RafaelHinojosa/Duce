@@ -449,4 +449,6 @@
     <string name="username_help">Username already exists</string>
     <string name="must_fill">This field must be filled</string>
     <string name="select_first_languages">Select First Languages</string>
+    <string name="date_sample">21 June 2021</string>
+    <string name="you">You</string>
 </resources>

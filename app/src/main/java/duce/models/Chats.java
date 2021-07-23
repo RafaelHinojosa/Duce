@@ -1,16 +1,24 @@
 package duce.models;
 
+import android.util.Log;
+
+import com.parse.FindCallback;
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @ParseClassName("Chats")
 public class Chats extends ParseObject {
 
     public static final String TAG = "Chats";
 
-    public static final String USER_ONE = "user_one";
-    public static final String USER_TWO = "user_two";
+    public static final String USER_ONE = "userOne";
+    public static final String USER_TWO = "userTwo";
 
     public ParseUser getUserOne() {
         return getParseUser(USER_ONE);

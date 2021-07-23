@@ -9,7 +9,6 @@ import duce.models.Chats;
 import duce.models.Countries;
 import duce.models.Languages;
 import duce.models.Messages;
-import duce.models.User;
 import duce.models.UserLanguages;
 
 public class ParseApplication extends Application {
@@ -17,7 +16,6 @@ public class ParseApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        ParseObject.registerSubclass(User.class);
         ParseObject.registerSubclass(Languages.class);
         ParseObject.registerSubclass(UserLanguages.class);
         ParseObject.registerSubclass(Chats.class);
@@ -25,8 +23,8 @@ public class ParseApplication extends Application {
         ParseObject.registerSubclass(Countries.class);
 
         Parse.initialize(new Parse.Configuration.Builder(this)
-                .applicationId("PEmnelg3TPFPH0JCtuwAYt7xIs48Jgr7tLxrBY4N")
-                .clientKey("2tZPBPm2p3akpABkUB2ZBrFuYnOSFlX2W9qp8ivx")
+                .applicationId("WHjW7CrNBYYWkB2qv2nAnIdsdfoR3YkFrhjOVcNB")
+                .clientKey("ahJ8pSvBBBsTPmHmY3xiS5qp359oOplmbDt2U8dY")
                 .server("https://parseapi.back4app.com")
                 .build()
         );

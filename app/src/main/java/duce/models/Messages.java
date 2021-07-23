@@ -11,11 +11,12 @@ public class Messages extends ParseObject {
 
     public static final String TAG = "Messages";
 
-    public static final String USER_ONE = "user_one";
-    public static final String USER_TWO = "user_two";
-    public static final String CHATS_ID = "chats_id";
+    public static final String CHATS_ID = "chatsId";
+    public static final String SENDER = "senderId";
+    public static final String RECEIVER = "receiverId";
     public static final String DESCRIPTION = "description";
-    public static final String CREATED_AT = "created_at";
+    public static final String LAST_MESSAGE = "lastMessage";
+    public static final String CREATED_AT = "createdAt";
 
     public Chats getChatsId() {
         return (Chats) getParseObject(CHATS_ID);
@@ -25,20 +26,20 @@ public class Messages extends ParseObject {
         put(CHATS_ID, chat);
     }
 
-    public ParseUser getUserOne() {
-        return getParseUser(USER_ONE);
+    public ParseUser getSender() {
+        return getParseUser(SENDER);
     }
 
-    public void setUserOne(ParseUser userOne) {
-        put(USER_ONE, userOne);
+    public void setSender(ParseUser sender) {
+        put(SENDER, sender);
     }
 
-    public ParseUser getUserTwo() {
-        return getParseUser(USER_TWO);
+    public ParseUser getReceiver() {
+        return getParseUser(RECEIVER);
     }
 
-    public void setUserTwo(ParseUser userTwo) {
-        put(USER_TWO, userTwo);
+    public void setReceiver(ParseUser receiver) {
+        put(RECEIVER, receiver);
     }
 
     public String getDescription() {

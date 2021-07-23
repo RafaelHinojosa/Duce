@@ -5,15 +5,15 @@ import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
-@ParseClassName("User_Languages")
+@ParseClassName("UserLanguages")
 public class UserLanguages extends ParseObject {
 
     public static final String TAG = "UserLanguages";
 
-    public static final String USER_ID = "user_id";
-    public static final String LANGUAGE_ID = "language_id";
+    public static final String USER_ID = "userId";
+    public static final String LANGUAGE_ID = "languageId";
     public static final String PROFICIENCY = "proficiency";
-    public static final String INTERESTED_IN = "interested_in";
+    public static final String INTERESTED_IN = "interestedIn";
 
     public ParseUser getUser() {
         return getParseUser(USER_ID);
