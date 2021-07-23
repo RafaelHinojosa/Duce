@@ -20,7 +20,15 @@ public class CustomUser {
     public static final String SELF_DESCRIPTION = "selfDescription";
     public static final String COUNTRY_ID = "countryId";
 
+    public CustomUser() {
+        mParseUser = new ParseUser();
+    }
+
     public CustomUser(ParseUser user) {
+        mParseUser = user;
+    }
+
+    public void setCustomUser(ParseUser user) {
         mParseUser = user;
     }
 

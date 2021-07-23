@@ -12,8 +12,8 @@ public class Messages extends ParseObject {
     public static final String TAG = "Messages";
 
     public static final String CHATS_ID = "chatsId";
-    public static final String SENDER = "senderId";
-    public static final String RECEIVER = "receiverId";
+    public static final String SENDER = "sender";
+    public static final String RECEIVER = "receiver";
     public static final String DESCRIPTION = "description";
     public static final String LAST_MESSAGE = "lastMessage";
     public static final String CREATED_AT = "createdAt";

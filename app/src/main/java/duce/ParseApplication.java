@@ -7,6 +7,7 @@ import com.parse.ParseObject;
 
 import duce.models.Chats;
 import duce.models.Countries;
+import duce.models.CustomUser;
 import duce.models.Languages;
 import duce.models.Messages;
 import duce.models.UserLanguages;
