@@ -1,6 +1,7 @@
 package duce.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -24,6 +25,7 @@ import android.widget.Toast;
 
 import com.duce.R;
 import com.duce.databinding.ChatsFragmentBinding;
+import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -35,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import bolts.Task;
 import duce.ConversationActivity;
 import duce.MainActivity;
 import duce.adapters.ChatsAdapter;
@@ -51,7 +54,6 @@ public class ChatsFragment extends Fragment {
     private List<Messages> mLastMessages = new ArrayList<>();
     private RecyclerView mRvChats;
     private EditText mEtSearch;
-    private TextView mTvNoChats;
     private ChatsAdapter mChatsAdapter;
     protected SwipeRefreshLayout mSwipeContainer;
 
@@ -70,7 +72,6 @@ public class ChatsFragment extends Fragment {
 
         mRvChats = (RecyclerView) view.findViewById(R.id.rvChats);
         mEtSearch = (EditText) view.findViewById(R.id.etSearch);
-        mTvNoChats = (TextView) view.findViewById(R.id.tvNoChats);
         mSwipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
 
         return view;
@@ -102,7 +103,6 @@ public class ChatsFragment extends Fragment {
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     String text = textView.getText().toString();
-                    Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
                     getSearchedChats(text);
                     return true;
                 }
@@ -116,9 +116,11 @@ public class ChatsFragment extends Fragment {
     // Select the last messages from conversations where the user appears
     public void getLastMessages(boolean refreshChats) {
         ParseQuery<Messages> sender = ParseQuery.getQuery("Messages");
+        sender.whereEqualTo(Messages.OWNER_USER, ParseUser.getCurrentUser());
         sender.whereEqualTo(Messages.SENDER, ParseUser.getCurrentUser());
 
         ParseQuery<Messages> receiver = ParseQuery.getQuery("Messages");
+        receiver.whereEqualTo(Messages.OWNER_USER, ParseUser.getCurrentUser());
         receiver.whereEqualTo(Messages.RECEIVER, ParseUser.getCurrentUser());
 
         List<ParseQuery<Messages>> queries = new ArrayList<ParseQuery<Messages>>();
@@ -162,12 +164,14 @@ public class ChatsFragment extends Fragment {
         // 1. Where I am the sender and the receiver's username matches with the searched user
         ParseQuery<Messages> senderIsMe = ParseQuery.getQuery("Messages");
         senderIsMe.whereEqualTo("lastMessage", true);
+        senderIsMe.whereMatchesKeyInQuery("ownerUser", "objectId", myQuery);
         senderIsMe.whereMatchesKeyInQuery("sender", "objectId", myQuery);
         senderIsMe.whereMatchesKeyInQuery("receiver", "objectId", usersWithString);
 
         // 2. Where I am the receiver and the sender's username matches with the searched user
         ParseQuery<Messages> receiverIsMe = ParseQuery.getQuery("Messages");
         receiverIsMe.whereEqualTo("lastMessage", true);
+        receiverIsMe.whereMatchesKeyInQuery("ownerUser", "objectId", myQuery);
         receiverIsMe.whereMatchesKeyInQuery("receiver", "objectId", myQuery);
         receiverIsMe.whereMatchesKeyInQuery("sender", "objectId", usersWithString);
 
@@ -192,7 +196,36 @@ public class ChatsFragment extends Fragment {
                 }
                 mChatsAdapter.clear();
                 mChatsAdapter.addAll(messages);
-                mTvNoChats.setVisibility(View.VISIBLE);
+                if (messages.size() == 0) {
+                    Toast.makeText(getContext(), R.string.no_chats_found, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    // Deletes all the messages from a Conversation where I am the "owner" -> my own copy of the messages so that the other user does not lose them
+    public static void deleteChat(Chats chatId, int position) {
+        ParseQuery<Messages> messagesToDelete = ParseQuery.getQuery("Messages");
+        messagesToDelete.whereEqualTo(Messages.CHATS_ID, chatId);
+        messagesToDelete.whereEqualTo(Messages.OWNER_USER, ParseUser.getCurrentUser());
+
+        messagesToDelete.findInBackground(new FindCallback<Messages>() {
+            @Override
+            public void done(List<Messages> messages, ParseException e) {
+                if (e != null) {
+                    Log.d(TAG, "Error: " + e.getMessage());
+                    return;
+                }
+
+                Messages.deleteAllInBackground(messages, new DeleteCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e != null) {
+                            Log.d(TAG, "Error: " + e.getMessage());
+                            return;
+                        }
+                    }
+                });
             }
         });
     }

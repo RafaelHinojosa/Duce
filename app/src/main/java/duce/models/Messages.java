@@ -14,6 +14,7 @@ public class Messages extends ParseObject {
     public static final String TAG = "Messages";
 
     public static final String CHATS_ID = "chatsId";
+    public static final String OWNER_USER = "ownerUser";
     public static final String SENDER = "sender";
     public static final String RECEIVER = "receiver";
     public static final String DESCRIPTION = "description";
@@ -26,6 +27,14 @@ public class Messages extends ParseObject {
 
     public void setChatsId(Chats chat) {
         put(CHATS_ID, chat);
+    }
+
+    public ParseUser getOwnerUser() {
+        return getParseUser(OWNER_USER);
+    }
+
+    public void setOwnerUser(ParseUser ownerUser) {
+        put(OWNER_USER, ownerUser);
     }
 
     public ParseUser getSender() {
@@ -52,9 +61,8 @@ public class Messages extends ParseObject {
         put(DESCRIPTION, description);
     }
 
-    // Returns how much time ago was the post created
+    // Returns how much time ago was a given Date
     public static String calculateTimeAgo(Date createdAt) {
-
         int SECOND_MILLIS = 1000;
         int MINUTE_MILLIS = 60 * SECOND_MILLIS;
         int HOUR_MILLIS = 60 * MINUTE_MILLIS;

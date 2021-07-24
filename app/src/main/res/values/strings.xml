@@ -452,4 +452,8 @@
     <string name="date_sample">21 June 2021</string>
     <string name="you">You</string>
     <string name="no_chats_found">No chats were found in your search</string>
+    <string name="delete_conversation">Delete Conversation</string>
+    <string name="delete_conversation_confirmation">Are you sure you want to delete this conversation?</string>
+    <string name="delete">Yes, delete</string>
+    <string name="cancel">Cancel</string>
 </resources>

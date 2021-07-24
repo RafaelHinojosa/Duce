@@ -1,7 +1,9 @@
 package duce.adapters;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.Image;
 import android.util.Log;
@@ -11,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,6 +36,7 @@ import java.util.Date;
 import java.util.List;
 
 import duce.ConversationActivity;
+import duce.MainActivity;
 import duce.fragments.ChatsFragment;
 import duce.models.Chats;
 import duce.models.Countries;
@@ -46,7 +50,7 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ViewHolder> 
     public static final String TAG = "ChatsAdapter";
 
     private ChatItemBinding mBinding;
-    private final Context mContext;
+    public final Context mContext;
     List<Messages> mLastMessages;
 
     public ChatsAdapter(Context context, List<Messages> lastMessages) {
@@ -83,7 +87,12 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public void deleteItem(int position) {
+        mLastMessages.remove(position);
+        notifyDataSetChanged();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         ImageView mIvProfilePicture;
         TextView mTvFlag;
@@ -101,10 +110,10 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ViewHolder> 
             mTvDescription = mBinding.tvDescription;
             mTvDate = mBinding.tvDate;
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
         }
 
         public void bind(Messages message) {
-
             String senderId = message.getSender().getObjectId();
             String receiverId = message.getReceiver().getObjectId();
             // If I am the sender, the other's the receiver. If I am the receiver, the other is the sender.
@@ -157,6 +166,29 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ViewHolder> 
                 intent.putExtra("conversation", Parcels.wrap(message));
                 mContext.startActivity(intent);
             }
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            int position = getAdapterPosition();
+            if (position != RecyclerView.NO_POSITION) {
+                Messages message = mLastMessages.get(position);
+
+                new AlertDialog.Builder(mContext)
+                        .setTitle(R.string.delete_conversation)
+                        .setMessage(R.string.delete_conversation_confirmation)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                ChatsFragment.deleteChat(message.getChatsId(), position);
+                                deleteItem(position);
+                                Toast.makeText(mContext, "Conversation Deleted", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setNegativeButton(R.string.cancel, null).show();
+            }
+
+            return false;
         }
     }
 }
