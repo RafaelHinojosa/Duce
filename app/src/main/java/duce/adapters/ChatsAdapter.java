@@ -78,7 +78,6 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
 
-    // Adds a List to the posts List and adapter
     public void addAll(List<Messages> newList) {
         mLastMessages.addAll(newList);
         notifyDataSetChanged();

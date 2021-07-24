@@ -1,5 +1,6 @@
 package duce.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -12,11 +13,14 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.duce.R;
 import com.duce.databinding.ChatsFragmentBinding;
@@ -47,6 +51,7 @@ public class ChatsFragment extends Fragment {
     private List<Messages> mLastMessages = new ArrayList<>();
     private RecyclerView mRvChats;
     private EditText mEtSearch;
+    private TextView mTvNoChats;
     private ChatsAdapter mChatsAdapter;
     protected SwipeRefreshLayout mSwipeContainer;
 
@@ -65,6 +70,7 @@ public class ChatsFragment extends Fragment {
 
         mRvChats = (RecyclerView) view.findViewById(R.id.rvChats);
         mEtSearch = (EditText) view.findViewById(R.id.etSearch);
+        mTvNoChats = (TextView) view.findViewById(R.id.tvNoChats);
         mSwipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
 
         return view;
@@ -90,6 +96,19 @@ public class ChatsFragment extends Fragment {
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
+
+        mEtSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    String text = textView.getText().toString();
+                    Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
+                    getSearchedChats(text);
+                    return true;
+                }
+                return false;
+            }
+        });
 
         getLastMessages(false);
     }
@@ -128,6 +147,52 @@ public class ChatsFragment extends Fragment {
                     mLastMessages.addAll(messages);
                     mChatsAdapter.notifyDataSetChanged();
                 }
+            }
+        });
+    }
+
+    public void getSearchedChats(String search) {
+        // Get the my User and the list of users whose username matches the list
+        ParseQuery<ParseUser> myQuery = ParseUser.getQuery();
+        myQuery.whereEqualTo("objectId", ParseUser.getCurrentUser().getObjectId());
+
+        ParseQuery<ParseUser> usersWithString = ParseUser.getQuery();
+        usersWithString.whereStartsWith("username", search);
+
+        // 1. Where I am the sender and the receiver's username matches with the searched user
+        ParseQuery<Messages> senderIsMe = ParseQuery.getQuery("Messages");
+        senderIsMe.whereEqualTo("lastMessage", true);
+        senderIsMe.whereMatchesKeyInQuery("sender", "objectId", myQuery);
+        senderIsMe.whereMatchesKeyInQuery("receiver", "objectId", usersWithString);
+
+        // 2. Where I am the receiver and the sender's username matches with the searched user
+        ParseQuery<Messages> receiverIsMe = ParseQuery.getQuery("Messages");
+        receiverIsMe.whereEqualTo("lastMessage", true);
+        receiverIsMe.whereMatchesKeyInQuery("receiver", "objectId", myQuery);
+        receiverIsMe.whereMatchesKeyInQuery("sender", "objectId", usersWithString);
+
+        // 3. Join both lists where I am either a sender or receiver and the other user's username matches with the search
+        List<ParseQuery<Messages>> listMessagesMe = new ArrayList<ParseQuery<Messages>>();
+        listMessagesMe.add(senderIsMe);
+        listMessagesMe.add(receiverIsMe);
+
+        ParseQuery<Messages> searchedChats = ParseQuery.or(listMessagesMe);
+        searchedChats.addDescendingOrder("createdAt");
+
+        searchedChats.findInBackground(new FindCallback<Messages>() {
+            @Override
+            public void done(List<Messages> messages, ParseException e) {
+                if (e != null) {
+                    Log.d(TAG, "Error: " + e.getMessage());
+                    return;
+                }
+                Log.i(TAG, "Chats retrieved = " + messages.size());
+                for (Messages message : messages) {
+                    Log.i(TAG, message.getDescription());
+                }
+                mChatsAdapter.clear();
+                mChatsAdapter.addAll(messages);
+                mTvNoChats.setVisibility(View.VISIBLE);
             }
         });
     }

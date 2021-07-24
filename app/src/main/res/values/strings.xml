@@ -451,4 +451,5 @@
     <string name="select_first_languages">Select First Languages</string>
     <string name="date_sample">21 June 2021</string>
     <string name="you">You</string>
+    <string name="no_chats_found">No chats were found in your search</string>
 </resources>
