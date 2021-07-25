@@ -19,18 +19,17 @@ public class ParseApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
-        // Can be Level.BASIC, Level.HEADERS, or Level.BODY
-        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        // any network interceptors must be added with the Configuration Builder given this syntax
-        builder.networkInterceptors().add(httpLoggingInterceptor);
-
         ParseObject.registerSubclass(Languages.class);
         ParseObject.registerSubclass(UserLanguages.class);
         ParseObject.registerSubclass(Chats.class);
         ParseObject.registerSubclass(Messages.class);
         ParseObject.registerSubclass(Countries.class);
+
+        // Http library that handles HTTP requests
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        builder.networkInterceptors().add(httpLoggingInterceptor);
 
         Parse.initialize(new Parse.Configuration.Builder(this)
                 .applicationId("WHjW7CrNBYYWkB2qv2nAnIdsdfoR3YkFrhjOVcNB")

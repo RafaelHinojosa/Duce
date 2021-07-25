@@ -458,4 +458,7 @@
     <string name="cancel">Cancel</string>
     <string name="send">Send</string>
     <string name="message_save">Message Saved Succesfully</string>
+    <string name="short_message_sample">This is a short message sample</string>
+    <string name="profile_pic_me">My profile picture</string>
+    <string name="profile_pic_other">The receiver\'s profile picture</string>
 </resources>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingVertical="10dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="60dp"
+    android:clipToPadding="false"
+    >
+
+    <TextView
+        android:id="@+id/tvUsername"
+        android:layout_marginLeft="8dp"
+        android:layout_toRightOf="@+id/ivProfileOther"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="4dp"
+        android:hint="@string/username_sample_1"
+        />
+
+    <TextView
+        android:id="@+id/tvDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvUsername"
+        android:layout_alignLeft="@+id/tvUsername"
+        android:background="@drawable/incoming_message"
+        android:paddingVertical="12dp"
+        android:paddingHorizontal="12dp"
+        android:gravity="left"
+        android:elevation="2dp"
+        android:textSize="18dp"
+        android:textColor="@color/white"
+        android:hint="@string/short_message_sample"
+        />
+
+    <ImageView
+        android:id="@+id/ivProfileOther"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignBottom="@+id/tvDescription"
+        android:paddingBottom="5dp"
+        android:layout_alignParentLeft="true"
+        android:contentDescription="@string/profile_pic_other"
+        android:src="@mipmap/ic_launcher"
+        />
+
+</RelativeLayout>

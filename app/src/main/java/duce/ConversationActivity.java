@@ -2,6 +2,7 @@ package duce;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -29,8 +30,10 @@ import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import duce.adapters.ConversationAdapter;
 import duce.fragments.ConversationSettingsDialogFragment;
 import duce.models.CustomUser;
 import duce.models.Messages;
@@ -38,6 +41,7 @@ import duce.models.Messages;
 public class ConversationActivity extends AppCompatActivity implements ConversationSettingsDialogFragment.ConversationSettingsDialogListener {
 
     public static final String TAG = "ConversationActivity";
+    static final int MAX_MESSAGES_TO_SHOW = 20;
 
     private ImageView mIvProfilePicture;
     private TextView mTvFlag;
@@ -47,7 +51,9 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     private EditText mEtCompose;
     private ImageButton mIbSend;
     private Messages mConversation;
+    private List<Messages> mMessages;
     private CustomUser mOtherUser;
+    private ConversationAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,11 +66,21 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         mIvProfilePicture = binding.ivProfilePicture;
         mTvFlag = binding.tvFlag;
         mTvUsername = binding.tvUsername;
+        mRvMessages = binding.rvMessages;
         mEtCompose = binding.etComposeMessage;
         mIbSend = binding.ibSend;
         mBtnSettings = findViewById(R.id.btnSettings);
         mConversation = Parcels.unwrap(getIntent().getParcelableExtra("conversation"));
+        mMessages = new ArrayList<>();
         mOtherUser = new CustomUser();
+
+        mAdapter = new ConversationAdapter(ConversationActivity.this, mMessages);
+        mRvMessages.setAdapter(mAdapter);
+
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ConversationActivity.this);
+        linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setStackFromEnd(true);
+        mRvMessages.setLayoutManager(linearLayoutManager);
 
         mIbSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,6 +107,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         });
 
         bind();
+        getMessages();
     }
 
     protected void bind() {
@@ -118,6 +135,30 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
                             .transform(new CircleCrop())
                             .into(mIvProfilePicture);
                     mTvUsername.setText(mOtherUser.getUsername());
+                }
+            }
+        });
+    }
+
+    public void getMessages() {
+        ParseQuery<Messages> messagesQuery = ParseQuery.getQuery("Messages");
+        messagesQuery.whereEqualTo(Messages.CHATS_ID, mConversation.getChatsId());
+        messagesQuery.whereEqualTo(Messages.OWNER_USER, ParseUser.getCurrentUser());
+        messagesQuery.setLimit(MAX_MESSAGES_TO_SHOW);
+        messagesQuery.orderByDescending("createdAt");
+
+        messagesQuery.findInBackground(new FindCallback<Messages>() {
+            @Override
+            public void done(List<Messages> messages, ParseException e) {
+                if (e != null) {
+                    Log.d(TAG, "Error: " + e);
+                    return;
+                }
+                if (messages.size() > 0) {
+                    mMessages.clear();
+                    mMessages.addAll(messages);
+                    mAdapter.notifyDataSetChanged();
+                    mRvMessages.scrollToPosition(0);
                 }
             }
         });
