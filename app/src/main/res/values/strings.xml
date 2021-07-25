@@ -456,4 +456,6 @@
     <string name="delete_conversation_confirmation">Are you sure you want to delete this conversation?</string>
     <string name="delete">Yes, delete</string>
     <string name="cancel">Cancel</string>
+    <string name="send">Send</string>
+    <string name="message_save">Message Saved Succesfully</string>
 </resources>

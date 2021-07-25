@@ -33,6 +33,8 @@ public class CustomUser {
         this.mParseUser = user;
     }
 
+    public ParseUser getCustomUser() { return mParseUser; }
+
     public String getObjectId() {
         return mParseUser.getObjectId();
     }
