@@ -20,8 +20,6 @@
             android:layout_height="150dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="70dp"
-            android:background="@android:color/darker_gray"
-            app:srcCompat="@drawable/cristiano"
             tools:srcCompat="@tools:sample/avatars"
             />
 
@@ -33,6 +31,7 @@
             android:layout_below="@+id/ivProfilePicture"
             android:layout_marginTop="20dp"
             android:layout_centerHorizontal="true"
+            android:textAlignment="center"
             android:textSize="22dp"
             android:hint="@string/username_sample_1"
             />
@@ -45,6 +44,7 @@
             android:layout_below="@+id/tvUsername"
             android:layout_marginTop="10dp"
             android:layout_centerHorizontal="true"
+            android:textAlignment="center"
             android:textSize="16dp"
             android:hint="@string/age_sample_1"
             />
@@ -58,6 +58,7 @@
             android:layout_margin="15dp"
             android:layout_centerHorizontal="true"
             android:maxLines="2"
+            android:textAlignment="center"
             android:hint="@string/description_sample"
             />
 

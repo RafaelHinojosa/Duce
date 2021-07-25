@@ -2,6 +2,7 @@ package duce;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -17,6 +18,9 @@ import duce.fragments.ProfileMainFragment;
 
 import com.duce.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.parse.ParseUser;
+
+import org.parceler.Parcels;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,7 +47,10 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new FinderFragment();
                         break;
                     case R.id.profile_navigation:
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable("user", Parcels.wrap(ParseUser.getCurrentUser()));
                         fragment = new ProfileMainFragment();
+                        fragment.setArguments(bundle);
                         break;
                     case R.id.chats_navigation:
                     default:
