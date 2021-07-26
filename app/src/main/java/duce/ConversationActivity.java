@@ -27,9 +27,13 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+import com.parse.livequery.ParseLiveQueryClient;
+import com.parse.livequery.SubscriptionHandling;
 
 import org.parceler.Parcels;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -108,6 +112,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
 
         bind();
         getMessages();
+        setLiveMessages();
     }
 
     protected void bind() {
@@ -183,13 +188,19 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
                     Log.e(TAG, "Failed to save message " + e);
                     return;
                 }
+                if (owner.equals("me")) {
+                    Log.i(TAG, "hey " + owner);
+                    mMessages.add(0, message);
+                    mAdapter.notifyDataSetChanged();
+                    mRvMessages.scrollToPosition(0);
+                }
                 updateLastMessage(owner);
                 Toast.makeText(ConversationActivity.this, R.string.message_save, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    // When a message is submitted, we have to update the lastMessage property of the penutimate messag
+    // When a message is submitted, we have to update the lastMessage property of the penutimate message
     public void updateLastMessage(String owner) {
         ParseQuery<Messages> penultimateMessage = ParseQuery.getQuery("Messages");
         penultimateMessage.whereEqualTo(Messages.CHATS_ID, mConversation.getChatsId());
@@ -216,6 +227,40 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
                     message.saveInBackground();
                 }
             }
+        });
+    }
+
+    // Sets a Live Query for Messages
+    public void setLiveMessages() {
+        String webSocketUrl = "wss://duce.b4a.io/";
+
+        ParseLiveQueryClient parseLiveQueryClient = null;
+        try {
+            parseLiveQueryClient = ParseLiveQueryClient.Factory.getClient(new URI(webSocketUrl));
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        ParseQuery<Messages> messagesQuery = ParseQuery.getQuery("Messages");
+        messagesQuery.whereEqualTo(Messages.CHATS_ID, mConversation.getChatsId());
+        messagesQuery.whereEqualTo(Messages.OWNER_USER, ParseUser.getCurrentUser());
+        messagesQuery.whereEqualTo(Messages.RECEIVER, ParseUser.getCurrentUser());
+
+        assert parseLiveQueryClient != null;
+        SubscriptionHandling<Messages> subscriptionHandling = parseLiveQueryClient.subscribe(messagesQuery);
+
+        // Listen for CREATE events on the Message class
+        subscriptionHandling.handleEvent(SubscriptionHandling.Event.CREATE, (query, message) -> {
+            mMessages.add(0, message);
+
+            // RecyclerView updates need to be run on the UI thread
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mAdapter.notifyDataSetChanged();
+                    mRvMessages.scrollToPosition(0);
+                }
+            });
         });
     }
 

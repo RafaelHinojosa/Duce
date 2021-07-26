@@ -5,9 +5,11 @@ import android.app.Application;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import duce.models.Chats;
 import duce.models.Countries;
-import duce.models.CustomUser;
 import duce.models.Languages;
 import duce.models.Messages;
 import duce.models.UserLanguages;
@@ -35,7 +37,7 @@ public class ParseApplication extends Application {
                 .applicationId("WHjW7CrNBYYWkB2qv2nAnIdsdfoR3YkFrhjOVcNB")
                 .clientKey("ahJ8pSvBBBsTPmHmY3xiS5qp359oOplmbDt2U8dY")
                 .clientBuilder(builder)
-                .server("https://parseapi.back4app.com")
+                .server("https://parseapi.back4app.com/")
                 .build()
         );
     }
