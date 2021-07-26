@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:paddingVertical="10dp"
     android:paddingLeft="15dp"
-    android:paddingRight="60dp"
+    android:paddingRight="40dp"
     android:clipToPadding="false"
     >
 
@@ -23,6 +23,7 @@
         android:id="@+id/tvDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:maxWidth="200dp"
         android:layout_below="@+id/tvUsername"
         android:layout_alignLeft="@+id/tvUsername"
         android:background="@drawable/incoming_message"
@@ -30,7 +31,8 @@
         android:paddingHorizontal="12dp"
         android:gravity="left"
         android:elevation="2dp"
-        android:textSize="18dp"
+        android:textSize="16dp"
+        android:maxLines="10"
         android:textColor="@color/white"
         android:hint="@string/short_message_sample"
         />
@@ -44,6 +46,17 @@
         android:layout_alignParentLeft="true"
         android:contentDescription="@string/profile_pic_other"
         android:src="@mipmap/ic_launcher"
+        />
+
+    <ImageButton
+        android:id="@+id/ibDuce"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/tvDescription"
+        android:layout_toEndOf="@+id/tvDescription"
+        android:contentDescription="@string/duce_description"
+        android:gravity="center"
+        android:src="@drawable/translate"
         />
 
 </RelativeLayout>

@@ -461,4 +461,9 @@
     <string name="short_message_sample">This is a short message sample</string>
     <string name="profile_pic_me">My profile picture</string>
     <string name="profile_pic_other">The receiver\'s profile picture</string>
+    <string name="duce_description">Translate Message</string>
+    <string name="select_language">Select a Language</string>
+    <string name="incoming_messages_title">Incoming Messages Language</string>
+    <string name="select_a_language">Select a Language</string>
+    <string name="back">Back</string>
 </resources>

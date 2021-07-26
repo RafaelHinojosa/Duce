@@ -1,29 +1,39 @@
 package duce.fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.graphics.Matrix;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.duce.R;
+import com.google.android.material.snackbar.Snackbar;
 
-public class ConversationSettingsDialogFragment extends DialogFragment implements View.OnClickListener {
+import java.util.Arrays;
+
+import duce.adapters.LanguagesAdapter;
+
+public class ConversationSettingsDialogFragment extends DialogFragment {
 
     public static final String TAG = "ConversationSettingsDialogFragment";
 
-    private Spinner mSpSelectLanguage;
-    private Button mBtnSave;
-
-    public ConversationSettingsDialogFragment() {
-        // Required empty public constructor
-    }
+    private TextView mSelectLanguage;
+    private Button mBtnCancel;
+    private AlertDialog.Builder mLanSelector;
+    private String mLanSelected;
+    private LanguagesAdapter mLanAdapter;
+    private ConversationSettingsDialogListener mListener;
 
     public interface ConversationSettingsDialogListener {
         void onFinishSettingsDialog(String language);
@@ -38,9 +48,7 @@ public class ConversationSettingsDialogFragment extends DialogFragment implement
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.conversation_settings_dialog_fragment, container, false);
     }
 
@@ -48,21 +56,66 @@ public class ConversationSettingsDialogFragment extends DialogFragment implement
     public void onViewCreated(View view, @Nullable Bundle savedInstance) {
         super.onViewCreated(view, savedInstance);
 
-        mSpSelectLanguage = (Spinner) view.findViewById(R.id.spSelectLanguage);
-        mBtnSave = (Button) view.findViewById(R.id.btnSave);
+        mBtnCancel = (Button) view.findViewById(R.id.btnCancel);
+        mSelectLanguage = (TextView) view.findViewById(R.id.tvSelectLanguage);
+        mLanSelector = new AlertDialog.Builder(getContext());
+        mLanAdapter = new LanguagesAdapter();
+        mLanSelected = "";
+        mListener = (ConversationSettingsDialogListener) getActivity();
 
-        String title = getArguments().getString("title", "Select Language (frag)");
+        String title = getArguments().getString("title", String.valueOf(R.string.select_language));
         getDialog().setTitle(title);
-        mSpSelectLanguage.requestFocus();
 
-        mBtnSave.setOnClickListener(this);
+        mSelectLanguage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setupDialog();
+            }
+        });
+
+        mBtnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ConversationSettingsDialogListener listener = (ConversationSettingsDialogListener) getActivity();
+                listener.onFinishSettingsDialog("");
+                dismiss();
+            }
+        });
     }
 
-    @Override
-    public void onClick(View v) {
-        ConversationSettingsDialogListener listener = (ConversationSettingsDialogListener) getActivity();
-        listener.onFinishSettingsDialog(mSpSelectLanguage.getSelectedItem().toString());
-        // Close dialog and return to Conversation Activity (parent)
-        dismiss();
+    public void setupDialog() {
+        mLanSelector.setTitle(R.string.incoming_messages_title);
+        mLanSelector.setCancelable(false);
+
+        String[] languages = (String[]) mLanAdapter.getLanguages();
+
+        // Arguments: (List, index of selection, click listener)
+        mLanSelector.setSingleChoiceItems(languages, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (i >= 0 && i < languages.length) {
+                    mLanSelected = languages[i];
+                }
+            }
+        });
+
+        mLanSelector.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                ConversationSettingsDialogListener listener = (ConversationSettingsDialogListener) getActivity();
+                listener.onFinishSettingsDialog(mLanSelected);
+                dismiss();
+            }
+        });
+
+        mLanSelector.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mLanSelected = "";
+                dismiss();
+            }
+        });
+
+        mLanSelector.show();
     }
 }

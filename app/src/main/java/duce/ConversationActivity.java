@@ -6,7 +6,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -18,9 +20,14 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.duce.BuildConfig;
 import com.duce.R;
 import com.duce.databinding.ConversationActivityBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.api.services.translate.Translate;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.translate.TranslateOptions;
+import com.google.cloud.translate.Translation;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -32,6 +39,8 @@ import com.parse.livequery.SubscriptionHandling;
 
 import org.parceler.Parcels;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -58,6 +67,8 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     private List<Messages> mMessages;
     private CustomUser mOtherUser;
     private ConversationAdapter mAdapter;
+    com.google.cloud.translate.Translate translate;
+    private String mTranslationLanguage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +88,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         mConversation = Parcels.unwrap(getIntent().getParcelableExtra("conversation"));
         mMessages = new ArrayList<>();
         mOtherUser = new CustomUser();
+        mTranslationLanguage = "";
 
         mAdapter = new ConversationAdapter(ConversationActivity.this, mMessages);
         mRvMessages.setAdapter(mAdapter);
@@ -113,6 +125,8 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         bind();
         getMessages();
         setLiveMessages();
+        getTranslateService();
+        translate("Hola como estas?", "en");
     }
 
     protected void bind() {
@@ -266,7 +280,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
 
     private void showSettingsDialog() {
         FragmentManager fm = getSupportFragmentManager();
-        ConversationSettingsDialogFragment settingsDialog = ConversationSettingsDialogFragment.newInstance("Select Language");
+        ConversationSettingsDialogFragment settingsDialog = ConversationSettingsDialogFragment.newInstance(String.valueOf(R.string.select_language));
         settingsDialog.show(fm, "conversation_settings_dialog_fragment");
     }
 
@@ -274,6 +288,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     @Override
     public void onFinishSettingsDialog(String language) {
         Toast.makeText(this, "Language Selected: " + language, Toast.LENGTH_SHORT).show();
+        mTranslationLanguage = language;
     }
 
     public boolean isBlank(String word) {
@@ -283,5 +298,32 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
             }
         }
         return true;
+    }
+
+    public void getTranslateService() {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        try (InputStream is = getResources().openRawResource(R.raw.duce_credentials)) {
+            final GoogleCredentials myCredentials = GoogleCredentials.fromStream(is);
+
+            // Set credentials and get translate service
+            TranslateOptions translateOptions = TranslateOptions.newBuilder().setCredentials(myCredentials).build();
+            translate = translateOptions.getService();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+
+        }
+    }
+
+    public void translate(String originalText, String targetLanguage) {
+        //Get input text to be translated
+        Translation translation = translate.translate(
+                originalText,
+                com.google.cloud.translate.Translate.TranslateOption.targetLanguage(targetLanguage),
+                com.google.cloud.translate.Translate.TranslateOption.model("base")
+                );
+        String translatedText = translation.getTranslatedText();
+        Toast.makeText(ConversationActivity.this, translatedText, Toast.LENGTH_SHORT).show();
     }
 }
