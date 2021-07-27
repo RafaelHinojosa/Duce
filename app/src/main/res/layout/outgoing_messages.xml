@@ -38,15 +38,4 @@
         android:hint="@string/short_message_sample"
         />
 
-    <ImageButton
-        android:id="@+id/ibDuce"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/tvDescription"
-        android:layout_toStartOf="@+id/tvDescription"
-        android:contentDescription="@string/duce_description"
-        android:gravity="center"
-        android:src="@drawable/translate"
-        />
-
 </RelativeLayout>

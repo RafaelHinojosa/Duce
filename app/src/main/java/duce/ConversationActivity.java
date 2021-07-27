@@ -263,6 +263,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
                                 // Update conversation's language
                                 chat.setLanguage(targetLanguage);
                                 chat.saveInBackground();
+                                getMessages();
                                 Log.i(TAG, "Language code of this conversation is now: " + languageCode);
                             }
                         }

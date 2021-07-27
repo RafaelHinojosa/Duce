@@ -173,10 +173,6 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                                     Log.i(TAG, "Current Code " + currentCode);
                                     Log.i(TAG, "Target Code " + targetCode);
 
-                                    // currnt == target
-                                    // target == original
-                                    // target == otra cosa diferente a lo origianal
-
                                     // If I am in target, go back to original
                                     if (targetCode.equals(currentCode) || targetCode.equals("original")) {
                                         Log.i(TAG, "iguales");
@@ -200,6 +196,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
         @Override
         void bindMessage(Messages message) {
+            String targetCode = ConversationActivity.getTargetLanguage();
             String userId = message.getSender().getObjectId();
 
             ParseQuery<ParseUser> sender = ParseUser.getQuery();
@@ -219,7 +216,13 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                                 .circleCrop()
                                 .into(mIvProfileOther);
                         mTvUsername.setText(mSender.getUsername());
-                        mTvDescription.setText(message.getDescription());
+                        if (targetCode.equals("original")) {
+                            mTvDescription.setText(message.getDescription());
+                        } else {
+                            String translatedText = ConversationActivity.translate(message.getDescription(), targetCode);
+                            Log.i(TAG, translatedText);
+                            mTvDescription.setText(translatedText);
+                        }
                     }
                 }
             });
@@ -229,7 +232,6 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     public class OutgoingMessageViewHolder extends MessageViewHolder {
         private ImageView mIvProfileMe;
         private TextView mTvDescription;
-        private ImageButton mIbDuce;
         private CustomUser mSender;
 
         public OutgoingMessageViewHolder(View itemView) {
@@ -237,7 +239,6 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
             mIvProfileMe = (ImageView) itemView.findViewById(R.id.ivProfileMe);
             mTvDescription = (TextView) itemView.findViewById(R.id.tvDescription);
-            mIbDuce = (ImageButton) itemView.findViewById(R.id.ibDuce);
             mSender = new CustomUser();
         }
 
