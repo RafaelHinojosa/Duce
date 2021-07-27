@@ -466,4 +466,5 @@
     <string name="incoming_messages_title">Incoming Messages Language</string>
     <string name="select_a_language">Select a Language</string>
     <string name="back">Back</string>
+    <string name="select_help">Click on Settings mesh to select a language</string>
 </resources>

@@ -20,6 +20,7 @@ public class Messages extends ParseObject {
     public static final String DESCRIPTION = "description";
     public static final String LAST_MESSAGE = "lastMessage";
     public static final String CREATED_AT = "createdAt";
+    public static final String LANGUAGE = "language";
 
     public Chats getChatsId() {
             return (Chats) getParseObject(CHATS_ID);
@@ -59,6 +60,14 @@ public class Messages extends ParseObject {
 
     public void setDescription(String description) {
         put(DESCRIPTION, description);
+    }
+
+    public Languages getLanguage() {
+        return (Languages) getParseObject(LANGUAGE);
+    }
+
+    public void setLanguage(Languages language) {
+        put(LANGUAGE, language);
     }
 
     // Returns how much time ago was a given Date

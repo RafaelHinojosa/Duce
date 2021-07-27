@@ -19,6 +19,7 @@ public class Chats extends ParseObject {
 
     public static final String USER_ONE = "userOne";
     public static final String USER_TWO = "userTwo";
+    public static final String LANGUAGE = "language";
 
     public ParseUser getUserOne() {
         return getParseUser(USER_ONE);
@@ -34,5 +35,13 @@ public class Chats extends ParseObject {
 
     public void setUserTwo(ParseUser userTwo) {
         put(USER_TWO, userTwo);
+    }
+
+    public Languages getLanguage() {
+        return (Languages) getParseObject(LANGUAGE);
+    }
+
+    public void setLanguage(Languages languageId) {
+        put(LANGUAGE, languageId);
     }
 }

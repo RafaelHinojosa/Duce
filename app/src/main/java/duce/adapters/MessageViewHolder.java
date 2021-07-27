@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.ImageViewTargetFactory;
 import com.duce.R;
 import com.duce.databinding.IncomingMessageBinding;
 import com.parse.FindCallback;
@@ -22,6 +23,7 @@ import com.parse.ParseUser;
 
 import java.util.List;
 
+import duce.ConversationActivity;
 import duce.models.CustomUser;
 import duce.models.Messages;
 
@@ -40,7 +42,7 @@ public abstract class MessageViewHolder extends RecyclerView.ViewHolder {
         private ImageView mIvProfileOther;
         private TextView mTvDescription;
         private TextView mTvUsername;
-        private ImageButton mIbTranslate;
+        private ImageButton mIbDuce;    // Translate button
         private CustomUser mSender;
 
         public IncomingMessageViewHolder(View itemView, Context context) {
@@ -50,6 +52,19 @@ public abstract class MessageViewHolder extends RecyclerView.ViewHolder {
             mIvProfileOther = (ImageView) itemView.findViewById(R.id.ivProfileOther);
             mTvDescription = (TextView) itemView.findViewById(R.id.tvDescription);
             mTvUsername = (TextView) itemView.findViewById(R.id.tvUsername);
+            mIbDuce = (ImageButton) itemView.findViewById(R.id.ibDuce);
+            mIbDuce.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        // Get message description and position
+                        Log.i(TAG, mTvDescription.getText().toString());
+                        //Log.i(TAG, "El mensaje es " + ConversationAdapter.getMessage(position).toString());
+                        Log.i(TAG, "Position " + String.valueOf(position));
+                    }
+                }
+            });
             mSender = new CustomUser();
         }
 
@@ -85,7 +100,7 @@ public abstract class MessageViewHolder extends RecyclerView.ViewHolder {
         private Context mContext;
         private ImageView mIvProfileMe;
         private TextView mTvDescription;
-        private ImageButton mIbTranslate;
+        private ImageButton mIbDuce;
         private CustomUser mSender;
 
         public OutgoingMessageViewHolder(View itemView, Context context) {
@@ -94,6 +109,7 @@ public abstract class MessageViewHolder extends RecyclerView.ViewHolder {
             mContext = context;
             mIvProfileMe = (ImageView) itemView.findViewById(R.id.ivProfileMe);
             mTvDescription = (TextView) itemView.findViewById(R.id.tvDescription);
+            mIbDuce = (ImageButton) itemView.findViewById(R.id.ibDuce);
             mSender = new CustomUser();
         }
 
