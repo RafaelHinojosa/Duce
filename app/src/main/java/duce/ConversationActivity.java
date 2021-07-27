@@ -56,6 +56,7 @@ import duce.models.Chats;
 import duce.models.CustomUser;
 import duce.models.Languages;
 import duce.models.Messages;
+import duce.models.UserChats;
 
 public class ConversationActivity extends AppCompatActivity implements ConversationSettingsDialogFragment.ConversationSettingsDialogListener {
 
@@ -191,18 +192,19 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     }
 
     public void setTargetLanguage() {
-        ParseQuery<Chats> chatQuery = ParseQuery.getQuery("Chats");
-        chatQuery.whereEqualTo("objectId", mConversation.getChatsId().getObjectId());
+        ParseQuery<UserChats> chatQuery = ParseQuery.getQuery("UserChats");
+        chatQuery.whereEqualTo(UserChats.CHATS_ID, mConversation.getChatsId());
+        chatQuery.whereEqualTo(UserChats.USER_ID, ParseUser.getCurrentUser());
 
-        chatQuery.findInBackground(new FindCallback<Chats>() {
+        chatQuery.findInBackground(new FindCallback<UserChats>() {
             @Override
-            public void done(List<Chats> chats, ParseException e) {
+            public void done(List<UserChats> userChats, ParseException e) {
                 if (e != null) {
                     Log.e(TAG, "Error: " + e.getMessage());
                     return;
                 }
-                if (chats.size() > 0) {
-                    Chats chat = chats.get(0);
+                if (userChats.size() > 0) {
+                    UserChats chat = userChats.get(0);
                     String languageId = chat.getLanguage().getObjectId();
 
                     ParseQuery<Languages> codeQuery = ParseQuery.getQuery("Languages");
@@ -229,18 +231,20 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     }
 
     public void updateConversationLanguage(String languageName) {
-        ParseQuery<Chats> chatQuery = ParseQuery.getQuery("Chats");
-        chatQuery.whereEqualTo("objectId", mConversation.getChatsId().getObjectId());
+        ParseQuery<UserChats> chatQuery = ParseQuery.getQuery("UserChats");
+        chatQuery.whereEqualTo(UserChats.CHATS_ID, mConversation.getChatsId());
+        chatQuery.whereEqualTo(UserChats.USER_ID, ParseUser.getCurrentUser());
 
-        chatQuery.findInBackground(new FindCallback<Chats>() {
+        chatQuery.findInBackground(new FindCallback<UserChats>() {
             @Override
-            public void done(List<Chats> chats, ParseException e) {
+            public void done(List<UserChats> chats, ParseException e) {
                 if (e != null) {
                     Log.e(TAG, "Error: " + e.getMessage());
                     return;
                 }
+
                 if (chats.size() > 0) {
-                    Chats chat = chats.get(0);
+                    UserChats chat = chats.get(0);
 
                     ParseQuery<Languages> codeQuery = ParseQuery.getQuery("Languages");
                     codeQuery.whereEqualTo("languageName", languageName);
@@ -256,7 +260,6 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
                                 Languages targetLanguage = languages.get(0);
                                 String languageCode = targetLanguage.getTranslateCode();
                                 mTargetLanguage = languageCode;
-                                Log.i(TAG, mTargetLanguage);
                                 // Update conversation's language
                                 chat.setLanguage(targetLanguage);
                                 chat.saveInBackground();
@@ -289,7 +292,6 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
                     return;
                 }
                 if (owner.equals("me")) {
-                    Log.i(TAG, "hey " + owner);
                     mMessages.add(0, message);
                     mAdapter.notifyDataSetChanged();
                     mRvMessages.scrollToPosition(0);

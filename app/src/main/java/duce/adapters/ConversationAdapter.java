@@ -173,12 +173,16 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                                     Log.i(TAG, "Current Code " + currentCode);
                                     Log.i(TAG, "Target Code " + targetCode);
 
+                                    // currnt == target
+                                    // target == original
+                                    // target == otra cosa diferente a lo origianal
+
                                     // If I am in target, go back to original
-                                    if (targetCode.equals(currentCode)) {
+                                    if (targetCode.equals(currentCode) || targetCode.equals("original")) {
                                         Log.i(TAG, "iguales");
                                         mTvDescription.setText(message.getDescription());
                                         changeLanguage(position, "original");
-                                    } else if (!targetCode.equals("original")) {
+                                    } else if (!targetCode.equals(currentCode)) {
                                         Log.i(TAG, "simon");
                                         String translatedText = ConversationActivity.translate(message.getDescription(), targetCode);
                                         Log.i(TAG, translatedText);

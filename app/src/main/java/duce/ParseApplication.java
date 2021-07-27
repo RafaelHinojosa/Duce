@@ -12,6 +12,7 @@ import duce.models.Chats;
 import duce.models.Countries;
 import duce.models.Languages;
 import duce.models.Messages;
+import duce.models.UserChats;
 import duce.models.UserLanguages;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -26,6 +27,7 @@ public class ParseApplication extends Application {
         ParseObject.registerSubclass(Chats.class);
         ParseObject.registerSubclass(Messages.class);
         ParseObject.registerSubclass(Countries.class);
+        ParseObject.registerSubclass(UserChats.class);
 
         // Http library that handles HTTP requests
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
