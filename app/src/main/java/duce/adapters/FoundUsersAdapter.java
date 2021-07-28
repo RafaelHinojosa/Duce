@@ -25,10 +25,12 @@ import com.duce.databinding.ChatItemBinding;
 import com.duce.databinding.FoundUserItemBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import org.jetbrains.annotations.NotNull;
 import org.parceler.Parcels;
@@ -36,11 +38,14 @@ import org.w3c.dom.Text;
 
 import java.util.List;
 
+import duce.ConversationActivity;
 import duce.MainActivity;
 import duce.fragments.FinderFragment;
 import duce.fragments.ProfileMainFragment;
+import duce.models.Chats;
 import duce.models.CustomUser;
 import duce.models.Messages;
+import duce.models.UserChats;
 import duce.models.UserLanguages;
 
 public class FoundUsersAdapter extends RecyclerView.Adapter<FoundUsersAdapter.ViewHolder> {
@@ -111,7 +116,7 @@ public class FoundUsersAdapter extends RecyclerView.Adapter<FoundUsersAdapter.Vi
             mBtnMessage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // TODO: Go to Messages
+                    setUpConversation();
                 }
             });
         }
@@ -202,6 +207,92 @@ public class FoundUsersAdapter extends RecyclerView.Adapter<FoundUsersAdapter.Vi
                 intent.putExtra("user", Parcels.wrap(customUser.getCustomUser()));
                 mContext.startActivity(intent);
             }
+        }
+
+        public void setUpConversation() {
+            int position = getAdapterPosition();
+            if (position != RecyclerView.NO_POSITION) {
+                CustomUser user = mUsers.get(position);
+
+                ParseQuery<UserChats> userChatsQuery = ParseQuery.getQuery("UserChats");
+                userChatsQuery.whereEqualTo("userId", ParseUser.getCurrentUser());
+                userChatsQuery.whereEqualTo("otherUserId", user.getCustomUser());
+
+                userChatsQuery.findInBackground(new FindCallback<UserChats>() {
+                    @Override
+                    public void done(List<UserChats> userChats, ParseException e) {
+                        if (e != null) {
+                            Log.e(TAG, "Error: " + e.getMessage());
+                            return;
+                        }
+                        if (userChats.size() == 0) {
+                            createChat(user.getCustomUser());
+                        } else {
+                            UserChats userChat = userChats.get(0);
+                            Chats chat = userChat.getChat();
+                            goToMessages(chat, ParseUser.getCurrentUser(), user.getCustomUser());
+                        }
+                    }
+                });
+            }
+        }
+
+        public void createChat(ParseUser otherUser) {
+            Chats newChat = new Chats();
+            newChat.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e != null) {
+                        Log.e(TAG, "Error: " + e.getMessage());
+                        return;
+                    }
+                    ParseQuery<Chats> lastChat = ParseQuery.getQuery("Chats");
+                    lastChat.setLimit(1);
+                    lastChat.addDescendingOrder("createdAt");
+                    lastChat.findInBackground(new FindCallback<Chats>() {
+                        @Override
+                        public void done(List<Chats> chats, ParseException e) {
+                            if (e != null) {
+                                Log.e(TAG, "Error: " + e.getMessage());
+                                return;
+                            }
+                            if (chats.size() > 0) {
+                                Chats lastChat = chats.get(0);
+                                goToMessages(lastChat, ParseUser.getCurrentUser(), otherUser);
+
+                                // My conversation copy
+                                UserChats userChats = new UserChats();
+                                userChats.setChat(lastChat);
+                                userChats.setUser(ParseUser.getCurrentUser());
+                                userChats.setOtherUser(otherUser);
+                                userChats.saveInBackground();
+
+                                // The other's profile copy
+                                UserChats otherUserCopy = new UserChats();
+                                otherUserCopy.setChat(lastChat);
+                                otherUserCopy.setUser(otherUser);
+                                otherUserCopy.setOtherUser(ParseUser.getCurrentUser());
+                                otherUserCopy.saveInBackground();
+
+                                goToMessages(lastChat, ParseUser.getCurrentUser(), otherUser);
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
+        public void goToMessages(Chats chat, ParseUser sender, ParseUser receiver) {
+            Messages message = new Messages();
+            message.setChatsId(chat);
+            message.setOwnerUser(sender);
+            message.setSender(sender);
+            message.setReceiver(receiver);
+            message.setDescription("Hello");
+
+            Intent toMessages = new Intent(mContext, ConversationActivity.class);
+            toMessages.putExtra("conversation", Parcels.wrap(message));
+            mContext.startActivity(toMessages);
         }
     }
 }
