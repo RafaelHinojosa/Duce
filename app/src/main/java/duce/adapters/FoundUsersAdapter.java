@@ -1,6 +1,8 @@
 package duce.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +14,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -27,10 +31,14 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import org.jetbrains.annotations.NotNull;
+import org.parceler.Parcels;
 import org.w3c.dom.Text;
 
 import java.util.List;
 
+import duce.MainActivity;
+import duce.fragments.FinderFragment;
+import duce.fragments.ProfileMainFragment;
 import duce.models.CustomUser;
 import duce.models.Messages;
 import duce.models.UserLanguages;
@@ -187,7 +195,24 @@ public class FoundUsersAdapter extends RecyclerView.Adapter<FoundUsersAdapter.Vi
 
         @Override
         public void onClick(View v) {
-            // TODO: Go to profile
+            int position = getAdapterPosition();
+            if (position != RecyclerView.NO_POSITION) {
+                CustomUser customUser = mUsers.get(position);
+                /*
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("user", Parcels.wrap(customUser));
+                Fragment fragment = new ProfileMainFragment();
+                fragment.setArguments(bundle);
+
+                FinderFragment.getParentFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.flContainer, fragment)
+                        .commit();
+                */
+                Intent intent = new Intent(mContext, MainActivity.class);
+                intent.putExtra("user", Parcels.wrap(customUser.getCustomUser()));
+                mContext.startActivity(intent);
+            }
         }
     }
 }
