@@ -1,6 +1,10 @@
 package duce.fragments;
 
+import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
@@ -13,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -31,6 +36,10 @@ import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import duce.StartActivity;
@@ -50,11 +59,13 @@ public class MyProfileTabFragment extends Fragment {
     private FloatingActionButton mBtnEdit;
     private ImageView mIvProfilePicture;
     private TextView mTvUsername;
+    private TextView mEtAge;
     private TextView mTvSelfDescription;
     private com.google.android.flexbox.FlexboxLayout mFlMyLanguages;
     private com.google.android.flexbox.FlexboxLayout mFlMyInterests;
     private Button mBtnLogOut;
     private CustomUser mUser;
+    private DatePickerDialog.OnDateSetListener mDateSetListener;
 
     public static MyProfileTabFragment newInstance() {
         MyProfileTabFragment fragment = new MyProfileTabFragment();
@@ -80,10 +91,50 @@ public class MyProfileTabFragment extends Fragment {
         mBtnEdit = view.findViewById(R.id.btnEditProfile);
         mIvProfilePicture = view.findViewById(R.id.ivProfilePicture);
         mTvUsername = view.findViewById(R.id.tvUsername);
+        mEtAge = view.findViewById(R.id.etAge);
         mTvSelfDescription = view.findViewById(R.id.tvDescription);
         mFlMyLanguages = view.findViewById(R.id.flMyLanguages);
         mFlMyInterests = view.findViewById(R.id.flMyInterests);
         mBtnLogOut = view.findViewById(R.id.btnLogOut);
+
+        // Only the own user can change the date
+        if (mUser.getCustomUser().equals(ParseUser.getCurrentUser())) {
+            mEtAge.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Calendar today = Calendar.getInstance();
+                    int year = today.get(Calendar.YEAR);
+                    int month = today.get(Calendar.MONTH);
+                    int day = today.get(Calendar.DAY_OF_MONTH);
+
+                    DatePickerDialog birthdatePicker = new DatePickerDialog(
+                            getContext(),
+                            android.R.style.Theme_Holo_Light_Dialog,
+                            mDateSetListener,
+                            year,
+                            month,
+                            day
+                    );
+                    birthdatePicker.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    birthdatePicker.show();
+                }
+            });
+        }
+
+        mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                String age = getAge(year, month, dayOfMonth);
+                mEtAge.setText(age);
+
+                if (!age.equals("Invalid birthdate")) {
+                    Date birthDate = new Date(year - 1900, month, dayOfMonth, 0, 0, 0);
+                    mUser.setBirthdate(birthDate);
+                    mUser.getCustomUser().saveInBackground();
+                }
+            }
+        };
 
         mBtnLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,9 +157,14 @@ public class MyProfileTabFragment extends Fragment {
         mTvUsername.setText(mUser.getUsername());
         mTvSelfDescription.setText(mUser.getSelfDescription());
 
-        // Clean the linear layouts
-        //mLlMyLanguages.removeAllViews();
-        //mFlMyInterests.removeAllViews();
+        // Set age
+        Date birthdate = mUser.getBirthdate();
+        int year = birthdate.getYear() + 1900;
+        int month = birthdate.getMonth() + 1;
+        int day = birthdate.getDate();
+        String age = getAge(year, month, day);
+        mEtAge.setText(age);
+
         setLanguages();
     }
 
@@ -157,5 +213,27 @@ public class MyProfileTabFragment extends Fragment {
         textView.setLayoutParams(params);
 
         return textView;
+    }
+
+    // Returns the age of the user based on its birthdate
+    public String getAge(int year, int month, int day) {
+        Calendar birthdate = Calendar.getInstance();
+        Calendar today = Calendar.getInstance();
+
+        birthdate.set(year, month, day);
+
+        int age = today.get(Calendar.YEAR) - birthdate.get(Calendar.YEAR);
+
+        if (today.get(Calendar.DAY_OF_YEAR) < birthdate.get(Calendar.DAY_OF_YEAR)) {
+            age--;
+        }
+
+        if (age < 0) {
+            return "Invalid birthdate";
+        }
+
+        Integer ageNumber = new Integer(age);
+        String ageString = ageNumber.toString() + " years old";
+        return ageString;
     }
 }

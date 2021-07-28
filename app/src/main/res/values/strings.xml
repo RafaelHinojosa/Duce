@@ -469,4 +469,5 @@
     <string name="select_help">Click on Settings mesh to select a language</string>
     <string name="no_users_found">No users were found in your search</string>
     <string name="select_proficient_languages">Select languages you are proficient in</string>
+    <string name="years_old">" years old"</string>
 </resources>

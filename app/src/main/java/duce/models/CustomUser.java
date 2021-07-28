@@ -8,6 +8,7 @@ import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
 import java.lang.annotation.Annotation;
+import java.util.Date;
 
 public class CustomUser {
 
@@ -20,6 +21,7 @@ public class CustomUser {
     public static final String PROFILE_PICTURE = "profilePicture";
     public static final String SELF_DESCRIPTION = "selfDescription";
     public static final String COUNTRY_ID = "countryId";
+    public static final String BIRTHDATE = "birthdate";
 
     public CustomUser() {
         this.mParseUser = new ParseUser();
@@ -73,5 +75,13 @@ public class CustomUser {
 
     public void setCountryId(String countryId) {
         mParseUser.put(COUNTRY_ID, countryId);
+    }
+
+    public Date getBirthdate() {
+        return (Date) mParseUser.getDate(BIRTHDATE);
+    }
+
+    public void setBirthdate(Date birthdate) {
+        mParseUser.put(BIRTHDATE, birthdate);
     }
 }
