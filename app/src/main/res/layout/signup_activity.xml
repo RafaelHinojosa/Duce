@@ -80,7 +80,7 @@
         android:layout_below="@+id/etPassword"
         android:layout_alignStart="@+id/etPassword"
         android:layout_marginTop="60dp"
-        android:text="@string/select_first_languages"
+        android:text="@string/select_proficient_languages"
         />
 
     <!-- Select First Language -->
@@ -100,13 +100,41 @@
         android:maxLines="3"
         />
 
+    <!-- Select Interests -->
+    <TextView
+        android:id="@+id/tvSelectInterests"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvFirstLanguage"
+        android:layout_alignStart="@+id/etPassword"
+        android:layout_marginTop="30dp"
+        android:text="@string/select_first_languages"
+        />
+
+    <!-- Select Interests -->
+    <TextView
+        android:id="@+id/tvInterests"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvSelectInterests"
+        android:layout_alignStart="@+id/tvSelectInterests"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
+        android:drawablePadding="16dp"
+        android:hint="@string/select_languages"
+        android:drawableEnd="@android:drawable/arrow_down_float"
+        android:background="@android:drawable/editbox_background"
+        android:maxLines="3"
+        />
+
     <!-- Sign up -->
     <Button
         android:id="@+id/btnSignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/tvFirstLanguage"
+        android:layout_below="@id/tvInterests"
         android:layout_marginTop="50dp"
         android:text="@string/signup"
         />

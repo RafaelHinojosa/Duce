@@ -37,6 +37,7 @@ import duce.adapters.LanguagesAdapter;
 import duce.models.Languages;
 import duce.models.UserLanguages;
 
+import static com.duce.R.color.mtrl_navigation_bar_colored_item_tint;
 import static com.duce.R.color.signup_red;
 
 public class SignupActivity extends AppCompatActivity {
@@ -48,10 +49,12 @@ public class SignupActivity extends AppCompatActivity {
     private EditText mEtPassword;
     private TextView mTvPasswordHelp;
     private TextView mTvFirstLanguage;
+    private TextView mTvInterests;
     private Button mBtnSignUp;
     private LanguagesAdapter mLanAdapter;
     private boolean[] mIsLanguageSelected;
     private ArrayList<Integer> mSelectedLanguages;
+    private ArrayList<Integer> mInterestLanguages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,16 +69,25 @@ public class SignupActivity extends AppCompatActivity {
         mEtPassword = binding.etPassword;
         mTvPasswordHelp = binding.tvPasswordHelp;
         mTvFirstLanguage = binding.tvFirstLanguage;
+        mTvInterests = binding.tvInterests;
         mBtnSignUp = binding.btnSignUp;
         mLanAdapter = new LanguagesAdapter();
         mSelectedLanguages = new ArrayList<Integer>();
+        mInterestLanguages = new ArrayList<Integer>();
 
         mTvUsernameHelp.setVisibility(View.INVISIBLE);
 
         mTvFirstLanguage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setAlertDialog();
+                setAlertDialog("myLanguage");
+            }
+        });
+
+        mTvInterests.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setAlertDialog("interest");
             }
         });
 
@@ -112,14 +124,15 @@ public class SignupActivity extends AppCompatActivity {
                     mTvUsernameHelp.setText(R.string.username_help);
                     return;
                 }
-                createUserLanguages();
+                registerUserLanguages();
                 Toast.makeText(SignupActivity.this,  "Welcome " + username, Toast.LENGTH_SHORT).show();
                 goMainActivity();
             }
         });
     }
 
-    private void createUserLanguages() {
+    private void registerUserLanguages() {
+        // Set the languages put as Proficient Languages
         for (int i = 0; i < mSelectedLanguages.size(); i++) {
             int index = mSelectedLanguages.get(i);
             Languages languageObject = mLanAdapter.getLanguageObject(index);
@@ -127,6 +140,29 @@ public class SignupActivity extends AppCompatActivity {
                 UserLanguages userLanguages = new UserLanguages();
                 userLanguages.setUser(ParseUser.getCurrentUser());
                 userLanguages.setLanguage(languageObject);
+                userLanguages.setMyLanguage(true);
+                userLanguages.setInterestedIn(false);
+                userLanguages.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e != null) {
+                            Log.i(TAG, "Could not register languages");
+                        }
+                    }
+                });
+            }
+        }
+
+        // Set the languages put as Interest
+        for (int i = 0; i < mInterestLanguages.size(); i++) {
+            int index = mInterestLanguages.get(i);
+            Languages languageObject = mLanAdapter.getLanguageObject(index);
+            if (languageObject != null) {
+                UserLanguages userLanguages = new UserLanguages();
+                userLanguages.setUser(ParseUser.getCurrentUser());
+                userLanguages.setLanguage(languageObject);
+                userLanguages.setMyLanguage(false);
+                userLanguages.setInterestedIn(true);
                 userLanguages.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
@@ -139,9 +175,9 @@ public class SignupActivity extends AppCompatActivity {
         }
     }
 
-    public void setAlertDialog() {
+    public void setAlertDialog(String languageType) {
         AlertDialog.Builder builder = new AlertDialog.Builder(SignupActivity.this);
-        builder.setTitle("Select Languages");
+        builder.setTitle(R.string.select_languages);
         builder.setCancelable(false);
 
         mIsLanguageSelected = new boolean[mLanAdapter.getItemCount()];
@@ -149,28 +185,50 @@ public class SignupActivity extends AppCompatActivity {
         builder.setMultiChoiceItems(mLanAdapter.getLanguages(), mIsLanguageSelected, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                if (isChecked) {
-                    mSelectedLanguages.add(which);
-                } else {
-                    mSelectedLanguages.remove(Integer.valueOf(which));
-                }
+               if (languageType.equals("myLanguage")) {
+                   if (isChecked) {
+                       mSelectedLanguages.add(which);
+                   } else {
+                       mSelectedLanguages.remove(Integer.valueOf(which));
+                   }
+               } else if (languageType.equals("interest")) {
+                   if (isChecked) {
+                       mInterestLanguages.add(which);
+                   } else {
+                       mInterestLanguages.remove(Integer.valueOf(which));
+                   }
+               }
             }
         });
 
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Collections.sort(mSelectedLanguages);
-                StringBuilder stringBuilder = new StringBuilder();
-                for (int j = 0; j < mSelectedLanguages.size(); j++) {
-                    String language = mLanAdapter.getLanguageName(mSelectedLanguages.get(j));
-                    stringBuilder.append(language);
+                if (languageType.equals("myLanguage")) {
+                    Collections.sort(mSelectedLanguages);
+                    StringBuilder stringBuilder = new StringBuilder();
+                    for (int j = 0; j < mSelectedLanguages.size(); j++) {
+                        String language = mLanAdapter.getLanguageName(mSelectedLanguages.get(j));
+                        stringBuilder.append(language);
 
-                    if (j != mSelectedLanguages.size()-1) {
-                        stringBuilder.append(", ");
+                        if (j != mSelectedLanguages.size() - 1) {
+                            stringBuilder.append(", ");
+                        }
                     }
+                    mTvFirstLanguage.setText(stringBuilder.toString());
+                } else if (languageType.equals("interest")) {
+                    Collections.sort(mInterestLanguages);
+                    StringBuilder stringBuilder = new StringBuilder();
+                    for (int j = 0; j < mInterestLanguages.size(); j++) {
+                        String language = mLanAdapter.getLanguageName(mInterestLanguages.get(j));
+                        stringBuilder.append(language);
+
+                        if (j != mInterestLanguages.size() - 1) {
+                            stringBuilder.append(", ");
+                        }
+                    }
+                    mTvInterests.setText(stringBuilder.toString());
                 }
-                mTvFirstLanguage.setText(stringBuilder.toString());
             }
         });
 
@@ -185,10 +243,14 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 for (int j = 0; j < mIsLanguageSelected.length; j++) {
-                    // Remove all selections
                     mIsLanguageSelected[j] = false;
-                    mSelectedLanguages.clear();
-                    mTvFirstLanguage.setText("");
+                    if (languageType.equals("myLanguage")) {
+                        mSelectedLanguages.clear();
+                        mTvFirstLanguage.setText("");
+                    } else if (languageType.equals("interest")) {
+                        mInterestLanguages.clear();
+                        mTvInterests.setText("");
+                    }
                 }
             }
         });
