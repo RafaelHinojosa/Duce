@@ -2,65 +2,110 @@ package duce.fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.duce.R;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link FinderFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+import java.util.List;
+
+import duce.adapters.ChatsAdapter;
+import duce.adapters.FoundUsersAdapter;
+import duce.models.CustomUser;
+
+import static com.duce.R.layout.chats_fragment;
+import static com.duce.R.layout.finder_fragment;
+
 public class FinderFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    public static final String TAG = "FinderFragment";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private List<CustomUser> mUsers = new ArrayList<>();
+    private EditText mEtSearch;
+    private RecyclerView mRvUsers;
+    private FoundUsersAdapter mUsersAdapter;
 
-    public FinderFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment finder.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static FinderFragment newInstance(String param1, String param2) {
-        FinderFragment fragment = new FinderFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    public static FinderFragment newInstance() {
+        return new FinderFragment();
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    public View onCreateView(
+            LayoutInflater inflater,
+            ViewGroup container,
+            Bundle savedInstanceState) {
+        View view = inflater.inflate(finder_fragment, container, false);
+
+        mEtSearch = view.findViewById(R.id.etSearch);
+        mRvUsers = view.findViewById(R.id.rvUsers);
+
+        return view;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.finder_fragment, container, false);
+    public void onViewCreated(View view, @Nullable Bundle savedInstance) {
+        super.onViewCreated(view, savedInstance);
+
+        mUsers = new ArrayList<>();
+        mUsersAdapter = new FoundUsersAdapter(getContext(), mUsers);
+        mRvUsers.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRvUsers.setAdapter(mUsersAdapter);
+
+        mEtSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    String text = textView.getText().toString();
+                    getSearchedUsers(text);
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    public void getSearchedUsers(String search) {
+        ParseQuery<ParseUser> usersWithString = ParseUser.getQuery();
+        usersWithString.whereStartsWith("username", search);
+
+        usersWithString.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> users, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error: " + e.getMessage());
+                    return;
+                }
+
+                mUsersAdapter.clear();
+                for (ParseUser user : users) {
+                    CustomUser newUser = new CustomUser(user);
+                    mUsers.add(newUser);
+                }
+                mUsersAdapter.notifyDataSetChanged();
+
+                if (users.size() == 0) {
+                    Toast.makeText(getContext(), R.string.no_users_found, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }

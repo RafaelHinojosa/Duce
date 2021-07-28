@@ -6,7 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="7dp"
+    android:paddingBottom="5dp"
     >
+
     <!-- Profile Picture -->
     <ImageView
         android:id="@+id/ivProfilePicture"
@@ -15,30 +17,34 @@
         android:layout_margin="15dp"
         tools:srcCompat="@tools:sample/avatars"
         />
+
     <!-- Username -->
     <TextView
         android:id="@+id/tvUsername"
-        android:layout_width="108dp"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginTop="40dp"
         android:layout_toEndOf="@+id/ivProfilePicture"
         android:layout_marginStart="13dp"
         android:hint="@string/username_sample_1"
-        android:textSize="22dp"
+        android:textSize="20dp"
         />
-    <!-- Call Button -->
+
+    <!-- Message -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btnCall"
+        android:id="@+id/btnMessage"
+        gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="97dp"
-        android:layout_marginTop="28dp"
-        android:layout_toEndOf="@+id/tvUsername"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="36dp"
         android:clickable="true"
-        app:srcCompat="@android:drawable/stat_sys_phone_call"
+        android:src="@drawable/message"
         />
+
     <!-- My Languages -->
     <TextView
         android:id="@+id/tvMyLanguages"
@@ -48,46 +54,51 @@
         android:layout_alignStart="@+id/ivProfilePicture"
         android:text="@string/my_languages"
         />
-    <!-- Horizontal Recycler View https://stackoverflow.com/questions/28460300/how-to-build-a-horizontal-listview-with-recyclerview -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvMyLanguages"
-        android:layout_width="175dp"
-        android:layout_height="25dp"
+
+    <!-- My Languages -->
+    <LinearLayout
+        android:id="@+id/llMyLanguages"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/tvMyLanguages"
         android:layout_alignStart="@+id/tvMyLanguages"
         android:layout_marginTop="5dp"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:scrollIndicators="bottom"
         />
+
     <!-- Language Divider -->
     <View
         android:id="@+id/divider"
         android:layout_width="1dp"
         android:layout_height="50dp"
         android:layout_alignTop="@+id/tvMyLanguages"
-        android:layout_marginStart="15dp"
-        android:layout_toEndOf="@+id/rvMyLanguages"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@+id/llMyLanguages"
         android:background="?android:attr/listDivider"
         />
+
     <!-- Language Interests -->
     <TextView
-        android:id="@+id/tvLanguageInterests"
+        android:id="@+id/tvMyInterests"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ivProfilePicture"
         android:layout_alignStart="@+id/divider"
-        android:layout_marginStart="5dp"
+        android:layout_marginStart="10dp"
         android:text="@string/my_interests"
         />
-    <!-- Horizontal Recycler View https://stackoverflow.com/questions/28460300/how-to-build-a-horizontal-listview-with-recyclerview -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvLanguageInterests"
-        android:layout_width="175dp"
-        android:layout_height="25dp"
-        android:layout_below="@id/tvLanguageInterests"
-        android:layout_alignStart="@+id/tvLanguageInterests"
+
+    <!-- My Interests -->
+    <LinearLayout
+        android:id="@+id/llMyInterests"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvMyInterests"
+        android:layout_alignStart="@+id/tvMyInterests"
         android:layout_marginTop="5dp"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:scrollIndicators="bottom"
         />
+
 </RelativeLayout>
