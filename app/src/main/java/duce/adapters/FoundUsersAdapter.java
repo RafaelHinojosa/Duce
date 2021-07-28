@@ -162,7 +162,6 @@ public class FoundUsersAdapter extends RecyclerView.Adapter<FoundUsersAdapter.Vi
                         TextView language = setLanguageTV(userLanguage.getLanguage().getLanguageName());
                         TextView languageCopy = setLanguageTV(userLanguage.getLanguage().getLanguageName());
 
-
                         if (userLanguage.getMyLanguage() && myLanguagesCount < 3) {
                             mLlMyLanguages.addView(language);
                             myLanguagesCount++;
@@ -198,17 +197,7 @@ public class FoundUsersAdapter extends RecyclerView.Adapter<FoundUsersAdapter.Vi
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
                 CustomUser customUser = mUsers.get(position);
-                /*
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("user", Parcels.wrap(customUser));
-                Fragment fragment = new ProfileMainFragment();
-                fragment.setArguments(bundle);
 
-                FinderFragment.getParentFragmentManager()
-                        .beginTransaction()
-                        .add(R.id.flContainer, fragment)
-                        .commit();
-                */
                 Intent intent = new Intent(mContext, MainActivity.class);
                 intent.putExtra("user", Parcels.wrap(customUser.getCustomUser()));
                 mContext.startActivity(intent);

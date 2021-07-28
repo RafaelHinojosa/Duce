@@ -36,25 +36,12 @@
             android:hint="@string/username_sample_1"
             />
 
-        <!-- Age and Flat -->
-        <TextView
-            android:id="@+id/tvAge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvUsername"
-            android:layout_marginTop="10dp"
-            android:layout_centerHorizontal="true"
-            android:textAlignment="center"
-            android:textSize="16dp"
-            android:hint="@string/age_sample_1"
-            />
-
         <!-- Description -->
         <TextView
             android:id="@+id/tvDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvAge"
+            android:layout_below="@+id/tvUsername"
             android:layout_margin="15dp"
             android:layout_centerHorizontal="true"
             android:maxLines="2"
@@ -75,38 +62,27 @@
             android:text="@string/my_languages"
             />
 
-        <!--
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvMyLanguages"
-            android:layout_width="match_parent"
+        <!-- My Languages Layout -->
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/flMyLanguages"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvMyLanguages"
             android:layout_alignStart="@+id/tvMyLanguages"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginBottom="15dp" />
-        -->
-
-        <TextView
-            android:id="@+id/tvLanguages"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvMyLanguages"
-            android:layout_alignStart="@+id/tvMyLanguages"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginBottom="15dp"
-            android:text="@string/languages_sample"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_marginEnd="30dp"
+            app:flexWrap="wrap"
+            app:alignItems="stretch"
+            app:alignContent="stretch"
             />
 
         <!-- Language Interests -->
         <TextView
-            android:id="@+id/tvLanguageInterests"
+            android:id="@+id/tvMyInterests"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvLanguages"
+            android:layout_below="@+id/flMyLanguages"
             android:layout_marginTop="15dp"
             android:layout_alignParentStart="true"
             android:layout_marginStart="15dp"
@@ -114,31 +90,19 @@
             android:text="@string/my_interests"
             />
 
-        <!--
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvLanguageInterests"
-            android:layout_width="match_parent"
+        <!-- My Interests Layout -->
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/flMyInterests"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvLanguageInterests"
-            android:layout_alignStart="@+id/tvLanguageInterests"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginBottom="15dp"
-            />
-        -->
-
-        <TextView
-            android:id="@+id/rvLanguageInterests"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvLanguageInterests"
-            android:layout_alignStart="@+id/tvLanguageInterests"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginBottom="15dp"
-            android:text="@string/interests_sample"
+            android:layout_below="@+id/tvMyInterests"
+            android:layout_alignStart="@+id/tvMyInterests"
+            android:layout_marginEnd="30dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            app:flexWrap="wrap"
+            app:alignItems="stretch"
+            app:alignContent="stretch"
             />
 
         <!-- Edit Button -->
@@ -160,7 +124,7 @@
             android:id="@+id/btnLogOut"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/rvLanguageInterests"
+            android:layout_below="@+id/flMyInterests"
             android:layout_marginTop="20dp"
             android:layout_alignEnd="@+id/btnEditProfile"
             android:text="@string/logout"

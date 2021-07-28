@@ -84,4 +84,6 @@ dependencies {
     annotationProcessor 'com.google.cloud:google-cloud-translate:1.12.0'
     // Correct Errors from Google Translate API usage
     compile 'com.android.support:multidex:1.0.1'
+    // FlexBox
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
 }
