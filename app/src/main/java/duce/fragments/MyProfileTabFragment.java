@@ -139,6 +139,18 @@ public class MyProfileTabFragment extends Fragment {
         mBtnLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                CustomUser mUser = new CustomUser(ParseUser.getCurrentUser());
+
+                Calendar today = Calendar.getInstance();
+                int year = today.get(Calendar.YEAR);
+                int month = today.get(Calendar.MONTH);
+                int day = today.get(Calendar.DAY_OF_MONTH);
+
+                Date lastConnection = new Date(year - 1900, month, day, 0, 0, 0);
+                mUser.setLastConnection(lastConnection);
+                mUser.setOnline(false);
+                mUser.getCustomUser().saveInBackground();
+
                 ParseUser.logOut();
                 Intent toStartActivity = new Intent(getActivity(), StartActivity.class);
                 startActivity(toStartActivity);
@@ -159,11 +171,13 @@ public class MyProfileTabFragment extends Fragment {
 
         // Set age
         Date birthdate = mUser.getBirthdate();
-        int year = birthdate.getYear() + 1900;
-        int month = birthdate.getMonth() + 1;
-        int day = birthdate.getDate();
-        String age = getAge(year, month, day);
-        mEtAge.setText(age);
+        if (birthdate != null) {
+            int year = birthdate.getYear() + 1900;
+            int month = birthdate.getMonth() + 1;
+            int day = birthdate.getDate();
+            String age = getAge(year, month, day);
+            mEtAge.setText(age);
+        }
 
         setLanguages();
     }

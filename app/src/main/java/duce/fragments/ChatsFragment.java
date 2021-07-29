@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.duce.R;
 import com.duce.databinding.ChatsFragmentBinding;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.Parse;
@@ -40,6 +41,7 @@ import java.util.List;
 import bolts.Task;
 import duce.ConversationActivity;
 import duce.MainActivity;
+import duce.MatchAlgorithm;
 import duce.adapters.ChatsAdapter;
 import duce.models.Chats;
 import duce.models.Countries;
@@ -54,6 +56,7 @@ public class ChatsFragment extends Fragment {
     private List<Messages> mLastMessages = new ArrayList<>();
     private RecyclerView mRvChats;
     private EditText mEtSearch;
+    private FloatingActionButton mBtnMatch;
     private ChatsAdapter mChatsAdapter;
     protected SwipeRefreshLayout mSwipeContainer;
 
@@ -84,6 +87,7 @@ public class ChatsFragment extends Fragment {
         mLastMessages = new ArrayList<>();
         mChatsAdapter = new ChatsAdapter(getContext(), mLastMessages);
         mRvChats.setLayoutManager(new LinearLayoutManager(getContext()));
+        mBtnMatch = view.findViewById(R.id.btnMatchGen);
         mRvChats.setAdapter(mChatsAdapter);
 
         mSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -97,6 +101,14 @@ public class ChatsFragment extends Fragment {
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
+
+        mBtnMatch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toMatch = new Intent(getContext(), MatchAlgorithm.class);
+                startActivity(toMatch);
+            }
+        });
 
         mEtSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override

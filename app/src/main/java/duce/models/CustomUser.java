@@ -22,6 +22,8 @@ public class CustomUser {
     public static final String SELF_DESCRIPTION = "selfDescription";
     public static final String COUNTRY_ID = "countryId";
     public static final String BIRTHDATE = "birthdate";
+    public static final String LAST_CONNECTION = "lastConnection";
+    public static final String ONLINE = "online";
 
     public CustomUser() {
         this.mParseUser = new ParseUser();
@@ -83,5 +85,21 @@ public class CustomUser {
 
     public void setBirthdate(Date birthdate) {
         mParseUser.put(BIRTHDATE, birthdate);
+    }
+
+    public void setLastConnection(Date lastConnection) {
+        mParseUser.put(LAST_CONNECTION, lastConnection);
+    }
+
+    public Date getLastConnection() {
+        return (Date) mParseUser.getDate(LAST_CONNECTION);
+    }
+
+    public void setOnline(boolean isOnline) {
+        mParseUser.put(ONLINE, isOnline);
+    }
+
+    public boolean getOnline() {
+        return (boolean) mParseUser.getBoolean(ONLINE);
     }
 }

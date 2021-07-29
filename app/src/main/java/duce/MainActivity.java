@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import com.duce.databinding.MainActivityBinding;
 import duce.fragments.ChatsFragment;
 import duce.fragments.FinderFragment;
 import duce.fragments.ProfileMainFragment;
+import duce.models.CustomUser;
 
 import com.duce.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -22,6 +24,9 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import org.parceler.Parcels;
+
+import java.util.Calendar;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +39,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        CustomUser mUser = new CustomUser(ParseUser.getCurrentUser());
+        mUser.setOnline(true);
+        mUser.getCustomUser().saveInBackground();
 
         MainActivityBinding binding = MainActivityBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
@@ -88,5 +97,27 @@ public class MainActivity extends AppCompatActivity {
         } else {
             navView.setSelectedItemId(R.id.chats_navigation);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (ParseUser.getCurrentUser() == null) {
+            return;
+        }
+
+        CustomUser mUser = new CustomUser(ParseUser.getCurrentUser());
+        Toast.makeText(getApplicationContext(), "OnDestroy", Toast.LENGTH_LONG).show();
+
+        Calendar today = Calendar.getInstance();
+        int year = today.get(Calendar.YEAR);
+        int month = today.get(Calendar.MONTH);
+        int day = today.get(Calendar.DAY_OF_MONTH);
+
+        Date lastConnection = new Date(year - 1900, month, day, 0, 0, 0);
+        mUser.setLastConnection(lastConnection);
+        mUser.setOnline(false);
+        mUser.getCustomUser().saveInBackground();
     }
 }

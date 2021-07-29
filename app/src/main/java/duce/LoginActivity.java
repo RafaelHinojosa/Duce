@@ -16,6 +16,8 @@ import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
+import duce.models.CustomUser;
+
 public class LoginActivity extends AppCompatActivity {
 
     public static final String  TAG = "LoginActivity";
@@ -57,6 +59,10 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Username/password are not correct!", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                CustomUser mUser = new CustomUser(ParseUser.getCurrentUser());
+                mUser.setOnline(true);
+                mUser.getCustomUser().saveInBackground();
+
                 Toast.makeText(LoginActivity.this, "Welcome back " + username, Toast.LENGTH_SHORT).show();
                 Intent toMainActivity = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(toMainActivity);
