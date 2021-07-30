@@ -249,7 +249,6 @@ public class FoundUsersAdapter extends RecyclerView.Adapter<FoundUsersAdapter.Vi
                             }
                             if (chats.size() > 0) {
                                 Chats lastChat = chats.get(0);
-                                goToMessages(lastChat, ParseUser.getCurrentUser(), otherUser);
 
                                 // My conversation copy
                                 UserChats userChats = new UserChats();

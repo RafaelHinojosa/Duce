@@ -2,7 +2,9 @@ package duce;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,12 +16,15 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.yuyakaido.android.cardstackview.CardStackLayoutManager;
 import com.yuyakaido.android.cardstackview.CardStackListener;
 import com.yuyakaido.android.cardstackview.CardStackView;
 import com.yuyakaido.android.cardstackview.Direction;
 import com.yuyakaido.android.cardstackview.StackFrom;
 import com.yuyakaido.android.cardstackview.SwipeableMethod;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -28,9 +33,12 @@ import java.util.Date;
 import java.util.List;
 
 import duce.adapters.MatchAlgorithmAdapter;
+import duce.models.Chats;
 import duce.models.CustomUser;
 import duce.models.Languages;
 import duce.models.MatchingUser;
+import duce.models.Messages;
+import duce.models.UserChats;
 import duce.models.UserLanguages;
 
 public class MatchAlgorithm extends AppCompatActivity {
@@ -80,9 +88,10 @@ public class MatchAlgorithm extends AppCompatActivity {
 
             @Override
             public void onCardSwiped(Direction direction) {
+                int position = mCardManager.getTopPosition() - 1;
                 Log.d(TAG, "onCardSwiped: p=" + mCardManager.getTopPosition() + " d=" + direction);
                 if (direction == Direction.Top) {
-                    // TODO: go to conversation
+                    setUpConversation(position);
                     Toast.makeText(MatchAlgorithm.this, "Direction Top", Toast.LENGTH_SHORT).show();
                 }
                 if (direction == Direction.Bottom) {
@@ -360,5 +369,88 @@ public class MatchAlgorithm extends AppCompatActivity {
             }
         }
         return agePos;
+    }
+
+    public void setUpConversation(int position) {
+        if (position >= 0 && position <= mMatchingUsers.size()) {
+            CustomUser user = mMatchingUsers.get(position).getUser();
+
+            ParseQuery<UserChats> userChatsQuery = ParseQuery.getQuery("UserChats");
+            userChatsQuery.whereEqualTo("userId", ParseUser.getCurrentUser());
+            userChatsQuery.whereEqualTo("otherUserId", user.getCustomUser());
+
+            userChatsQuery.findInBackground(new FindCallback<UserChats>() {
+                @Override
+                public void done(List<UserChats> userChats, ParseException e) {
+                    if (e != null) {
+                        Log.e(TAG, "Error: " + e.getMessage());
+                        return;
+                    }
+                    if (userChats.size() == 0) {
+                        createChat(user.getCustomUser());
+                    } else {
+                        UserChats userChat = userChats.get(0);
+                        Chats chat = userChat.getChat();
+                        goToMessages(chat, ParseUser.getCurrentUser(), user.getCustomUser());
+                    }
+                }
+            });
+        }
+    }
+
+    public void createChat(ParseUser otherUser) {
+        Chats newChat = new Chats();
+        newChat.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error: " + e.getMessage());
+                    return;
+                }
+                ParseQuery<Chats> lastChat = ParseQuery.getQuery("Chats");
+                lastChat.setLimit(1);
+                lastChat.addDescendingOrder("createdAt");
+                lastChat.findInBackground(new FindCallback<Chats>() {
+                    @Override
+                    public void done(List<Chats> chats, ParseException e) {
+                        if (e != null) {
+                            Log.e(TAG, "Error: " + e.getMessage());
+                            return;
+                        }
+                        if (chats.size() > 0) {
+                            Chats lastChat = chats.get(0);
+                            goToMessages(lastChat, ParseUser.getCurrentUser(), otherUser);
+
+                            // My conversation copy
+                            UserChats userChats = new UserChats();
+                            userChats.setChat(lastChat);
+                            userChats.setUser(ParseUser.getCurrentUser());
+                            userChats.setOtherUser(otherUser);
+                            userChats.saveInBackground();
+
+                            // The other's profile copy
+                            UserChats otherUserCopy = new UserChats();
+                            otherUserCopy.setChat(lastChat);
+                            otherUserCopy.setUser(otherUser);
+                            otherUserCopy.setOtherUser(ParseUser.getCurrentUser());
+                            otherUserCopy.saveInBackground();
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    public void goToMessages(Chats chat, ParseUser sender, ParseUser receiver) {
+        Messages message = new Messages();
+        message.setChatsId(chat);
+        message.setOwnerUser(sender);
+        message.setSender(sender);
+        message.setReceiver(receiver);
+        message.setDescription("Hello");
+
+        Intent toMessages = new Intent(MatchAlgorithm.this, ConversationActivity.class);
+        toMessages.putExtra("conversation", Parcels.wrap(message));
+        startActivity(toMessages);
     }
 }
