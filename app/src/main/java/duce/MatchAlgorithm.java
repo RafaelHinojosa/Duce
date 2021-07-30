@@ -92,32 +92,37 @@ public class MatchAlgorithm extends AppCompatActivity {
                 Log.d(TAG, "onCardSwiped: p=" + mCardManager.getTopPosition() + " d=" + direction);
                 if (direction == Direction.Top) {
                     setUpConversation(position);
-                    Toast.makeText(MatchAlgorithm.this, "Direction Top", Toast.LENGTH_SHORT).show();
                 }
                 if (direction == Direction.Bottom) {
-                    // TODO: go to profile
-                    Toast.makeText(MatchAlgorithm.this, "Direction Bottom", Toast.LENGTH_SHORT).show();
+                    if (position >= 0 && position <= mMatchingUsers.size()) {
+                        CustomUser customUser = mMatchingUsers.get(position).getUser();
+
+                        Intent intent = new Intent(MatchAlgorithm.this, MainActivity.class);
+                        intent.putExtra("user", Parcels.wrap(customUser.getCustomUser()));
+                        Toast.makeText(MatchAlgorithm.this, "Going to " + customUser.getUsername() + " profile", Toast.LENGTH_SHORT).show();
+                        startActivity(intent);
+                    }
                 }
             }
 
             @Override
             public void onCardRewound() {
-
+                Log.i(TAG, "Card Rewounded");
             }
 
             @Override
             public void onCardCanceled() {
-
+                Log.i(TAG, "Card Canceled");
             }
 
             @Override
             public void onCardAppeared(View view, int position) {
-
+                Log.i(TAG, "Card Appeared");
             }
 
             @Override
             public void onCardDisappeared(View view, int position) {
-
+                Log.i(TAG, "Card Disappeared");
             }
         });
 
@@ -449,8 +454,11 @@ public class MatchAlgorithm extends AppCompatActivity {
         message.setReceiver(receiver);
         message.setDescription("Hello");
 
+        CustomUser customUser = new CustomUser(receiver);
+
         Intent toMessages = new Intent(MatchAlgorithm.this, ConversationActivity.class);
         toMessages.putExtra("conversation", Parcels.wrap(message));
+        Toast.makeText(MatchAlgorithm.this, "Going to chat with " + customUser.getUsername(), Toast.LENGTH_SHORT).show();
         startActivity(toMessages);
     }
 }
