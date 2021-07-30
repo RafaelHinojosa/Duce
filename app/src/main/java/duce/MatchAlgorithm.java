@@ -3,15 +3,22 @@ package duce;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.service.autofill.FieldClassification;
 import android.util.Log;
 
 import com.duce.R;
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import duce.models.CustomUser;
@@ -26,6 +33,11 @@ public class MatchAlgorithm extends AppCompatActivity {
     private List<Languages> mMyLanguages;
     private List<Languages> mMyInterests;
     private List<MatchingUser> mMatchingUsers;
+    private List<ParseUser> mUsers;
+    private CustomUser mUser;
+    private int[] mMinRange = {9, 10, 15, 20, 15};
+    private int[] mMaxRange = {9, 15, 20, 15, 10};
+    private int[] mAgeRange = {16, 25, 40, 60, 75};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,11 +47,14 @@ public class MatchAlgorithm extends AppCompatActivity {
         mMyLanguages = new ArrayList<>();
         mMyInterests = new ArrayList<>();
         mMatchingUsers = new ArrayList<>();
+        mUser = new CustomUser(ParseUser.getCurrentUser());
+        mUsers = new ArrayList<>();
 
         setLanguages();
-        getUsers();
+        getUserLanguages();
     }
 
+    // Saves the current user languages and interests
     public void setLanguages() {
         mMyLanguages.clear();
         mMyInterests.clear();
@@ -63,13 +78,11 @@ public class MatchAlgorithm extends AppCompatActivity {
                 for (UserLanguages userLanguage : userLanguages) {
                     if (userLanguage.getMyLanguage()) {
                         Languages language = userLanguage.getLanguage();
-                        Log.i(TAG, language.getLanguageName());
                         mMyLanguages.add(language);
                     }
 
                     if (userLanguage.getInterestedIn()) {
                         Languages language = userLanguage.getLanguage();
-                        Log.i(TAG, language.getLanguageName());
                         mMyInterests.add(language);
                     }
                 }
@@ -77,8 +90,210 @@ public class MatchAlgorithm extends AppCompatActivity {
         });
     }
 
+    //
+    public void getUserLanguages() {
+        ParseQuery<UserLanguages> userLanguagesQuery = ParseQuery.getQuery("UserLanguages");
+        userLanguagesQuery.whereNotEqualTo("userId", ParseUser.getCurrentUser().getObjectId());
+        userLanguagesQuery.addAscendingOrder("userId");
+        userLanguagesQuery.include("userId");
+        userLanguagesQuery.include("languageId");
+
+        userLanguagesQuery.findInBackground(new FindCallback<UserLanguages>() {
+            @Override
+            public void done(List<UserLanguages> userLanguages, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error: " + e.getMessage());
+                    return;
+                }
+
+                if (userLanguages.size() == 0) {
+                    return;
+                }
+
+                // Get & Save the languages and interests of all users that have a language registered
+                MatchingUser matchingUser = new MatchingUser(userLanguages.get(0).getUser());
+                String userId = userLanguages.get(0).getUser().getObjectId();
+                mMatchingUsers.add(matchingUser);
+                int userIndex = 0;
+                //Log.i(TAG, userId);
+                for (int i = 1; i < userLanguages.size(); i++) {
+                    //Log.i(TAG, userLanguages.get(i).getUser().getUsername());
+                    if (userLanguages.get(i).getUser().getObjectId().equals(userId)) {
+                        if (userLanguages.get(i).getMyLanguage()) {
+                            Languages language = userLanguages.get(i).getLanguage();
+                            mMatchingUsers.get(userIndex).addLanguage(language);
+                        }
+
+                        if (userLanguages.get(i).getInterestedIn()) {
+                            Languages language = userLanguages.get(i).getLanguage();
+                            mMatchingUsers.get(userIndex).addInterest(language);
+                        }
+                    } else {
+                        matchingUser = new MatchingUser(userLanguages.get(i).getUser());
+                        userId = matchingUser.getUser().getObjectId();
+                        mMatchingUsers.add(matchingUser);
+                        userIndex++;
+                        i--;
+                    }
+                }
+
+                // Set common languages between my interests and their known languages
+                for (MatchingUser user : mMatchingUsers) {
+                    user.setCommonLanguages(mMyInterests);
+                    int common = user.getCommonLanNumber();
+
+                    //Log.i(TAG, "Common Languages between: " + ParseUser.getCurrentUser().getUsername() + " and " + user.getUser().getUsername());
+
+                    List<Languages> commonLanguages = user.getCommonLanguages();
+                    user.updateScore(8 * common);
+                    String commonLangS = "";
+                    for (Languages language : commonLanguages) {
+                        commonLangS += language.getLanguageName();
+                    }
+                    //Log.i(TAG, "Languages: " + commonLangS);
+                }
+
+                // Set common languages between my languages and their interests
+                for (MatchingUser user : mMatchingUsers) {
+                    user.setCrossedLanguages(mMyLanguages);
+                    int common = user.getCrossedLanNumber();
+
+                    //Log.i(TAG, "Common Languages between: " + ParseUser.getCurrentUser().getUsername() + " and " + user.getUser().getUsername());
+
+                    List<Languages> crossedLanguages = user.getCrossedLanguages();
+                    user.updateScore(5 * common);
+                    String crossedLangS = "";
+                    for (Languages language : crossedLanguages) {
+                        crossedLangS += language.getLanguageName();
+                    }
+                    //Log.i(TAG, "Languages: " + crossedLangS);
+                }
+
+                // Set points for the age
+                int myAge = setAge(mUser.getBirthdate());
+                // Do only if myAge is > 15
+                int myAgePos = 0;
+                for (int i = 0; i < mAgeRange.length - 1; i++) {
+                    if (mAgeRange[i] <= myAge && myAge < mAgeRange[i+1]) {
+                        myAgePos = i;
+                        break;
+                    } else if (i == mAgeRange.length - 1) {
+                        myAgePos = i + 1;
+                    }
+                }
+
+                // Ranges the other user should be inside
+                int myMin = myAge - mMinRange[myAgePos];
+                int myMax = myAge + mMaxRange[myAgePos];
+                if (myMin < 15) {
+                    myMin = 15;
+                }
+
+                // See if other user and my user are in the same age range
+                for (MatchingUser user : mMatchingUsers) {
+                    int userAge = user.getAge();
+                    int userAgePos = getAgeIndex(userAge);
+                    int userMin = userAge - mMinRange[userAgePos];
+                    int userMax = userAge + mMaxRange[userAgePos];
+                    if (userMin < 15) {
+                        userMin = 15;
+                    }
+
+                    if (userMin <= myAge && myAge <= userMax && myMin <= userAge && userAge <= myMax) {
+                        //Log.i(TAG, "Ages are in range! " + mUser.getUsername() + " " + myAge +  "   " + user.getUser().getUsername() + " " + userAge);
+                        user.updateScore(3);
+                        //Log.i(TAG, "Score: " + String.valueOf(user.getScore()));
+                    } else {
+                        //Log.i(TAG, mUser.getUsername() + " " + myAge + " and " + user.getUser().getUsername() + " " +  userAge + " are not in the same range");
+                    }
+                }
+
+                // Set points for recently connected people
+                for (MatchingUser user : mMatchingUsers) {
+                    user.setLastConnection();
+                    String lastConnection = user.getLastConnection();
+                    if (!(lastConnection.equals("yesterday") || lastConnection.charAt(lastConnection.length()-1) == 'd')) {
+                        user.updateScore(2);
+                    }
+                    //Log.i(TAG, lastConnection);
+                }
+
+                // Order the users by their points
+                Collections.sort(mMatchingUsers, new ScoreComparator());
+                for (MatchingUser user : mMatchingUsers) {
+                    String userResume = "\n";
+                    userResume += user.getUser().getUsername() + "\n";
+
+                    // Languages the user know and you want to learn
+                    List<Languages> commonLanguages = user.getCommonLanguages();
+                    String commonLangS = "";
+                    for (Languages language : commonLanguages) {
+                        commonLangS += language.getLanguageName() + ", ";
+                    }
+                    userResume += user.getUser().getUsername() + " knows these languages you want to learn: " + commonLangS + "\n";
+
+                    // Langauges the user wants to learn and you know
+                    List<Languages> crossedLanguages = user.getCrossedLanguages();
+                    String crossedLangS = "";
+                    for (Languages language : crossedLanguages) {
+                        crossedLangS += language.getLanguageName() + ", ";
+                    }
+                    userResume += "You know these languages " + user.getUser().getUsername() + " wants to learn: " + crossedLangS + "\n";
+
+                    userResume += "AGES: Your age: " + setAge(mUser.getBirthdate()) + "; " + user.getUser().getUsername() + " age: " + user.getAge() + "\n";;
+                    userResume += "Last Connection: " + user.getLastConnection() + "\n";
+                    userResume += "POINTS: " + user.getScore() + " points\n";
+
+                    Log.i(TAG, userResume);
+                }
+            }
+        });
+    }
+
+    private int setAge(Date birthdate) {
+        if (birthdate == null) {
+            return -1;
+        }
+
+        int year = birthdate.getYear() + 1900;
+        int month = birthdate.getMonth() + 1;
+        int day = birthdate.getDate();
+
+        Calendar calBirthdate = Calendar.getInstance();
+        Calendar today = Calendar.getInstance();
+
+        calBirthdate.set(year, month, day);
+
+        int age = today.get(Calendar.YEAR) - calBirthdate.get(Calendar.YEAR);
+
+        if (today.get(Calendar.DAY_OF_YEAR) < calBirthdate.get(Calendar.DAY_OF_YEAR)) {
+            age--;
+        }
+
+        if (age < 0) {
+            return -1;
+        }
+
+        Integer ageNumber = new Integer(age);
+        return ageNumber;
+    }
+
+    private int getAgeIndex(int age) {
+        int agePos = 0;
+        for (int i = 0; i < mAgeRange.length - 1; i++) {
+            if (mAgeRange[i] <= age && age < mAgeRange[i+1]) {
+                return agePos;
+            } else if (i == mAgeRange.length - 1) {
+                agePos = i + 1;
+            }
+        }
+        return agePos;
+    }
+
     public void getUsers() {
         ParseQuery<ParseUser> usersQuery = ParseUser.getQuery();
+        usersQuery.whereEqualTo("username", "cristiano");
+        // usersQuery.setLimit(2);
         usersQuery.findInBackground(new FindCallback<ParseUser>() {
             @Override
             public void done(List<ParseUser> users, ParseException e) {
@@ -86,24 +301,51 @@ public class MatchAlgorithm extends AppCompatActivity {
                     Log.e(TAG, "Error: " + e.getMessage());
                     return;
                 }
-                for (ParseUser user : users) {
-                    gradeUser(user);
+
+                if (users.size() < 0) {
+                    return;
                 }
 
-                mergeUsers();
+                mUsers.addAll(users);
+                for (ParseUser user : users) {
+                    new Thread(() -> {
+                        Log.i(TAG, user.getUsername());
+                        MatchingUser matchingUser = new MatchingUser(user);
+
+                        ParseQuery<UserLanguages> proficientQuery = ParseQuery.getQuery("UserLanguages");
+                        proficientQuery.include("languageId");
+                        proficientQuery.whereEqualTo("userId", user);
+
+                        proficientQuery.findInBackground(new FindCallback<UserLanguages>() {
+                            @Override
+                            public void done(List<UserLanguages> userLanguages, ParseException e) {
+                                if (e != null) {
+                                    Log.e(TAG, "Error: " + e.getMessage());
+                                    return;
+                                }
+
+                                if (userLanguages.size() == 0) {
+                                    Log.i(TAG, "Si es 0");
+                                    return;
+                                }
+
+                                for (UserLanguages userLanguage : userLanguages) {
+                                    if (userLanguage.getMyLanguage()) {
+                                        Languages language = userLanguage.getLanguage();
+                                        matchingUser.addLanguage(language);
+                                    }
+
+                                    if (userLanguage.getInterestedIn()) {
+                                        Languages language = userLanguage.getLanguage();
+                                        matchingUser.addInterest(language);
+                                    }
+                                }
+                            }
+                        });
+                        Log.i(TAG, matchingUser.getProficientLanguages().toString());
+                    }).start();
+                }
             }
         });
-    }
-
-    public void gradeUser(ParseUser user) {
-        MatchingUser matchingUser = new MatchingUser(user);
-        // TODO: Compare my interests with matchingUsers' languages
-        // TODO: Compare my languages with matchingUsers' interests
-        // TODO: Get Age and grade
-        // TODO: Last Connection
-        // TODO: Save User
-    }
-
-    public void mergeUsers() {
     }
 }

@@ -18,26 +18,26 @@ public class MatchingUser {
 
     private int mScore;
     private int mAge;
-    // Time since last connection
-    private Calendar mLastConnection;
+    private String lastConnection;
     private List<Languages> mProficientLanguages;
     private List<Languages> mInterests;
     private List<Languages> mCommonLanguages;
+    private List<Languages> mCrossedLanguages;
     private CustomUser mUser;
 
     public MatchingUser(ParseUser user) {
-        mUser = new CustomUser(user);
+        this.mUser = new CustomUser(user);
         initializeVariables();
-        setLanguages();
     }
 
     public void initializeVariables() {
-        mScore = 0;
-        mAge = 0;
-        // Calendar
-        mProficientLanguages = new ArrayList<>();
-        mInterests = new ArrayList<>();
-        mCommonLanguages = new ArrayList<>();
+        this.mScore = 0;
+        setAge();
+        lastConnection = "";
+        this.mProficientLanguages = new ArrayList<>();
+        this.mInterests = new ArrayList<>();
+        this.mCommonLanguages = new ArrayList<>();
+        this.mCrossedLanguages = new ArrayList<>();
     }
 
     public CustomUser getUser() {
@@ -60,7 +60,7 @@ public class MatchingUser {
         return mAge;
     }
 
-    public void setAge() {
+    private void setAge() {
         Date birthdate = mUser.getBirthdate();
         if (birthdate == null) {
             mAge = -1;
@@ -91,12 +91,20 @@ public class MatchingUser {
         mAge = ageNumber;
     }
 
-    // Last connection
+    public void setLastConnection() {
+        if (mUser.getOnline()) {
+            lastConnection = "Online";
+        } else {
+            lastConnection = calculateTimeAgo(mUser.getLastConnection());
+        }
+    }
 
+    public String getLastConnection() {
+        return lastConnection;
+    }
+
+    // Get & Save the proficient and interest languages of the user
     public void setLanguages() {
-        mProficientLanguages.clear();
-        mInterests.clear();
-
         ParseQuery<UserLanguages> proficientQuery = ParseQuery.getQuery("UserLanguages");
         proficientQuery.include("languageId");
         proficientQuery.whereEqualTo("userId", mUser.getCustomUser());
@@ -110,6 +118,7 @@ public class MatchingUser {
                 }
 
                 if (userLanguages.size() == 0) {
+                    Log.i(TAG, "Si es 0");
                     return;
                 }
 
@@ -138,11 +147,15 @@ public class MatchingUser {
 
     // Checks the common languages between the interests of a user and the proficiency of the other one
     public void setCommonLanguages(List<Languages> userInterests) {
+        //Log.i(TAG, "Common languages between " + mUser.getUsername() + " and " + ParseUser.getCurrentUser().getUsername());
         for (Languages userInterest : userInterests) {
             String languageName = userInterest.getLanguageName();
+            //Log.i(TAG, languageName + " pairing");
+            //Log.i(TAG, String.valueOf(mProficientLanguages.size()));
             for (Languages proficientLanguage : mProficientLanguages) {
+                //Log.i(TAG, proficientLanguage.getLanguageName());
                 if (languageName.equals(proficientLanguage.getLanguageName())) {
-                    Log.i(TAG, "Common Language Found: " + languageName);
+                    //Log.i(TAG, "Common Language Found: " + languageName);
                     mCommonLanguages.add(userInterest);
                     break;
                 }
@@ -156,5 +169,77 @@ public class MatchingUser {
 
     public int getCommonLanNumber() {
         return mCommonLanguages.size();
+    }
+
+    // Checks the common languages between the interests of a user and the proficiency of the other one
+    public void setCrossedLanguages(List<Languages> userLanguages) {
+        Log.i(TAG, "Common languages between " + mUser.getUsername() + " and " + ParseUser.getCurrentUser().getUsername());
+        for (Languages userLanguage : userLanguages) {
+            String languageName = userLanguage.getLanguageName();
+            Log.i(TAG, languageName + " pairing");
+            Log.i(TAG, String.valueOf(mProficientLanguages.size()));
+            for (Languages interest : mInterests) {
+                Log.i(TAG, interest.getLanguageName());
+                if (languageName.equals(interest.getLanguageName())) {
+                    Log.i(TAG, "Common Language Found: " + languageName);
+                    mCrossedLanguages.add(userLanguage);
+                    break;
+                }
+            }
+        }
+    }
+
+    public List<Languages> getCrossedLanguages() {
+        return mCrossedLanguages;
+    }
+
+    public int getCrossedLanNumber() {
+        return mCrossedLanguages.size();
+    }
+
+    public void addLanguage(Languages language) {
+        mProficientLanguages.add(language);
+    }
+
+    public void addInterest(Languages language) {
+        mInterests.add(language);
+    }
+
+    public static String calculateTimeAgo(Date lastConnection) {
+        if (lastConnection == null) {
+            return "Disconnected";
+        }
+
+        int SECOND_MILLIS = 1000;
+        int MINUTE_MILLIS = 60 * SECOND_MILLIS;
+        int HOUR_MILLIS = 60 * MINUTE_MILLIS;
+        int DAY_MILLIS = 24 * HOUR_MILLIS;
+
+        try {
+            long time = lastConnection.getTime();
+            long now = System.currentTimeMillis();
+
+            final long diff = now - time;
+            if (diff < MINUTE_MILLIS) {
+                return "just now";
+            } else if (diff < 2 * MINUTE_MILLIS) {
+                return "a minute ago";
+            } else if (diff < 50 * MINUTE_MILLIS) {
+                return diff / MINUTE_MILLIS + " m";
+            } else if (diff < 90 * MINUTE_MILLIS) {
+                return "an hour ago";
+            } else if (diff < 24 * HOUR_MILLIS) {
+                return diff / HOUR_MILLIS + " h";
+            } else if (diff < 48 * HOUR_MILLIS) {
+                return "yesterday";
+            } else {
+                return diff / DAY_MILLIS + " d";
+            }
+        } catch (Exception e) {
+            Log.i("Error:", "getRelativeTimeAgo failed", e);
+            e.printStackTrace();
+        }
+
+        return "Disconnected";
     }
 }
