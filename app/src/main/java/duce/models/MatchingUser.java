@@ -238,8 +238,43 @@ public class MatchingUser {
         } catch (Exception e) {
             Log.i("Error:", "getRelativeTimeAgo failed", e);
             e.printStackTrace();
+            return "Disconnected";
+        }
+    }
+
+    public String commonLanguagesToString() {
+        String languages = "";
+
+        if (mCommonLanguages.size() == 0) {
+            return "No common languages";
+        }
+        for (int i = 0; i < mCommonLanguages.size(); i++) {
+            languages += mCommonLanguages.get(i).getLanguageName();
+            if (i < mCommonLanguages.size() - 2) {
+                languages += ", ";
+            } else if (i == mCommonLanguages.size() - 2) {
+                languages += " and ";
+            }
         }
 
-        return "Disconnected";
+        return languages;
+    }
+
+    public String crossedLanguagesToString() {
+        String languages = "";
+
+        if (mCrossedLanguages.size() == 0) {
+            return "No common languages";
+        }
+        for (int i = 0; i < mCrossedLanguages.size(); i++) {
+            languages += mCrossedLanguages.get(i).getLanguageName();
+            if (i < mCrossedLanguages.size() - 2) {
+                languages += ", ";
+            } else if (i == mCrossedLanguages.size() - 2) {
+                languages += " and ";
+            }
+        }
+
+        return languages;
     }
 }

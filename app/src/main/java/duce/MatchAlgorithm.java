@@ -1,26 +1,33 @@
 package duce;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 
 import android.os.Bundle;
-import android.service.autofill.FieldClassification;
 import android.util.Log;
+import android.view.View;
+import android.view.animation.LinearInterpolator;
+import android.widget.Toast;
 
 import com.duce.R;
 import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.yuyakaido.android.cardstackview.CardStackLayoutManager;
+import com.yuyakaido.android.cardstackview.CardStackListener;
+import com.yuyakaido.android.cardstackview.CardStackView;
+import com.yuyakaido.android.cardstackview.Direction;
+import com.yuyakaido.android.cardstackview.StackFrom;
+import com.yuyakaido.android.cardstackview.SwipeableMethod;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import duce.adapters.MatchAlgorithmAdapter;
 import duce.models.CustomUser;
 import duce.models.Languages;
 import duce.models.MatchingUser;
@@ -35,9 +42,11 @@ public class MatchAlgorithm extends AppCompatActivity {
     private List<MatchingUser> mMatchingUsers;
     private List<ParseUser> mUsers;
     private CustomUser mUser;
-    private int[] mMinRange = {9, 10, 15, 20, 15};
-    private int[] mMaxRange = {9, 15, 20, 15, 10};
-    private int[] mAgeRange = {16, 25, 40, 60, 75};
+    private final int[] mMinRange = {9, 10, 15, 20, 15};
+    private final int[] mMaxRange = {9, 15, 20, 15, 10};
+    private final int[] mAgeRange = {16, 25, 40, 60, 75};
+    private CardStackLayoutManager mCardManager;
+    private MatchAlgorithmAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +58,70 @@ public class MatchAlgorithm extends AppCompatActivity {
         mMatchingUsers = new ArrayList<>();
         mUser = new CustomUser(ParseUser.getCurrentUser());
         mUsers = new ArrayList<>();
+        mAdapter = new MatchAlgorithmAdapter(mMatchingUsers, MatchAlgorithm.this);
+
+        CardStackView csCardStackView = findViewById(R.id.csCardStackView);
+        setCardStack();
+        csCardStackView.setLayoutManager(mCardManager);
+        csCardStackView.setAdapter(mAdapter);
+        csCardStackView.setItemAnimator(new DefaultItemAnimator());
 
         setLanguages();
         getUserLanguages();
+    }
+
+    private void setCardStack() {
+        mCardManager = new CardStackLayoutManager(this, new CardStackListener() {
+
+            @Override
+            public void onCardDragging(Direction direction, float ratio) {
+
+            }
+
+            @Override
+            public void onCardSwiped(Direction direction) {
+                Log.d(TAG, "onCardSwiped: p=" + mCardManager.getTopPosition() + " d=" + direction);
+                if (direction == Direction.Top) {
+                    // TODO: go to conversation
+                    Toast.makeText(MatchAlgorithm.this, "Direction Top", Toast.LENGTH_SHORT).show();
+                }
+                if (direction == Direction.Bottom) {
+                    // TODO: go to profile
+                    Toast.makeText(MatchAlgorithm.this, "Direction Bottom", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCardRewound() {
+
+            }
+
+            @Override
+            public void onCardCanceled() {
+
+            }
+
+            @Override
+            public void onCardAppeared(View view, int position) {
+
+            }
+
+            @Override
+            public void onCardDisappeared(View view, int position) {
+
+            }
+        });
+
+        mCardManager.setStackFrom(StackFrom.None);
+        mCardManager.setVisibleCount(3);            // Number of visible cards at the same time
+        mCardManager.setTranslationInterval(8.0f); // Time for the next card to appear
+        mCardManager.setScaleInterval(0.8f);      // Animates the next card to grow when a card is swiped
+        mCardManager.setSwipeThreshold(0.3f);   // How much distance to swipe the card
+        mCardManager.setMaxDegree(30.0f);       // Max degree of inclination of a card when it is swiped
+        mCardManager.setDirections(Direction.FREEDOM);
+        mCardManager.setCanScrollHorizontal(true);
+        mCardManager.setSwipeableMethod(SwipeableMethod.Manual);
+        mCardManager.setOverlayInterpolator(new LinearInterpolator());
     }
 
     // Saves the current user languages and interests
@@ -90,7 +160,6 @@ public class MatchAlgorithm extends AppCompatActivity {
         });
     }
 
-    //
     public void getUserLanguages() {
         ParseQuery<UserLanguages> userLanguagesQuery = ParseQuery.getQuery("UserLanguages");
         userLanguagesQuery.whereNotEqualTo("userId", ParseUser.getCurrentUser().getObjectId());
@@ -203,9 +272,9 @@ public class MatchAlgorithm extends AppCompatActivity {
                         //Log.i(TAG, "Ages are in range! " + mUser.getUsername() + " " + myAge +  "   " + user.getUser().getUsername() + " " + userAge);
                         user.updateScore(3);
                         //Log.i(TAG, "Score: " + String.valueOf(user.getScore()));
-                    } else {
-                        //Log.i(TAG, mUser.getUsername() + " " + myAge + " and " + user.getUser().getUsername() + " " +  userAge + " are not in the same range");
-                    }
+                    } // else {
+                        // Log.i(TAG, mUser.getUsername() + " " + myAge + " and " + user.getUser().getUsername() + " " +  userAge + " are not in the same range");
+                    // }
                 }
 
                 // Set points for recently connected people
@@ -220,6 +289,7 @@ public class MatchAlgorithm extends AppCompatActivity {
 
                 // Order the users by their points
                 Collections.sort(mMatchingUsers, new ScoreComparator());
+                Collections.reverse(mMatchingUsers);
                 for (MatchingUser user : mMatchingUsers) {
                     String userResume = "\n";
                     userResume += user.getUser().getUsername() + "\n";
@@ -246,6 +316,8 @@ public class MatchAlgorithm extends AppCompatActivity {
 
                     Log.i(TAG, userResume);
                 }
+
+                mAdapter.notifyDataSetChanged();
             }
         });
     }
@@ -288,64 +360,5 @@ public class MatchAlgorithm extends AppCompatActivity {
             }
         }
         return agePos;
-    }
-
-    public void getUsers() {
-        ParseQuery<ParseUser> usersQuery = ParseUser.getQuery();
-        usersQuery.whereEqualTo("username", "cristiano");
-        // usersQuery.setLimit(2);
-        usersQuery.findInBackground(new FindCallback<ParseUser>() {
-            @Override
-            public void done(List<ParseUser> users, ParseException e) {
-                if (e != null) {
-                    Log.e(TAG, "Error: " + e.getMessage());
-                    return;
-                }
-
-                if (users.size() < 0) {
-                    return;
-                }
-
-                mUsers.addAll(users);
-                for (ParseUser user : users) {
-                    new Thread(() -> {
-                        Log.i(TAG, user.getUsername());
-                        MatchingUser matchingUser = new MatchingUser(user);
-
-                        ParseQuery<UserLanguages> proficientQuery = ParseQuery.getQuery("UserLanguages");
-                        proficientQuery.include("languageId");
-                        proficientQuery.whereEqualTo("userId", user);
-
-                        proficientQuery.findInBackground(new FindCallback<UserLanguages>() {
-                            @Override
-                            public void done(List<UserLanguages> userLanguages, ParseException e) {
-                                if (e != null) {
-                                    Log.e(TAG, "Error: " + e.getMessage());
-                                    return;
-                                }
-
-                                if (userLanguages.size() == 0) {
-                                    Log.i(TAG, "Si es 0");
-                                    return;
-                                }
-
-                                for (UserLanguages userLanguage : userLanguages) {
-                                    if (userLanguage.getMyLanguage()) {
-                                        Languages language = userLanguage.getLanguage();
-                                        matchingUser.addLanguage(language);
-                                    }
-
-                                    if (userLanguage.getInterestedIn()) {
-                                        Languages language = userLanguage.getLanguage();
-                                        matchingUser.addInterest(language);
-                                    }
-                                }
-                            }
-                        });
-                        Log.i(TAG, matchingUser.getProficientLanguages().toString());
-                    }).start();
-                }
-            }
-        });
     }
 }
