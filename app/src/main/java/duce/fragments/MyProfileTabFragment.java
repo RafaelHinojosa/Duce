@@ -3,8 +3,12 @@ package duce.fragments;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.ImageDecoder;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
@@ -12,6 +16,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -36,6 +42,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -43,6 +50,9 @@ import com.parse.SaveCallback;
 import org.parceler.Parcels;
 import org.w3c.dom.Text;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Calendar;
@@ -62,6 +72,8 @@ import static com.duce.R.layout.my_profile_tab_fragment;
 public class MyProfileTabFragment extends Fragment {
 
     private static final String TAG = "MyProfileTabFragment";
+    public final static int PICK_PHOTO_CODE = 100;
+    private final String photoFileName = "photo.png";
 
     private boolean isMe;
     private ImageView mIvProfilePicture;
@@ -79,6 +91,7 @@ public class MyProfileTabFragment extends Fragment {
     private Button mBtnLogOut;
     private CustomUser mUser;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
+    private File photoFile;
 
     public static MyProfileTabFragment newInstance() {
         MyProfileTabFragment fragment = new MyProfileTabFragment();
@@ -112,6 +125,7 @@ public class MyProfileTabFragment extends Fragment {
             mEtAge = view.findViewById(R.id.etAge);
             mEtSelfDescription = view.findViewById(R.id.etDescription);
 
+            mIbEditProfile.setVisibility(View.VISIBLE);
             mEtUsername.setVisibility(View.VISIBLE);
             mEtAge.setVisibility(View.VISIBLE);
             mEtSelfDescription.setVisibility(View.VISIBLE);
@@ -173,7 +187,6 @@ public class MyProfileTabFragment extends Fragment {
         }
 
         if (isMe) {
-            mIbEditProfile.setVisibility(View.VISIBLE);
             mEtUsername.setText(mUser.getUsername());
             mEtAge.setText(age);
             mEtSelfDescription.setText(mUser.getSelfDescription());
@@ -199,6 +212,12 @@ public class MyProfileTabFragment extends Fragment {
                         return false;   // This makes the keyboard hide
                     }
                     return false;
+                }
+            });
+            mIbEditProfile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onPickPhoto();
                 }
             });
         } else {
@@ -350,6 +369,86 @@ public class MyProfileTabFragment extends Fragment {
                 // With the given languages, add them to the database
             }
         });
+    }
+
+    public void onPickPhoto() {
+        Intent intent = new Intent(Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivityForResult(intent, PICK_PHOTO_CODE);
+        }
+    }
+
+    public Bitmap loadFromUri(Uri photoUri) {
+        Bitmap image = null;
+        try {
+            if(Build.VERSION.SDK_INT > 27){
+                ImageDecoder.Source source = ImageDecoder.createSource(getContext().getContentResolver(), photoUri);
+                image = ImageDecoder.decodeBitmap(source);
+            } else {
+                image = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), photoUri);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return image;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if ((data != null) && requestCode == PICK_PHOTO_CODE) {
+            Uri photoUri = data.getData();
+
+            // Load the image located at photoUri into selectedImage
+            Bitmap selectedImage = loadFromUri(photoUri);
+
+            // Get image path
+            photoFile = getPhotoFileUri(photoFileName);
+
+            // Convert bitmap to bytes array
+            ByteArrayOutputStream bytesStream = new ByteArrayOutputStream();
+            // Compress selected image and assigns it to bytesStream
+            selectedImage.compress(Bitmap.CompressFormat.PNG, 50, bytesStream);
+            byte[] byteImage = bytesStream.toByteArray();
+            selectedImage.recycle();
+
+            // Convert bytes array into Parse File
+            ParseFile profileFile = new ParseFile(byteImage);
+            mUser.setProfilePicture(profileFile);
+            mUser.getCustomUser().saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e != null) {
+                        Log.e(TAG, "Error: " + e.getMessage());
+                        Toast.makeText(getContext(), "Could not change the profile picture", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    Toast.makeText(getContext(), "Profile picture changed successfully!", Toast.LENGTH_SHORT).show();
+                    Glide.with(getContext())
+                        .load(profileFile.getUrl())
+                        .centerCrop()
+                        .transform(new CircleCrop())
+                        .into(mIvProfilePicture);
+                }
+            });
+        }
+    }
+
+    // Returns the File for a photo stored on disk given the fileName
+    public File getPhotoFileUri(String fileName) {
+        // This way, we don't need to request external read/write runtime permissions.
+        File mediaStorageDir = new File(getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), TAG);
+
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
+            Log.d(TAG, "failed to create directory");
+        }
+
+        // Return the file target for the photo based on filename
+        File file = new File(mediaStorageDir.getPath() + File.separator + fileName);
+
+        return file;
     }
 
     // Returns the age of the user based on its birthdate
