@@ -79,9 +79,11 @@ public class MyProfileTabFragment extends Fragment {
     private EditText mEtSelfDescription;
     private TextView mTvAddLanguage;
     private TextView mTvAddInterest;
+    private TextView mTvDeleteLanguage;
+    private TextView mTvDeleteInterest;
+    private Button mBtnLogOut;
     private com.google.android.flexbox.FlexboxLayout mFlMyLanguages;
     private com.google.android.flexbox.FlexboxLayout mFlMyInterests;
-    private Button mBtnLogOut;
     private CustomUser mUser;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     private File photoFile;
@@ -254,6 +256,7 @@ public class MyProfileTabFragment extends Fragment {
         });
     }
 
+    // EDIT AGE METHODS
     public void setAgeClickListener() {
         mEtAge.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -292,6 +295,108 @@ public class MyProfileTabFragment extends Fragment {
         };
     }
 
+    public String getAge(int year, int month, int day) {
+        Calendar birthdate = Calendar.getInstance();
+        Calendar today = Calendar.getInstance();
+
+        birthdate.set(year, month, day);
+
+        int age = today.get(Calendar.YEAR) - birthdate.get(Calendar.YEAR);
+
+        if (today.get(Calendar.DAY_OF_YEAR) < birthdate.get(Calendar.DAY_OF_YEAR)) {
+            age--;
+        }
+
+        if (age < 0) {
+            return "Invalid birthdate";
+        }
+
+        Integer ageNumber = new Integer(age);
+        String ageString = ageNumber.toString() + " years old";
+        return ageString;
+    }
+
+    // EDIT PROFILE PICTURE METHODS
+    public void onPickPhoto() {
+        Intent intent = new Intent(Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivityForResult(intent, PICK_PHOTO_CODE);
+        }
+    }
+
+    public Bitmap loadFromUri(Uri photoUri) {
+        Bitmap image = null;
+        try {
+            if(Build.VERSION.SDK_INT > 27){
+                ImageDecoder.Source source = ImageDecoder.createSource(getContext().getContentResolver(), photoUri);
+                image = ImageDecoder.decodeBitmap(source);
+            } else {
+                image = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), photoUri);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return image;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if ((data != null) && requestCode == PICK_PHOTO_CODE) {
+            Uri photoUri = data.getData();
+
+            // Load the image located at photoUri into selectedImage
+            Bitmap selectedImage = loadFromUri(photoUri);
+
+            // Get image path
+            photoFile = getPhotoFileUri(photoFileName);
+
+            // Convert bitmap to bytes array
+            ByteArrayOutputStream bytesStream = new ByteArrayOutputStream();
+            // Compress selected image and assigns it to bytesStream
+            selectedImage.compress(Bitmap.CompressFormat.PNG, 50, bytesStream);
+            byte[] byteImage = bytesStream.toByteArray();
+            selectedImage.recycle();
+
+            // Convert bytes array into Parse File
+            ParseFile profileFile = new ParseFile(byteImage);
+            mUser.setProfilePicture(profileFile);
+            mUser.getCustomUser().saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e != null) {
+                        Log.e(TAG, "Error: " + e.getMessage());
+                        Toast.makeText(getContext(), "Could not change the profile picture", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    Toast.makeText(getContext(), "Profile picture changed successfully!", Toast.LENGTH_SHORT).show();
+                    Glide.with(getContext())
+                            .load(profileFile.getUrl())
+                            .centerCrop()
+                            .transform(new CircleCrop())
+                            .into(mIvProfilePicture);
+                }
+            });
+        }
+    }
+
+    public File getPhotoFileUri(String fileName) {
+        // This way, we don't need to request external read/write runtime permissions.
+        File mediaStorageDir = new File(getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), TAG);
+
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
+            Log.d(TAG, "failed to create directory");
+        }
+
+        // Return the file target for the photo based on filename
+        File file = new File(mediaStorageDir.getPath() + File.separator + fileName);
+
+        return file;
+    }
+
+    // LANGUAGES METHODS
     public void setLanguages() {
         mFlMyLanguages.removeAllViews();
         mFlMyInterests.removeAllViews();
@@ -299,6 +404,8 @@ public class MyProfileTabFragment extends Fragment {
         if (isMe) {
             setAddLanguageTV();
             setAddInterestTV();
+            setDeleteLanguageTV();
+            setDeleteInterestTV();
         }
 
         ParseQuery<UserLanguages> userLanguagesQuery = ParseQuery.getQuery("UserLanguages");
@@ -401,112 +508,59 @@ public class MyProfileTabFragment extends Fragment {
         });
     }
 
-    public void onPickPhoto() {
-        Intent intent = new Intent(Intent.ACTION_PICK,
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+    @SuppressLint("ResourceAsColor")
+    public void setDeleteLanguageTV() {
+        mTvDeleteLanguage = new TextView(getContext());
 
-        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
-            startActivityForResult(intent, PICK_PHOTO_CODE);
-        }
-    }
+        mTvDeleteLanguage.setText(R.string.delete_language);
+        mTvDeleteLanguage.setIncludeFontPadding(true);
+        mTvDeleteLanguage.setPadding(20,10,20,10);
+        mTvDeleteLanguage.setCompoundDrawablePadding(5);
+        mTvDeleteLanguage.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.delete_language_box));
+        mTvDeleteLanguage.setTextColor(R.color.signup_red);
 
-    public Bitmap loadFromUri(Uri photoUri) {
-        Bitmap image = null;
-        try {
-            if(Build.VERSION.SDK_INT > 27){
-                ImageDecoder.Source source = ImageDecoder.createSource(getContext().getContentResolver(), photoUri);
-                image = ImageDecoder.decodeBitmap(source);
-            } else {
-                image = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), photoUri);
+        FlexboxLayout.LayoutParams params = new FlexboxLayout.LayoutParams(
+                FlexboxLayout.LayoutParams.WRAP_CONTENT,
+                FlexboxLayout.LayoutParams.WRAP_CONTENT
+        );
+        mTvDeleteLanguage.setLayoutParams(params);
+
+        mFlMyLanguages.addView(mTvDeleteLanguage);
+
+        mTvDeleteLanguage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setupDialog("myLanguage", "delete");
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return image;
+        });
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if ((data != null) && requestCode == PICK_PHOTO_CODE) {
-            Uri photoUri = data.getData();
+    @SuppressLint("ResourceAsColor")
+    public void setDeleteInterestTV() {
+        mTvDeleteInterest = new TextView(getContext());
 
-            // Load the image located at photoUri into selectedImage
-            Bitmap selectedImage = loadFromUri(photoUri);
+        mTvDeleteInterest.setText(R.string.delete_language);
+        mTvDeleteInterest.setIncludeFontPadding(true);
+        mTvDeleteInterest.setPadding(20,10,20,10);
+        mTvDeleteInterest.setCompoundDrawablePadding(5);
+        mTvDeleteInterest.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.delete_language_box));
+        mTvDeleteInterest.setTextColor(R.color.signup_red);
 
-            // Get image path
-            photoFile = getPhotoFileUri(photoFileName);
+        FlexboxLayout.LayoutParams params = new FlexboxLayout.LayoutParams(
+                FlexboxLayout.LayoutParams.WRAP_CONTENT,
+                FlexboxLayout.LayoutParams.WRAP_CONTENT
+        );
+        mTvDeleteInterest.setLayoutParams(params);
 
-            // Convert bitmap to bytes array
-            ByteArrayOutputStream bytesStream = new ByteArrayOutputStream();
-            // Compress selected image and assigns it to bytesStream
-            selectedImage.compress(Bitmap.CompressFormat.PNG, 50, bytesStream);
-            byte[] byteImage = bytesStream.toByteArray();
-            selectedImage.recycle();
+        mFlMyInterests.addView(mTvDeleteInterest);
 
-            // Convert bytes array into Parse File
-            ParseFile profileFile = new ParseFile(byteImage);
-            mUser.setProfilePicture(profileFile);
-            mUser.getCustomUser().saveInBackground(new SaveCallback() {
-                @Override
-                public void done(ParseException e) {
-                    if (e != null) {
-                        Log.e(TAG, "Error: " + e.getMessage());
-                        Toast.makeText(getContext(), "Could not change the profile picture", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    Toast.makeText(getContext(), "Profile picture changed successfully!", Toast.LENGTH_SHORT).show();
-                    Glide.with(getContext())
-                        .load(profileFile.getUrl())
-                        .centerCrop()
-                        .transform(new CircleCrop())
-                        .into(mIvProfilePicture);
-                }
-            });
-        }
+        mTvDeleteInterest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setupDialog("interest", "delete");
+            }
+        });
     }
-
-    // Returns the File for a photo stored on disk given the fileName
-    public File getPhotoFileUri(String fileName) {
-        // This way, we don't need to request external read/write runtime permissions.
-        File mediaStorageDir = new File(getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), TAG);
-
-        // Create the storage directory if it does not exist
-        if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
-            Log.d(TAG, "failed to create directory");
-        }
-
-        // Return the file target for the photo based on filename
-        File file = new File(mediaStorageDir.getPath() + File.separator + fileName);
-
-        return file;
-    }
-
-    // Returns the age of the user based on its birthdate
-    public String getAge(int year, int month, int day) {
-        Calendar birthdate = Calendar.getInstance();
-        Calendar today = Calendar.getInstance();
-
-        birthdate.set(year, month, day);
-
-        int age = today.get(Calendar.YEAR) - birthdate.get(Calendar.YEAR);
-
-        if (today.get(Calendar.DAY_OF_YEAR) < birthdate.get(Calendar.DAY_OF_YEAR)) {
-            age--;
-        }
-
-        if (age < 0) {
-            return "Invalid birthdate";
-        }
-
-        Integer ageNumber = new Integer(age);
-        String ageString = ageNumber.toString() + " years old";
-        return ageString;
-    }
-
-
-
-
-
 
     public void setupDialog(String languageType, String action) {
         mLanSelector.setTitle(R.string.select_language);
@@ -529,9 +583,9 @@ public class MyProfileTabFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (action.equals("add")) {
-                    addLanguage(mLanSelected, mLanguageSelected, languageType);
+                    addLanguage(mLanguageSelected, languageType);
                 } else if (action.equals("delete")) {
-                    // TODO: DELETE
+                    deleteLanguage(mLanguageSelected, languageType);
                 }
                 dialogInterface.dismiss();
             }
@@ -548,7 +602,7 @@ public class MyProfileTabFragment extends Fragment {
         mLanSelector.show();
     }
 
-    private void addLanguage(String name, Languages mLanguageSelected, String type) {
+    private void addLanguage(Languages mLanguageSelected, String type) {
         ParseQuery<UserLanguages> userLanguages = ParseQuery.getQuery("UserLanguages");
         userLanguages.whereEqualTo("userId", ParseUser.getCurrentUser());
         userLanguages.whereEqualTo("languageId", mLanguageSelected);
@@ -590,6 +644,50 @@ public class MyProfileTabFragment extends Fragment {
                         userLanguages.setInterestedIn(true);
                     }
                     userLanguages.saveInBackground();
+                }
+
+                // Reload the languages lists
+                setLanguages();
+            }
+        });
+    }
+
+    private void deleteLanguage(Languages mLanguageSelected, String type) {
+        ParseQuery<UserLanguages> userLanguages = ParseQuery.getQuery("UserLanguages");
+        userLanguages.whereEqualTo("userId", ParseUser.getCurrentUser());
+        userLanguages.whereEqualTo("languageId", mLanguageSelected);
+
+        userLanguages.findInBackground(new FindCallback<UserLanguages>() {
+            @Override
+            public void done(List<UserLanguages> userLanguagesList, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, e.getMessage());
+                    return;
+                }
+
+                Log.i(TAG, String.valueOf(userLanguagesList.size()));
+
+                // If the element does not exist, there is nothing to delete
+                if (userLanguagesList.size() == 0) {
+                    return;
+                } else {
+                    if (type.equals("myLanguage")) {
+                        // Associated? then disassociate
+                        if (userLanguagesList.get(0).getMyLanguage()) {
+                            userLanguagesList.get(0).setMyLanguage(false);
+                            userLanguagesList.get(0).saveInBackground();
+                        } else {
+                            return; // the language already is not registered as myLanguage
+                        }
+                    } else {
+                        // The interest stops being true and is now false
+                        if (userLanguagesList.get(0).getInterestedIn()) {
+                            userLanguagesList.get(0).setInterestedIn(false);
+                            userLanguagesList.get(0).saveInBackground();
+                        } else {
+                            return; // the language is already is not registered as interest
+                        }
+                    }
                 }
 
                 // Reload the languages lists
