@@ -1,7 +1,9 @@
 package duce.fragments;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -13,8 +15,6 @@ import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -29,16 +29,13 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.duce.R;
-import com.duce.databinding.MyProfileTabFragmentBinding;
 import com.google.android.flexbox.FlexboxLayout;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -48,25 +45,21 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
-import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import duce.StartActivity;
+import duce.adapters.LanguagesAdapter;
 import duce.models.CustomUser;
 import duce.models.Languages;
-import duce.models.Messages;
 import duce.models.UserLanguages;
 
-import static com.duce.R.layout.chats_fragment;
-import static com.duce.R.layout.mtrl_alert_select_dialog_item;
+import static com.duce.R.layout.language_proficency_demo;
 import static com.duce.R.layout.my_profile_tab_fragment;
 
 public class MyProfileTabFragment extends Fragment {
@@ -92,6 +85,11 @@ public class MyProfileTabFragment extends Fragment {
     private CustomUser mUser;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     private File photoFile;
+    private LanguagesAdapter mLanAdapter;
+    private String mLanSelected;
+    private AlertDialog.Builder mLanSelector;
+    private Languages mLanguageSelected;
+
 
     public static MyProfileTabFragment newInstance() {
         MyProfileTabFragment fragment = new MyProfileTabFragment();
@@ -117,6 +115,9 @@ public class MyProfileTabFragment extends Fragment {
         isMe = mUser.getObjectId().equals(ParseUser.getCurrentUser().getObjectId());
 
         mIvProfilePicture = view.findViewById(R.id.ivProfilePicture);
+        mLanSelector = new AlertDialog.Builder(getContext());
+        mLanAdapter = new LanguagesAdapter();
+        mLanSelected = "";
 
         // The Current User enters to an edit mode
         if (isMe) {
@@ -292,8 +293,12 @@ public class MyProfileTabFragment extends Fragment {
     }
 
     public void setLanguages() {
+        mFlMyLanguages.removeAllViews();
+        mFlMyInterests.removeAllViews();
+
         if (isMe) {
             setAddLanguageTV();
+            setAddInterestTV();
         }
 
         ParseQuery<UserLanguages> userLanguagesQuery = ParseQuery.getQuery("UserLanguages");
@@ -364,9 +369,34 @@ public class MyProfileTabFragment extends Fragment {
         mTvAddLanguage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "me diste on click");
-                // Call the dialog...
-                // With the given languages, add them to the database
+                setupDialog("myLanguage", "add");
+            }
+        });
+    }
+
+    @SuppressLint("ResourceAsColor")
+    public void setAddInterestTV() {
+        mTvAddInterest = new TextView(getContext());
+
+        mTvAddInterest.setText(R.string.add);
+        mTvAddInterest.setIncludeFontPadding(true);
+        mTvAddInterest.setPadding(20,10,20,10);
+        mTvAddInterest.setCompoundDrawablePadding(5);
+        mTvAddInterest.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.add_language_box));
+        mTvAddInterest.setTextColor(R.color.add_blue);
+
+        FlexboxLayout.LayoutParams params = new FlexboxLayout.LayoutParams(
+                FlexboxLayout.LayoutParams.WRAP_CONTENT,
+                FlexboxLayout.LayoutParams.WRAP_CONTENT
+        );
+        mTvAddInterest.setLayoutParams(params);
+
+        mFlMyInterests.addView(mTvAddInterest);
+
+        mTvAddInterest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setupDialog("interest", "add");
             }
         });
     }
@@ -471,5 +501,100 @@ public class MyProfileTabFragment extends Fragment {
         Integer ageNumber = new Integer(age);
         String ageString = ageNumber.toString() + " years old";
         return ageString;
+    }
+
+
+
+
+
+
+    public void setupDialog(String languageType, String action) {
+        mLanSelector.setTitle(R.string.select_language);
+        mLanSelector.setCancelable(false);
+
+        String[] languages = (String[]) mLanAdapter.getLanguages();
+
+        // Arguments: (List, index of selection, click listener)
+        mLanSelector.setSingleChoiceItems(languages, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (i >= 0 && i < languages.length) {
+                    mLanSelected = languages[i];
+                    mLanguageSelected = mLanAdapter.getLanguageObject(i);
+                }
+            }
+        });
+
+        mLanSelector.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (action.equals("add")) {
+                    addLanguage(mLanSelected, mLanguageSelected, languageType);
+                } else if (action.equals("delete")) {
+                    // TODO: DELETE
+                }
+                dialogInterface.dismiss();
+            }
+        });
+
+        mLanSelector.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mLanSelected = "";
+                dialog.dismiss();
+            }
+        });
+
+        mLanSelector.show();
+    }
+
+    private void addLanguage(String name, Languages mLanguageSelected, String type) {
+        ParseQuery<UserLanguages> userLanguages = ParseQuery.getQuery("UserLanguages");
+        userLanguages.whereEqualTo("userId", ParseUser.getCurrentUser());
+        userLanguages.whereEqualTo("languageId", mLanguageSelected);
+
+        userLanguages.findInBackground(new FindCallback<UserLanguages>() {
+            @Override
+            public void done(List<UserLanguages> userLanguagesList, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, e.getMessage());
+                    return;
+                }
+
+                Log.i(TAG, String.valueOf(userLanguagesList.size()));
+
+                // IF the association already exists
+                if (userLanguagesList.size() > 0) {
+                    if (type.equals("myLanguage")) {
+                        if (!userLanguagesList.get(0).getMyLanguage()) {
+                            userLanguagesList.get(0).setMyLanguage(true);
+                            userLanguagesList.get(0).saveInBackground();
+                        } else {
+                            return; // the language already is registered as myLanguage
+                        }
+                    } else {
+                        if (!userLanguagesList.get(0).getInterestedIn()) {
+                            userLanguagesList.get(0).setInterestedIn(true);
+                            userLanguagesList.get(0).saveInBackground();
+                        } else {
+                            return; // the language is already is registered as interest
+                        }
+                    }
+                } else {
+                    UserLanguages userLanguages = new UserLanguages();
+                    userLanguages.setUser(ParseUser.getCurrentUser());
+                    userLanguages.setLanguage(mLanguageSelected);
+                    if (type.equals("myLanguage")) {
+                        userLanguages.setMyLanguage(true);
+                    } else {
+                        userLanguages.setInterestedIn(true);
+                    }
+                    userLanguages.saveInBackground();
+                }
+
+                // Reload the languages lists
+                setLanguages();
+            }
+        });
     }
 }
