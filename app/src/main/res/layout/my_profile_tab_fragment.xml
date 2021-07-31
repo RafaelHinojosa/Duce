@@ -34,7 +34,7 @@
             android:backgroundTint="@color/white"
             android:clickable="true"
             android:src="@android:drawable/ic_menu_edit"
-            android:visibility="gone"
+            android:visibility="invisible"
             />
 
         <!-- Username -->
@@ -46,8 +46,41 @@
             android:layout_marginTop="20dp"
             android:layout_centerHorizontal="true"
             android:textAlignment="center"
+            android:visibility="invisible"
             android:textSize="22dp"
             android:hint="@string/username_sample_1"
+            />
+
+        <!-- Edit Username -->
+        <EditText
+            android:id="@+id/etUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ivProfilePicture"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
+            android:hint="@string/username_sample_1"
+            android:textAlignment="center"
+            android:textSize="22dp"
+            android:inputType="text"
+            android:imeOptions="actionDone"
+            android:visibility="invisible"
+            >
+        </EditText>
+
+        <!-- Age -->
+        <TextView
+            android:id="@+id/tvAge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvUsername"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:textSize="16dp"
+            android:visibility="invisible"
+            android:editable="false"
+            android:textColor="@color/black"
+            android:hint="@string/age_sample_1"
             />
 
         <!-- Age -->
@@ -55,27 +88,50 @@
             android:id="@+id/etAge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvUsername"
+            android:layout_below="@+id/etUsername"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="8dp"
             android:textSize="16dp"
-            android:editable="false"
+            android:visibility="invisible"
+            android:inputType="text"
+            android:imeOptions="actionDone"
             android:textColor="@color/black"
             android:hint="@string/age_sample_1"
-            />
+            >
+        </EditText>
 
         <!-- Description -->
         <TextView
             android:id="@+id/tvDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/etAge"
+            android:layout_below="@+id/tvAge"
             android:layout_margin="15dp"
             android:layout_centerHorizontal="true"
             android:maxLines="2"
             android:textAlignment="center"
+            android:visibility="invisible"
             android:hint="@string/description_sample"
             />
+
+        <!-- Description -->
+        <EditText
+            android:id="@+id/etDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/etAge"
+            android:layout_margin="8dp"
+            android:layout_centerHorizontal="true"
+            android:maxLines="2"
+            android:maxLength="64"
+            android:textAlignment="center"
+            android:visibility="invisible"
+            android:inputType="text"
+            android:imeOptions="actionDone"
+            android:hint="@string/write_description"
+            android:textSize="14dp"
+            >
+        </EditText>
 
         <!-- My Languages -->
         <TextView
@@ -83,7 +139,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvDescription"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="30dp"
             android:layout_alignParentStart="true"
             android:layout_marginStart="15dp"
             android:textSize="18dp"
@@ -133,20 +189,6 @@
             app:alignContent="stretch"
             />
 
-        <!-- Edit Button -->
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btnEditProfile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="20dp"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="20dp"
-            android:clickable="true"
-            android:src="@android:drawable/ic_menu_edit"
-            android:contentDescription="@string/edit_profile"
-            />
-
         <!-- Log Out Button -->
         <Button
             android:id="@+id/btnLogOut"
@@ -154,7 +196,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/flMyInterests"
             android:layout_marginTop="20dp"
-            android:layout_alignEnd="@+id/btnEditProfile"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"
             android:text="@string/logout"
             android:backgroundTint="@color/signup_red"
             android:clickable="true"

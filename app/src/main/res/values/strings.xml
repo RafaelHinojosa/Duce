@@ -470,4 +470,6 @@
     <string name="no_users_found">No users were found in your search</string>
     <string name="select_proficient_languages">Select languages you are proficient in</string>
     <string name="years_old">" years old"</string>
+    <string name="add">+ Add</string>
+    <string name="write_description">Write a description of yourself</string>
 </resources>

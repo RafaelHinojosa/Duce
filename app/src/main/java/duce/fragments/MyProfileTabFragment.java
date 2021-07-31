@@ -13,11 +13,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -30,11 +34,14 @@ import com.duce.databinding.MyProfileTabFragmentBinding;
 import com.google.android.flexbox.FlexboxLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
+import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -56,11 +63,17 @@ public class MyProfileTabFragment extends Fragment {
 
     private static final String TAG = "MyProfileTabFragment";
 
-    private FloatingActionButton mBtnEdit;
+    private boolean isMe;
     private ImageView mIvProfilePicture;
+    private ImageButton mIbEditProfile;
     private TextView mTvUsername;
-    private TextView mEtAge;
+    private EditText mEtUsername;
+    private TextView mTvAge;
+    private EditText mEtAge;
     private TextView mTvSelfDescription;
+    private EditText mEtSelfDescription;
+    private TextView mTvAddLanguage;
+    private TextView mTvAddInterest;
     private com.google.android.flexbox.FlexboxLayout mFlMyLanguages;
     private com.google.android.flexbox.FlexboxLayout mFlMyInterests;
     private Button mBtnLogOut;
@@ -88,53 +101,35 @@ public class MyProfileTabFragment extends Fragment {
         assert bundle != null;
         mUser = new CustomUser(Parcels.unwrap(bundle.getParcelable("user")));
 
-        mBtnEdit = view.findViewById(R.id.btnEditProfile);
+        isMe = mUser.getObjectId().equals(ParseUser.getCurrentUser().getObjectId());
+
         mIvProfilePicture = view.findViewById(R.id.ivProfilePicture);
-        mTvUsername = view.findViewById(R.id.tvUsername);
-        mEtAge = view.findViewById(R.id.etAge);
-        mTvSelfDescription = view.findViewById(R.id.tvDescription);
+
+        // The Current User enters to an edit mode
+        if (isMe) {
+            mIbEditProfile = view.findViewById(R.id.ibEditProfilePicture);
+            mEtUsername = view.findViewById(R.id.etUsername);
+            mEtAge = view.findViewById(R.id.etAge);
+            mEtSelfDescription = view.findViewById(R.id.etDescription);
+
+            mEtUsername.setVisibility(View.VISIBLE);
+            mEtAge.setVisibility(View.VISIBLE);
+            mEtSelfDescription.setVisibility(View.VISIBLE);
+
+            setAgeClickListener();
+        } else {
+            mTvUsername = view.findViewById(R.id.tvUsername);
+            mTvAge = view.findViewById(R.id.tvAge);
+            mTvSelfDescription = view.findViewById(R.id.tvDescription);
+
+            mTvUsername.setVisibility(View.VISIBLE);
+            mTvAge.setVisibility(View.VISIBLE);
+            mTvSelfDescription.setVisibility(View.VISIBLE);
+        }
+
         mFlMyLanguages = view.findViewById(R.id.flMyLanguages);
         mFlMyInterests = view.findViewById(R.id.flMyInterests);
         mBtnLogOut = view.findViewById(R.id.btnLogOut);
-
-        // Only the own user can change the date
-        if (mUser.getCustomUser().equals(ParseUser.getCurrentUser())) {
-            mEtAge.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Calendar today = Calendar.getInstance();
-                    int year = today.get(Calendar.YEAR);
-                    int month = today.get(Calendar.MONTH);
-                    int day = today.get(Calendar.DAY_OF_MONTH);
-
-                    DatePickerDialog birthdatePicker = new DatePickerDialog(
-                            getContext(),
-                            android.R.style.Theme_Holo_Light_Dialog,
-                            mDateSetListener,
-                            year,
-                            month,
-                            day
-                    );
-                    birthdatePicker.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                    birthdatePicker.show();
-                }
-            });
-        }
-
-        mDateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                String age = getAge(year, month, dayOfMonth);
-                mEtAge.setText(age);
-
-                if (!age.equals("Invalid birthdate")) {
-                    Date birthDate = new Date(year - 1900, month, dayOfMonth, 0, 0, 0);
-                    mUser.setBirthdate(birthDate);
-                    mUser.getCustomUser().saveInBackground();
-                }
-            }
-        };
 
         mBtnLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,7 +152,7 @@ public class MyProfileTabFragment extends Fragment {
             }
         });
 
-        bind();
+       bind();
     }
 
     private void bind() {
@@ -166,23 +161,122 @@ public class MyProfileTabFragment extends Fragment {
              .centerCrop()
              .transform(new CircleCrop())
              .into(mIvProfilePicture);
-        mTvUsername.setText(mUser.getUsername());
-        mTvSelfDescription.setText(mUser.getSelfDescription());
 
         // Set age
+        String age = "";
         Date birthdate = mUser.getBirthdate();
         if (birthdate != null) {
             int year = birthdate.getYear() + 1900;
             int month = birthdate.getMonth() + 1;
             int day = birthdate.getDate();
-            String age = getAge(year, month, day);
+            age = getAge(year, month, day);
+        }
+
+        if (isMe) {
+            mIbEditProfile.setVisibility(View.VISIBLE);
+            mEtUsername.setText(mUser.getUsername());
             mEtAge.setText(age);
+            mEtSelfDescription.setText(mUser.getSelfDescription());
+
+            mEtUsername.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView tvUsername, int actionId, KeyEvent event) {
+                    if (actionId == EditorInfo.IME_ACTION_DONE) {
+                        String username = tvUsername.getText().toString();
+                        updateUsername(username);
+                        return false;
+                    }
+                    return false;
+                }
+            });
+            mEtSelfDescription.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView tvDescription, int actionId, KeyEvent event) {
+                    if (actionId == EditorInfo.IME_ACTION_DONE) {
+                        mUser.setSelfDescription(tvDescription.getText().toString());
+                        mUser.getCustomUser().saveInBackground();
+                        Toast.makeText(getContext(), "Self description updated correctly!", Toast.LENGTH_SHORT).show();
+                        return false;   // This makes the keyboard hide
+                    }
+                    return false;
+                }
+            });
+        } else {
+            mTvUsername.setText(mUser.getUsername());
+            mTvAge.setText(age);
+            mTvSelfDescription.setText(mUser.getSelfDescription());
         }
 
         setLanguages();
     }
 
+    public void updateUsername(String username) {
+        ParseQuery<ParseUser> findUser = ParseUser.getQuery();
+        findUser.whereEqualTo("username", username);
+
+        findUser.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error: " + e.getMessage());
+                    return;
+                }
+
+                if (objects.size() != 0 && !username.equals(mUser.getUsername())) {
+                    mEtUsername.setText(R.string.invalid_username);
+                } else {
+                    mUser.getCustomUser().setUsername(username);
+                    mUser.getCustomUser().saveInBackground();
+
+                    Toast.makeText(getContext(), "Username updated correctly!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    public void setAgeClickListener() {
+        mEtAge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar today = Calendar.getInstance();
+                int year = today.get(Calendar.YEAR);
+                int month = today.get(Calendar.MONTH);
+                int day = today.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog birthdatePicker = new DatePickerDialog(
+                        getContext(),
+                        android.R.style.Theme_Holo_Light_Dialog,
+                        mDateSetListener,
+                        year,
+                        month,
+                        day
+                );
+                birthdatePicker.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                birthdatePicker.show();
+            }
+        });
+
+        mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                String age = getAge(year, month, dayOfMonth);
+                mEtAge.setText(age);
+
+                if (!age.equals("Invalid birthdate")) {
+                    Date birthDate = new Date(year - 1900, month, dayOfMonth, 0, 0, 0);
+                    mUser.setBirthdate(birthDate);
+                    mUser.getCustomUser().saveInBackground();
+                }
+            }
+        };
+    }
+
     public void setLanguages() {
+        if (isMe) {
+            setAddLanguageTV();
+        }
+
         ParseQuery<UserLanguages> userLanguagesQuery = ParseQuery.getQuery("UserLanguages");
         userLanguagesQuery.whereEqualTo("userId", mUser.getCustomUser());
         userLanguagesQuery.include("languageId");
@@ -227,6 +321,35 @@ public class MyProfileTabFragment extends Fragment {
         textView.setLayoutParams(params);
 
         return textView;
+    }
+
+    @SuppressLint("ResourceAsColor")
+    public void setAddLanguageTV() {
+        mTvAddLanguage = new TextView(getContext());
+
+        mTvAddLanguage.setText(R.string.add);
+        mTvAddLanguage.setIncludeFontPadding(true);
+        mTvAddLanguage.setPadding(20,10,20,10);
+        mTvAddLanguage.setCompoundDrawablePadding(5);
+        mTvAddLanguage.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.add_language_box));
+        mTvAddLanguage.setTextColor(R.color.add_blue);
+
+        FlexboxLayout.LayoutParams params = new FlexboxLayout.LayoutParams(
+                FlexboxLayout.LayoutParams.WRAP_CONTENT,
+                FlexboxLayout.LayoutParams.WRAP_CONTENT
+        );
+        mTvAddLanguage.setLayoutParams(params);
+
+        mFlMyLanguages.addView(mTvAddLanguage);
+
+        mTvAddLanguage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG, "me diste on click");
+                // Call the dialog...
+                // With the given languages, add them to the database
+            }
+        });
     }
 
     // Returns the age of the user based on its birthdate
