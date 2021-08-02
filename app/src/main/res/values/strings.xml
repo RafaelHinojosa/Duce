@@ -5,12 +5,12 @@
     <string name="chats_title">Chats</string>
     <string name="friends_title">Friends</string>
     <string name="duce">Duce</string>
-    <string name="login_welcome">Welcome Back!</string>
+    <string name="login_welcome">Welcome back</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="login">Log In</string>
     <string name="signup">Sign Up</string>
-    <string name="signup_welcome">Welcome to Duce</string>
+    <string name="signup_welcome">Welcome to Duce,</string>
     <string name="sp_country_prompt">"Select your Country"</string>
     <string name="sp_first_language_prompt">"Select your First Language"</string>
     <string name="basic_conversation">Hello! How are you?</string>
@@ -35,7 +35,7 @@
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome !"</string>
+    <string name="welcome">"Welcome back"</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
@@ -473,4 +473,19 @@
     <string name="add">+ Add</string>
     <string name="write_description">Write a description of yourself</string>
     <string name="delete_language">- Delete</string>
+    <string name="to_chats">Going to chat with </string>
+    <string name="going_to">Going to</string>
+    <string name="conversation_deleted">Conversation deleted</string>
+    <string name="conversation">conversation</string>
+    <string name="profile">profile</string>
+    <string name="language_changed">"Language changed to "</string>
+    <string name="profile_pic_updated">Profile picture updated</string>
+    <string name="username_updated">Username updated</string>
+    <string name="birthdate_updated">Birthdate update</string>
+    <string name="description_updated">Self description updated</string>
+    <string name="language_added">Language added</string>
+    <string name="language_deleted">Language deleted</string>
+    <string name="incorrect_credentials">Username/password are not correct</string>
+    <string name="empty_message">Message can\'t be empty</string>
+    <string name="user_not_found">Could not found this user</string>
 </resources>

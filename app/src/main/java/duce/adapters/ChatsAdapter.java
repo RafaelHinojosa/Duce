@@ -36,12 +36,14 @@ import java.util.Date;
 import java.util.List;
 
 import duce.ConversationActivity;
+import duce.LoginActivity;
 import duce.MainActivity;
 import duce.fragments.ChatsFragment;
 import duce.models.Chats;
 import duce.models.Countries;
 import duce.models.CustomUser;
 import duce.models.Messages;
+import es.dmoral.toasty.Toasty;
 
 import static android.provider.Settings.System.getString;
 
@@ -182,7 +184,16 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ViewHolder> 
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 ChatsFragment.deleteChat(message.getChatsId(), position);
                                 deleteItem(position);
-                                Toast.makeText(mContext, "Conversation Deleted", Toast.LENGTH_SHORT).show();
+                                Toasty.custom(
+                                    mContext,
+                                    R.string.conversation_deleted,
+                                    R.drawable.delete,
+                                    R.color.teal_700,
+                                    Toast.LENGTH_SHORT,
+                                    true,
+                                    true
+                                    )
+                                    .show();
                             }
                         })
                         .setNegativeButton(R.string.cancel, null).show();

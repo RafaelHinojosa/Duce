@@ -36,6 +36,7 @@ import java.util.List;
 import duce.adapters.LanguagesAdapter;
 import duce.models.Languages;
 import duce.models.UserLanguages;
+import io.github.muddz.styleabletoast.StyleableToast;
 
 import static com.duce.R.color.mtrl_navigation_bar_colored_item_tint;
 import static com.duce.R.color.signup_red;
@@ -125,7 +126,13 @@ public class SignupActivity extends AppCompatActivity {
                     return;
                 }
                 registerUserLanguages();
-                Toast.makeText(SignupActivity.this,  "Welcome " + username, Toast.LENGTH_SHORT).show();
+                StyleableToast.makeText(
+                    SignupActivity.this,
+                    getString(R.string.signup_welcome) + " " + username + "!",
+                    Toast.LENGTH_SHORT,
+                    R.style.welcome_to_duce
+                    )
+                    .show();
                 goMainActivity();
             }
         });

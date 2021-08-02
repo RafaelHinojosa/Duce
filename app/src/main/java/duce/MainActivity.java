@@ -108,7 +108,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         CustomUser mUser = new CustomUser(ParseUser.getCurrentUser());
-        Toast.makeText(getApplicationContext(), "OnDestroy", Toast.LENGTH_LONG).show();
 
         Calendar today = Calendar.getInstance();
         int year = today.get(Calendar.YEAR);

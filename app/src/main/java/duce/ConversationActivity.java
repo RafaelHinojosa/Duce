@@ -57,6 +57,7 @@ import duce.models.CustomUser;
 import duce.models.Languages;
 import duce.models.Messages;
 import duce.models.UserChats;
+import es.dmoral.toasty.Toasty;
 
 public class ConversationActivity extends AppCompatActivity implements ConversationSettingsDialogFragment.ConversationSettingsDialogListener {
 
@@ -111,7 +112,16 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
             public void onClick(View v) {
                 String description = mEtCompose.getText().toString();
                 if (isBlank(description)) {
-                    Toast.makeText(ConversationActivity.this, "Empty messages can't be sent", Toast.LENGTH_SHORT).show();
+                    Toasty.custom(
+                        ConversationActivity.this,
+                        (CharSequence) getString(R.string.empty_message),
+                        android.R.drawable.ic_menu_close_clear_cancel,
+                        R.color.imperial_red,
+                        Toast.LENGTH_SHORT,
+                        true,
+                        true
+                        )
+                        .show();
                     return;
                 }
                 // The original for me the sender
@@ -298,7 +308,6 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
                     mRvMessages.scrollToPosition(0);
                 }
                 updateLastMessage(owner);
-                Toast.makeText(ConversationActivity.this, R.string.message_save, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -376,7 +385,16 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     // Extract data put in the interface in the Settings Dialog
     @Override
     public void onFinishSettingsDialog(String language) {
-        Toast.makeText(this, "Language Selected: " + language, Toast.LENGTH_SHORT).show();
+        Toasty.custom(
+            ConversationActivity.this,
+            (CharSequence) getString(R.string.language_changed) + language,
+            R.drawable.translate,
+            R.color.receiver_blue,
+            Toast.LENGTH_SHORT,
+            true,
+            true
+            )
+            .show();
         updateConversationLanguage(language);
     }
 

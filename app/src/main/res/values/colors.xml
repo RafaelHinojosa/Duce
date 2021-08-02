@@ -12,4 +12,16 @@
     <color name="receiver_blue">#0C87E8</color>
     <color name="signup_red">#F44336</color>
     <color name="proficiency">#98AFC7</color>
+    <!-- Color Palette: https://coolors.co/e63946-f1faee-a8dadc-457b9d-1d3557 -->
+    <color name="imperial_red">#E63946</color>
+    <color name="honeydew">#F1FAEE</color>
+    <color name="powder_blue">#A8DADC</color>
+    <color name="celadon_blue">#457B9D</color>
+    <color name="prussian_blue">#1D3557</color>
+    <!-- Color Palette: https://coolors.co/011627-fdfffc-2ec4b6-e71d36-ff9f1c -->
+    <color name="rich_black_fogra_29">#011627</color>
+    <color name="baby_powder">#FDFFFC</color>
+    <color name="tiffany_blue">#2EC4B6</color>
+    <color name="rose_madder">#E71D36</color>
+    <color name="orange_peel">#FF9F1C</color>
 </resources>

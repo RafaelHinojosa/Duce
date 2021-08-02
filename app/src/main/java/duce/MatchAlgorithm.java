@@ -40,6 +40,8 @@ import duce.models.MatchingUser;
 import duce.models.Messages;
 import duce.models.UserChats;
 import duce.models.UserLanguages;
+import es.dmoral.toasty.Toasty;
+import io.github.muddz.styleabletoast.StyleableToast;
 
 public class MatchAlgorithm extends AppCompatActivity {
 
@@ -99,7 +101,16 @@ public class MatchAlgorithm extends AppCompatActivity {
 
                         Intent intent = new Intent(MatchAlgorithm.this, MainActivity.class);
                         intent.putExtra("user", Parcels.wrap(customUser.getCustomUser()));
-                        Toast.makeText(MatchAlgorithm.this, "Going to " + customUser.getUsername() + " profile", Toast.LENGTH_SHORT).show();
+                        Toasty.custom(
+                            MatchAlgorithm.this,
+                            (CharSequence) customUser.getUsername() + " " + getString(R.string.profile),
+                            R.drawable.person_outline,
+                            R.color.prussian_blue,
+                            Toast.LENGTH_SHORT,
+                            true,
+                            true
+                            )
+                            .show();
                         startActivity(intent);
                     }
                 }
@@ -458,7 +469,13 @@ public class MatchAlgorithm extends AppCompatActivity {
 
         Intent toMessages = new Intent(MatchAlgorithm.this, ConversationActivity.class);
         toMessages.putExtra("conversation", Parcels.wrap(message));
-        Toast.makeText(MatchAlgorithm.this, "Going to chat with " + customUser.getUsername(), Toast.LENGTH_SHORT).show();
+        StyleableToast.makeText(
+            MatchAlgorithm.this,
+            customUser.getUsername() + " " + getString(R.string.conversation),
+            Toast.LENGTH_SHORT,
+            R.style.to_conversation
+            )
+            .show();
         startActivity(toMessages);
     }
 }

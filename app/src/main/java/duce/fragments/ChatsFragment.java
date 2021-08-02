@@ -40,12 +40,14 @@ import java.util.List;
 
 import bolts.Task;
 import duce.ConversationActivity;
+import duce.LoginActivity;
 import duce.MainActivity;
 import duce.MatchAlgorithm;
 import duce.adapters.ChatsAdapter;
 import duce.models.Chats;
 import duce.models.Countries;
 import duce.models.Messages;
+import es.dmoral.toasty.Toasty;
 
 import static com.duce.R.layout.chats_fragment;
 
@@ -209,7 +211,12 @@ public class ChatsFragment extends Fragment {
                 mChatsAdapter.clear();
                 mChatsAdapter.addAll(messages);
                 if (messages.size() == 0) {
-                    Toast.makeText(getContext(), R.string.no_chats_found, Toast.LENGTH_SHORT).show();
+                    Toasty.normal(
+                        getContext(),
+                        R.string.no_chats_found,
+                        Toast.LENGTH_SHORT
+                        )
+                        .show();
                 }
             }
         });

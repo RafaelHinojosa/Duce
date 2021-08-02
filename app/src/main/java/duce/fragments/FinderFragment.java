@@ -33,6 +33,7 @@ import java.util.List;
 import duce.adapters.ChatsAdapter;
 import duce.adapters.FoundUsersAdapter;
 import duce.models.CustomUser;
+import es.dmoral.toasty.Toasty;
 
 import static com.duce.R.layout.chats_fragment;
 import static com.duce.R.layout.finder_fragment;
@@ -105,7 +106,12 @@ public class FinderFragment extends Fragment {
                 mUsersAdapter.notifyDataSetChanged();
 
                 if (users.size() == 0) {
-                    Toast.makeText(getContext(), R.string.no_users_found, Toast.LENGTH_SHORT).show();
+                    Toasty.normal(
+                        getContext(),
+                        R.string.no_users_found,
+                        Toast.LENGTH_SHORT
+                        )
+                        .show();
                 }
             }
         });

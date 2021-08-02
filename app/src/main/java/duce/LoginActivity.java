@@ -2,6 +2,7 @@ package duce;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +18,7 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 
 import duce.models.CustomUser;
+import es.dmoral.toasty.Toasty;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -52,18 +54,38 @@ public class LoginActivity extends AppCompatActivity {
     protected void loginUser(String username, String password) {
 
         ParseUser.logInInBackground(username, password, new LogInCallback() {
+            @SuppressLint("ResourceType")
             @Override
             public void done(ParseUser user, ParseException e) {
                 if (e != null) {
                     Log.e(TAG, "Issue with login", e);
-                    Toast.makeText(LoginActivity.this, "Username/password are not correct!", Toast.LENGTH_SHORT).show();
+                    Toasty.custom(
+                        LoginActivity.this,
+                        (CharSequence) getString(R.string.incorrect_credentials),
+                        android.R.drawable.ic_menu_close_clear_cancel,
+                        R.color.imperial_red,
+                        Toast.LENGTH_SHORT,
+                        true,
+                        true
+                        )
+                        .show();
                     return;
                 }
                 CustomUser mUser = new CustomUser(ParseUser.getCurrentUser());
                 mUser.setOnline(true);
                 mUser.getCustomUser().saveInBackground();
 
-                Toast.makeText(LoginActivity.this, "Welcome back " + username, Toast.LENGTH_SHORT).show();
+                Toasty.custom(
+                    LoginActivity.this,
+                    (CharSequence) getString(R.string.login_welcome) + " " + mUser.getUsername(),
+                    R.drawable.person_outline,
+                    R.color.celadon_blue,
+                    Toast.LENGTH_SHORT,
+                    false,
+                    true
+                    )
+                    .show();
+
                 Intent toMainActivity = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(toMainActivity);
             }

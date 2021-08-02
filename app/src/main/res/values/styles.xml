@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="welcome_to_duce">
+        <item name="stTextBold">false</item>
+        <item name="stTextColor">@color/baby_powder</item>
+        <item name="stTextSize">14sp</item>
+        <item name="stColorBackground">@color/prussian_blue</item>
+        <item name="stSolidBackground">true</item>
+        <item name="stLength">SHORT</item>
+        <item name="stGravity">center</item>
+        <item name="stRadius">250dp</item>
+    </style>
+
+
+    <style name="to_conversation">
+        <item name="stTextBold">false</item>
+        <item name="stTextColor">@color/honeydew</item>
+        <item name="stTextSize">14sp</item>
+        <item name="stColorBackground">@android:color/holo_orange_light</item>
+        <item name="stSolidBackground">true</item>
+        <item name="stIconStart">@drawable/chat_bubble</item>
+        <item name="stLength">SHORT</item>
+        <item name="stGravity">top</item>
+        <item name="stRadius">250dp</item>
+    </style>
+
+</resources>

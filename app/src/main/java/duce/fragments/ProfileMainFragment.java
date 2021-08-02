@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import duce.models.CustomUser;
+import es.dmoral.toasty.Toasty;
 
 // This Fragment will hold 2 fragments (tabs): My Profile and Friends. That's why it is Profile [MAIN] Fragment
 public class ProfileMainFragment extends Fragment {
@@ -93,7 +94,12 @@ public class ProfileMainFragment extends Fragment {
                 if (users.size() > 0) {
                     mUser.setCustomUser(users.get(0));
                 } else {
-                    Toast.makeText(getContext(), "User not found", Toast.LENGTH_SHORT).show();
+                    Toasty.normal(
+                        getContext(),
+                        R.string.user_not_found,
+                        Toast.LENGTH_SHORT
+                        )
+                        .show();
                 }
             }
         });
