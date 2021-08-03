@@ -97,18 +97,14 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ViewHolder> 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         ImageView mIvProfilePicture;
-        TextView mTvFlag;
         TextView mTvUsername;
-        TextView mTvSender;
         TextView mTvDescription;
         TextView mTvDate;
 
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
             mIvProfilePicture = mBinding.ivProfilePicture;
-            mTvFlag = mBinding.tvFlag;
             mTvUsername = mBinding.tvUsername;
-            mTvSender = mBinding.tvSender;
             mTvDescription = mBinding.tvDescription;
             mTvDate = mBinding.tvDate;
             itemView.setOnClickListener(this);
@@ -137,6 +133,8 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ViewHolder> 
                         return;
                     }
                     if (objects.size() > 0) {
+                        String lastDescription = "";
+
                         otherUser.setCustomUser(objects.get(0));
                         // Set values to the chat Item
                         Glide.with(mContext)
@@ -146,14 +144,16 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ViewHolder> 
                             .into(mIvProfilePicture);
                         mTvUsername.setText(otherUser.getUsername());
                         if (senderId.equals(otherId)) {
-                            mTvSender.setText(otherUser.getUsername() + ":");
+                            lastDescription += otherUser.getUsername() + ": ";
                         } else {
-                            mTvSender.setText(R.string.you);
+                            lastDescription += "You: ";
                         }
+                        lastDescription += message.getDescription();
+                        mTvDescription.setText(lastDescription);
                     }
                 }
             });
-            mTvDescription.setText(message.getDescription());
+
             Date createdAt = message.getCreatedAt();
             String timeAgo = Messages.calculateTimeAgo(createdAt);
             mTvDate.setText(timeAgo);

@@ -20,7 +20,6 @@ public class CustomUser {
     public static final String PASSWORD = "password";
     public static final String PROFILE_PICTURE = "profilePicture";
     public static final String SELF_DESCRIPTION = "selfDescription";
-    public static final String COUNTRY_ID = "countryId";
     public static final String BIRTHDATE = "birthdate";
     public static final String LAST_CONNECTION = "lastConnection";
     public static final String ONLINE = "online";
@@ -69,14 +68,6 @@ public class CustomUser {
 
     public void setSelfDescription(String selfDescription) {
         mParseUser.put(SELF_DESCRIPTION, selfDescription);
-    }
-
-    public Countries getCountryId() {
-        return (Countries) mParseUser.getParseObject(COUNTRY_ID);
-    }
-
-    public void setCountryId(String countryId) {
-        mParseUser.put(COUNTRY_ID, countryId);
     }
 
     public Date getBirthdate() {

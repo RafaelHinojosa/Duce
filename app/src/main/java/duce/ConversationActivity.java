@@ -56,7 +56,6 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     static final int MAX_MESSAGES_TO_SHOW = 20;
 
     private ImageView mIvProfilePicture;
-    private TextView mTvFlag;
     private TextView mTvUsername;
     private ImageButton mBtnSettings;
     private RecyclerView mRvMessages;
@@ -79,7 +78,6 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         setContentView(view);
 
         mIvProfilePicture = binding.ivProfilePicture;
-        mTvFlag = binding.tvFlag;
         mTvUsername = binding.tvUsername;
         mRvMessages = binding.rvMessages;
         mEtCompose = binding.etComposeMessage;
