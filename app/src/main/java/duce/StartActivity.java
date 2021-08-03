@@ -5,17 +5,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.widget.TextView;
 
-import com.duce.R;
-import com.duce.databinding.LoginActivityBinding;
 import com.duce.databinding.StartActivityBinding;
 import com.parse.ParseUser;
 
 public class StartActivity extends AppCompatActivity {
 
-    private Button mBtnToLogIn;
-    private Button mBtnToSignUp;
+    private TextView mTvLogIn;
+    private TextView mTvSignUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,10 +28,10 @@ public class StartActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        mBtnToLogIn = binding.btnToLogIn;
-        mBtnToSignUp = binding.btnToSignUp;
+        mTvLogIn = binding.tvToLogIn;
+        mTvSignUp = binding.tvToSignUp;
 
-        mBtnToLogIn.setOnClickListener(new View.OnClickListener() {
+        mTvLogIn.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -42,7 +40,7 @@ public class StartActivity extends AppCompatActivity {
             }
         });
 
-        mBtnToSignUp.setOnClickListener(new View.OnClickListener() {
+        mTvSignUp.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {

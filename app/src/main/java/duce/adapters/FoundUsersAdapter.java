@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -85,12 +86,11 @@ public class FoundUsersAdapter extends RecyclerView.Adapter<FoundUsersAdapter.Vi
 
         private ImageView mIvProfilePicture;
         private TextView mTvUsername;
-        private FloatingActionButton mBtnMessage;
+        private ImageButton mBtnMessage;
         private TextView mTvMyLanguages;
         private TextView mTvMyInterests;
         private LinearLayout mLlMyLanguages;
         private LinearLayout mLlMyInterests;
-        // Recycler views... / Containers for languages
 
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);

@@ -56,6 +56,8 @@
         android:layout_marginBottom="35dp"
         android:clickable="true"
         android:src="@drawable/fire"
+        android:backgroundTint="@color/imperial_red"
+        app:tint="@color/honeydew"
         />
 
 </RelativeLayout>

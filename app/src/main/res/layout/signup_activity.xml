@@ -131,12 +131,14 @@
     <!-- Sign up -->
     <Button
         android:id="@+id/btnSignUp"
-        android:layout_width="wrap_content"
+        android:layout_width="311dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/tvInterests"
         android:layout_marginTop="50dp"
         android:text="@string/signup"
+        android:textColor="@color/honeydew"
+        android:backgroundTint="@color/sender_green"
         />
 
 </RelativeLayout>

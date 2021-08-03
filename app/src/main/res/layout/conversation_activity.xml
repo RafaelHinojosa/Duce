@@ -51,7 +51,7 @@
         />
 
     <!-- Settings Button -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <ImageButton
         android:id="@+id/btnSettings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -59,7 +59,9 @@
         android:layout_alignEnd="@+id/rlSend"
         android:layout_marginEnd="20dp"
         android:clickable="true"
+        android:backgroundTint="@color/white"
         app:srcCompat="@drawable/settings"
+        app:tint="@color/prussian_blue"
         />
 
     <!-- Messages -->
@@ -73,7 +75,8 @@
         android:layout_alignParentEnd="true"
         android:layout_marginStart="0dp"
         android:screenReaderFocusable="true"
-        android:transcriptMode="alwaysScroll" />
+        android:transcriptMode="alwaysScroll"
+        />
 
     <RelativeLayout
         android:id="@+id/rlSend"
@@ -81,8 +84,6 @@
         android:layout_width="match_parent"
         android:paddingTop="5dp"
         android:paddingBottom="10dp"
-        android:paddingLeft="0dp"
-        android:paddingRight="0dp"
         android:layout_height="wrap_content"
         >
 
@@ -90,8 +91,8 @@
             android:id="@+id/etComposeMessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toStartOf="@+id/ibSend"
-            android:layout_alignBottom="@+id/ibSend"
+            android:layout_toStartOf="@+id/fabSend"
+            android:layout_alignBottom="@+id/fabSend"
             android:gravity="top"
             android:hint="@string/compose_message"
             android:imeOptions="actionSend"
@@ -99,48 +100,23 @@
             android:maxLines="10"
             />
 
-        <ImageButton
-            android:id="@+id/ibSend"
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabSend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:paddingRight="10dp"
             android:layout_alignParentEnd="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="2dp"
+            android:clickable="true"
             android:contentDescription="@string/send"
+            android:gravity="center"
+            android:backgroundTint="@android:color/holo_green_dark"
             android:src="@drawable/send"
-            android:textSize="18sp"
+            app:tint="@color/honeydew"
             />
 
     </RelativeLayout>
 
 </RelativeLayout>
-
-<!--
-
-<EditText
-android:id="@+id/etComposeMessage"
-android:layout_width="345dp"
-android:layout_height="87dp"
-android:layout_below="@+id/rvMessages"
-android:layout_alignParentBottom="true"
-android:layout_marginTop="49dp"
-android:layout_marginBottom="55dp"
-android:hint="@string/compose_message"
-android:imeOptions="actionSend"
-android:inputType="textShortMessage" />
-
-<ImageButton
-android:id="@+id/ibSend"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:layout_alignParentRight="true"
-android:layout_alignParentBottom="true"
-android:layout_marginRight="1dp"
-android:layout_marginBottom="55dp"
-android:contentDescription="@string/send"
-android:gravity="center"
-android:paddingRight="10dp"
-android:src="@drawable/send"
-android:textSize="18sp" />
-
--->

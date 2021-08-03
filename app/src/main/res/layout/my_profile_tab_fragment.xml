@@ -26,15 +26,16 @@
         <!-- Edit Profile Picture -->
         <ImageButton
             android:id="@+id/ibEditProfilePicture"
-            android:layout_width="37dp"
+            android:layout_width="30dp"
             android:layout_height="41dp"
             android:layout_alignBottom="@+id/ivProfilePicture"
-            android:layout_toEndOf="@+id/ivProfilePicture"
             android:layout_marginStart="-15dp"
+            android:layout_toEndOf="@+id/ivProfilePicture"
             android:backgroundTint="@color/white"
             android:clickable="true"
-            android:src="@android:drawable/ic_menu_edit"
-            android:visibility="invisible"
+            android:src="@drawable/edit"
+            android:visibility="visible"
+            app:tint="@color/celadon_blue"
             />
 
         <!-- Username -->
@@ -200,7 +201,7 @@
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="10dp"
             android:text="@string/logout"
-            android:backgroundTint="@color/signup_red"
+            android:backgroundTint="@color/imperial_red"
             android:clickable="true"
             />
 

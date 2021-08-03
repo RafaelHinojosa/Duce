@@ -58,6 +58,8 @@
         android:layout_below="@id/etPassword"
         android:layout_marginTop="50dp"
         android:text="@string/login"
+        android:textColor="@color/honeydew"
+        android:backgroundTint="@color/receiver_blue"
         />
 
 </RelativeLayout>

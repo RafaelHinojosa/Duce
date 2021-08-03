@@ -32,17 +32,18 @@
         />
 
     <!-- Message -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <ImageButton
         android:id="@+id/btnMessage"
-        gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="23dp"
-        android:layout_marginEnd="36dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="45dp"
+        android:backgroundTint="@color/white"
         android:clickable="true"
         android:src="@drawable/message"
+        app:tint="@color/teal_700"
         />
 
     <!-- My Languages -->

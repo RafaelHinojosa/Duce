@@ -5,13 +5,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -20,18 +17,14 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
-import com.duce.BuildConfig;
 import com.duce.R;
 import com.duce.databinding.ConversationActivityBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.api.services.translate.Translate;
 import com.google.auth.oauth2.GoogleCredentials;
-import com.google.cloud.translate.Language;
 import com.google.cloud.translate.TranslateOptions;
 import com.google.cloud.translate.Translation;
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -44,15 +37,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import duce.adapters.ConversationAdapter;
 import duce.fragments.ConversationSettingsDialogFragment;
-import duce.models.Chats;
 import duce.models.CustomUser;
 import duce.models.Languages;
 import duce.models.Messages;
@@ -67,10 +56,10 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     private ImageView mIvProfilePicture;
     private TextView mTvFlag;
     private TextView mTvUsername;
-    private FloatingActionButton mBtnSettings;
+    private ImageButton mBtnSettings;
     private RecyclerView mRvMessages;
     private EditText mEtCompose;
-    private ImageButton mIbSend;
+    private FloatingActionButton fabSend;
 
     private Messages mConversation;
     private List<Messages> mMessages;
@@ -92,7 +81,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         mTvUsername = binding.tvUsername;
         mRvMessages = binding.rvMessages;
         mEtCompose = binding.etComposeMessage;
-        mIbSend = binding.ibSend;
+        fabSend = binding.fabSend;
         mBtnSettings = findViewById(R.id.btnSettings);
         mConversation = Parcels.unwrap(getIntent().getParcelableExtra("conversation"));
         mMessages = new ArrayList<>();
@@ -107,7 +96,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         linearLayoutManager.setStackFromEnd(true);
         mRvMessages.setLayoutManager(linearLayoutManager);
 
-        mIbSend.setOnClickListener(new View.OnClickListener() {
+        fabSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String description = mEtCompose.getText().toString();
