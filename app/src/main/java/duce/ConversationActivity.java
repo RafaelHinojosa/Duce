@@ -283,6 +283,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         message.setSender(ParseUser.getCurrentUser());
         message.setReceiver(mOtherUser.getCustomUser());
         message.setDescription(description);
+        message.setLastMessage(false);
 
         message.saveInBackground(new SaveCallback() {
             @Override
@@ -296,23 +297,22 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
                     mAdapter.notifyDataSetChanged();
                     mRvMessages.scrollToPosition(0);
                 }
-                updateLastMessage(owner);
+                updateLastMessage(owner, message);
             }
         });
     }
 
     // When a message is submitted, we have to update the lastMessage property of the penutimate message
-    public void updateLastMessage(String owner) {
+    public void updateLastMessage(String owner, Messages lastMessage) {
         ParseQuery<Messages> penultimateMessage = ParseQuery.getQuery("Messages");
         penultimateMessage.whereEqualTo(Messages.CHATS_ID, mConversation.getChatsId());
+        penultimateMessage.whereEqualTo(Messages.LAST_MESSAGE, true);
+
         if (owner.equals("me")) {
             penultimateMessage.whereEqualTo(Messages.OWNER_USER, ParseUser.getCurrentUser());
         } else if (owner.equals("otherUser")){
             penultimateMessage.whereEqualTo(Messages.OWNER_USER, mOtherUser.getCustomUser());
         }
-        penultimateMessage.addDescendingOrder("createdAt");
-        penultimateMessage.setSkip(1);  // Skip the just submitted message
-        penultimateMessage.setLimit(1); // Get the penultimate
 
         // Retrieve the object by id
         penultimateMessage.findInBackground(new FindCallback<Messages>() {
@@ -322,6 +322,9 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
                     Log.e(TAG, "Could not get the penultimate message");
                     return;
                 }
+                lastMessage.setLastMessage(true);
+                lastMessage.saveInBackground();
+
                 if (messages.size() > 0) {
                     Messages message = messages.get(0);
                     message.put("lastMessage", false);

@@ -9,23 +9,14 @@
     android:clipToPadding="false"
     >
 
-    <ImageView
-        android:id="@+id/ivProfileMe"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_alignBottom="@+id/tvDescription"
-        android:paddingBottom="5dp"
-        android:layout_alignParentRight="true"
-        android:contentDescription="@string/profile_pic_me"
-        android:src="@mipmap/ic_launcher"
-        />
 
     <TextView
         android:id="@+id/tvDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
         android:maxWidth="200dp"
-        android:layout_toLeftOf="@+id/ivProfileMe"
+
         android:background="@drawable/outgoing_message"
         android:paddingVertical="12dp"
         android:paddingHorizontal="12dp"

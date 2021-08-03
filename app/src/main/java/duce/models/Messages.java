@@ -70,6 +70,14 @@ public class Messages extends ParseObject {
         put(LANGUAGE, language);
     }
 
+    public boolean isLastMessage() {
+        return getBoolean(LAST_MESSAGE);
+    }
+
+    public void setLastMessage(Boolean isLast) {
+        put(LAST_MESSAGE, isLast);
+    }
+
     // Returns how much time ago was a given Date
     public static String calculateTimeAgo(Date createdAt) {
         int SECOND_MILLIS = 1000;

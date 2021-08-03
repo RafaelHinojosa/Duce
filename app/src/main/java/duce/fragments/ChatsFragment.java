@@ -33,7 +33,11 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.livequery.ParseLiveQueryClient;
+import com.parse.livequery.SubscriptionHandling;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -124,24 +128,12 @@ public class ChatsFragment extends Fragment {
         });
 
         getLastMessages(false);
+        setLiveChats();
     }
 
     // Select the last messages from conversations where the user appears
     public void getLastMessages(boolean refreshChats) {
-        ParseQuery<Messages> sender = ParseQuery.getQuery("Messages");
-        sender.whereEqualTo(Messages.OWNER_USER, ParseUser.getCurrentUser());
-        sender.whereEqualTo(Messages.SENDER, ParseUser.getCurrentUser());
-
-        ParseQuery<Messages> receiver = ParseQuery.getQuery("Messages");
-        receiver.whereEqualTo(Messages.OWNER_USER, ParseUser.getCurrentUser());
-        receiver.whereEqualTo(Messages.RECEIVER, ParseUser.getCurrentUser());
-
-        List<ParseQuery<Messages>> queries = new ArrayList<ParseQuery<Messages>>();
-        queries.add(sender);
-        queries.add(receiver);
-
-        ParseQuery<Messages> mainQuery = ParseQuery.or(queries);
-        mainQuery.whereEqualTo(Messages.LAST_MESSAGE, true);
+        ParseQuery<Messages> mainQuery = queryMyMessages();
         mainQuery.addDescendingOrder(Messages.CREATED_AT);
         mainQuery.setLimit(20);
 
@@ -156,6 +148,7 @@ public class ChatsFragment extends Fragment {
                     Log.i(TAG, String.valueOf(message));
                 }
                 if (refreshChats) {
+                    mLastMessages.clear();
                     mChatsAdapter.clear();
                     mChatsAdapter.addAll(messages);
                 } else {
@@ -164,6 +157,52 @@ public class ChatsFragment extends Fragment {
                 }
             }
         });
+    }
+
+    // Sets a Live Query for Messages
+    public void setLiveChats() {
+        String webSocketUrl = "wss://duce.b4a.io/";
+
+        ParseLiveQueryClient parseLiveQueryClient = null;
+        try {
+            parseLiveQueryClient = ParseLiveQueryClient.Factory.getClient(new URI(webSocketUrl));
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        ParseQuery<Messages> messagesQuery = queryMyMessages();
+
+        assert parseLiveQueryClient != null;
+        SubscriptionHandling<Messages> subscriptionHandling = parseLiveQueryClient.subscribe(messagesQuery);
+
+        // Listen for CREATE events on the Message class
+        subscriptionHandling.handleEvent(SubscriptionHandling.Event.UPDATE, (query, message) -> {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    getLastMessages(true);
+                }
+            });
+        });
+    }
+
+    public ParseQuery<Messages> queryMyMessages() {
+        ParseQuery<Messages> sender = ParseQuery.getQuery("Messages");
+        sender.whereEqualTo(Messages.OWNER_USER, ParseUser.getCurrentUser());
+        sender.whereEqualTo(Messages.SENDER, ParseUser.getCurrentUser());
+
+        ParseQuery<Messages> receiver = ParseQuery.getQuery("Messages");
+        receiver.whereEqualTo(Messages.OWNER_USER, ParseUser.getCurrentUser());
+        receiver.whereEqualTo(Messages.RECEIVER, ParseUser.getCurrentUser());
+
+        List<ParseQuery<Messages>> queries = new ArrayList<ParseQuery<Messages>>();
+        queries.add(sender);
+        queries.add(receiver);
+
+        ParseQuery<Messages> mainQuery = ParseQuery.or(queries);
+        mainQuery.whereEqualTo(Messages.LAST_MESSAGE, true);
+
+        return mainQuery;
     }
 
     public void getSearchedChats(String search) {

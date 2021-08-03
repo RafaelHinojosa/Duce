@@ -230,14 +230,12 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     }
 
     public class OutgoingMessageViewHolder extends MessageViewHolder {
-        private ImageView mIvProfileMe;
         private TextView mTvDescription;
         private CustomUser mSender;
 
         public OutgoingMessageViewHolder(View itemView) {
             super(itemView);
 
-            mIvProfileMe = (ImageView) itemView.findViewById(R.id.ivProfileMe);
             mTvDescription = (TextView) itemView.findViewById(R.id.tvDescription);
             mSender = new CustomUser();
         }
@@ -258,10 +256,6 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                     }
                     if (users.size() > 0) {
                         mSender.setCustomUser(users.get(0));
-                        Glide.with(mContext)
-                                .load(mSender.getProfilePicture().getUrl())
-                                .circleCrop()
-                                .into(mIvProfileMe);
                         mTvDescription.setText(message.getDescription());
                     }
                 }
