@@ -8,63 +8,58 @@
     tools:context="duce.ConversationActivity"
     >
 
-    <!-- Chat/Profile Picture -->
-    <ImageView
-        android:id="@+id/ivProfilePicture"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="15dp"
-        app:srcCompat="@drawable/cristiano"
-        tools:srcCompat="@tools:sample/avatars"
-        />
+    <RelativeLayout
+        android:id="@+id/rlChat"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:elevation="10dp"
+        >
 
-    <!-- Flag -->
-    <TextView
-        android:id="@+id/tvFlag"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="17dp"
-        android:layout_marginTop="35dp"
-        android:layout_toEndOf="@+id/ivProfilePicture"
-        android:hint="@string/flag_hint"
-        android:textColor="@color/black"
-        />
+        <!-- Chat/Profile Picture -->
+        <ImageView
+            android:id="@+id/ivProfilePicture"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            app:srcCompat="@drawable/cristiano"
+            tools:srcCompat="@tools:sample/avatars"
+            />
 
-    <!-- Username -->
-    <TextView
-        android:id="@+id/tvUsername"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/tvFlag"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="20dp"
-        android:layout_toStartOf="@+id/btnSettings"
-        android:layout_toEndOf="@+id/tvFlag"
-        android:hint="@string/username_sample_1"
-        android:textColor="@color/rich_black_fogra_29"
-        android:textStyle="bold"
-        android:textSize="18dp"
-        />
+        <!-- Username -->
+        <TextView
+            android:id="@+id/tvUsername"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/ivProfilePicture"
+            android:layout_marginTop="32dp"
+            android:hint="@string/username_sample_1"
+            android:textColor="@color/rich_black_fogra_29"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            />
 
-    <!-- Settings Button -->
-    <ImageButton
-        android:id="@+id/btnSettings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        android:layout_alignEnd="@+id/rlSend"
-        android:layout_marginEnd="20dp"
-        android:clickable="true"
-        android:backgroundTint="@color/white"
-        app:srcCompat="@drawable/settings"
-        app:tint="@color/prussian_blue"
-        />
+        <!-- Settings Button -->
+        <ImageButton
+            android:id="@+id/btnSettings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/tvUsername"
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="40dp"
+            android:backgroundTint="@color/white"
+            android:clickable="true"
+            app:srcCompat="@drawable/settings"
+            app:tint="@color/prussian_blue"
+            />
+
+    </RelativeLayout>
 
     <!-- Messages -->
     <androidx.recyclerview.widget.RecyclerView
@@ -72,7 +67,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/rlSend"
-        android:layout_below="@+id/ivProfilePicture"
+        android:layout_below="@+id/rlChat"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="0dp"
@@ -84,9 +79,9 @@
         android:id="@+id/rlSend"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:paddingTop="0dp"
         android:paddingBottom="10dp"
         android:layout_height="wrap_content"
+        android:elevation="10dp"
         >
 
         <EditText

@@ -16,27 +16,14 @@
         tools:srcCompat="@tools:sample/avatars"
         />
 
-    <!-- Flag -->
-    <TextView
-        android:id="@+id/tvFlag"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/ivProfilePicture"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="20dp"
-        android:hint="@string/flag_hint"
-        android:textColor="@color/black"
-        android:visibility="invisible"
-        />
-
     <!-- Username -->
     <TextView
         android:id="@+id/tvUsername"
-        android:layout_width="wrap_content"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/tvFlag"
         android:layout_marginStart="5dp"
-        android:layout_toEndOf="@+id/tvFlag"
+        android:layout_alignTop="@+id/ivProfilePicture"
+        android:layout_toEndOf="@+id/ivProfilePicture"
         android:hint="@string/username_sample_1"
         android:textColor="@color/rich_black_fogra_29"
         android:textStyle="bold"
@@ -46,10 +33,11 @@
     <!-- Sender Last Message -->
     <TextView
         android:id="@+id/tvSender"
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvFlag"
-        android:layout_marginTop="15dp"
+        android:layout_below="@+id/tvUsername"
+        android:layout_marginTop="10dp"
+        android:layout_alignStart="@+id/tvUsername"
         android:layout_toEndOf="@+id/ivProfilePicture"
         android:textStyle="bold"
         android:hint="@string/username_sample_1"
@@ -58,9 +46,10 @@
     <!-- Last Message -->
     <TextView
         android:id="@+id/tvDescription"
-        android:layout_width="140dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/tvSender"
+        android:layout_alignEnd="@+id/tvDate"
         android:layout_marginStart="2dp"
         android:layout_toEndOf="@+id/tvSender"
         android:hint="@string/description_sample"
@@ -72,9 +61,9 @@
         android:id="@+id/tvDate"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvUsername"
+        android:layout_toEndOf="@+id/tvUsername"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="15dp"
-        android:layout_toEndOf="@+id/tvDescription"
         android:hint="@string/date_sample"
         android:textSize="10dp"
         />

@@ -95,4 +95,6 @@ dependencies {
     implementation 'io.github.muddz:styleabletoast:2.4.0'
     // Toasty
     implementation 'com.github.GrenderG:Toasty:1.5.0'
+    // Lottie
+    implementation "com.airbnb.android:lottie:3.4.0"
 }

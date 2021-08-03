@@ -7,6 +7,17 @@
     android:layout_height="match_parent"
     tools:context="duce.MainActivity"
     >
+    
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/avLanguagesPeople"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        app:lottie_rawRes="@raw/languages_people_lottie"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="false"
+        />
+
     <!-- flContainer that will be replaced with the fragment's view -->
     <FrameLayout
         android:id="@+id/flContainer"
@@ -14,6 +25,7 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/navView"
         />
+
     <!-- Bottom Navigation View -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navView"
@@ -22,4 +34,5 @@
         android:layout_alignParentBottom="true"
         app:menu="@menu/bottom_nav_menu"
         />
+
 </RelativeLayout>
