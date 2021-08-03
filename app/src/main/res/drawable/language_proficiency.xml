@@ -1,6 +1,7 @@
 <!-- Is the background of the language proficency of a user -->
 <shape
-    xmlns:android="http://schemas.android.com/apk/res/android" >
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
 
     <solid android:color="@color/proficiency" />
 
@@ -15,4 +16,5 @@
         android:topLeftRadius="20dp"
         android:topRightRadius="20dp"
         />
+
 </shape>

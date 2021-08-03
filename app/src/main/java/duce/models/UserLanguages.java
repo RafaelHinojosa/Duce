@@ -12,7 +12,6 @@ public class UserLanguages extends ParseObject {
 
     public static final String USER_ID = "userId";
     public static final String LANGUAGE_ID = "languageId";
-    public static final String PROFICIENCY = "proficiency";
     public static final String INTERESTED_IN = "interestedIn";
     public static final String MY_LANGUAGE = "myLanguage";
 
@@ -30,14 +29,6 @@ public class UserLanguages extends ParseObject {
 
     public void setLanguage(Languages language) {
         put(LANGUAGE_ID, language);
-    }
-
-    public int getProficiency() {
-        return getInt(PROFICIENCY);
-    }
-
-    public void setProficiency(int proficiency) {
-        put(PROFICIENCY, proficiency);
     }
 
     public boolean getInterestedIn() {

@@ -138,6 +138,7 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
+    // Registers the relationships between the user and the languages selected in the Database
     private void registerUserLanguages() {
         // Set the languages put as Proficient Languages
         for (int i = 0; i < mSelectedLanguages.size(); i++) {
@@ -189,7 +190,9 @@ public class SignupActivity extends AppCompatActivity {
 
         mIsLanguageSelected = new boolean[mLanAdapter.getItemCount()];
 
-        builder.setMultiChoiceItems(mLanAdapter.getLanguages(), mIsLanguageSelected, new DialogInterface.OnMultiChoiceClickListener() {
+        builder.setMultiChoiceItems(mLanAdapter.getLanguages(),
+                                    mIsLanguageSelected,
+                                    new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                if (languageType.equals("myLanguage")) {

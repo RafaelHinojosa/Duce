@@ -27,6 +27,7 @@ import duce.adapters.LanguagesAdapter;
 public class ConversationSettingsDialogFragment extends DialogFragment {
 
     public static final String TAG = "ConversationSettingsDialogFragment";
+    public static final String TITLE = "title";
 
     private TextView mSelectLanguage;
     private Button mBtnCancel;
@@ -42,14 +43,17 @@ public class ConversationSettingsDialogFragment extends DialogFragment {
     public static ConversationSettingsDialogFragment newInstance(String title) {
         ConversationSettingsDialogFragment fragment = new ConversationSettingsDialogFragment();
         Bundle args = new Bundle();
-        args.putString("title", title);
+        args.putString(TITLE, title);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.conversation_settings_dialog_fragment, container, false);
+    public View onCreateView(LayoutInflater inflater,
+                             ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.conversation_settings_dialog_fragment,
+            container, false);
     }
 
     @Override
@@ -63,7 +67,7 @@ public class ConversationSettingsDialogFragment extends DialogFragment {
         mLanSelected = "";
         mListener = (ConversationSettingsDialogListener) getActivity();
 
-        String title = getArguments().getString("title", String.valueOf(R.string.select_language));
+        String title = getArguments().getString(TITLE, String.valueOf(R.string.select_language));
         getDialog().setTitle(title);
 
         mSelectLanguage.setOnClickListener(new View.OnClickListener() {

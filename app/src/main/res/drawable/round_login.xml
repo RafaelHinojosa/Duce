@@ -4,7 +4,9 @@
     >
 
     <item android:state_pressed="false">
+
         <shape android:shape="oval">
+
             <solid android:color="@color/receiver_blue"/>
 
             <size
@@ -13,10 +15,13 @@
                 />
 
         </shape>
+
     </item>
 
     <item android:state_pressed="true">
+
         <shape android:shape="oval">
+
             <solid android:color="@color/infoColor"/>
 
             <size
@@ -25,6 +30,7 @@
                 />
 
         </shape>
+
     </item>
 
 </selector>
