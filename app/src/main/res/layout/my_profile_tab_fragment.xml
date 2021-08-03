@@ -34,7 +34,7 @@
             android:backgroundTint="@color/white"
             android:clickable="true"
             android:src="@drawable/edit"
-            android:visibility="visible"
+            android:visibility="invisible"
             app:tint="@color/celadon_blue"
             />
 
@@ -57,8 +57,10 @@
             android:id="@+id/etUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:maxWidth="311dp"
             android:layout_below="@+id/ivProfilePicture"
             android:layout_centerHorizontal="true"
+            android:maxLength="32"
             android:layout_marginTop="8dp"
             android:hint="@string/username_sample_1"
             android:textAlignment="center"
@@ -98,8 +100,8 @@
             android:imeOptions="actionDone"
             android:textColor="@color/black"
             android:hint="@string/age_sample_1"
-            >
-        </EditText>
+            android:focusable="false"
+            />
 
         <!-- Description -->
         <TextView
@@ -107,7 +109,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvAge"
-            android:layout_margin="15dp"
+            android:layout_marginTop="20dp"
             android:layout_centerHorizontal="true"
             android:maxLines="2"
             android:textAlignment="center"
@@ -120,15 +122,15 @@
             android:id="@+id/etDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:maxWidth="311dp"
             android:layout_below="@+id/etAge"
-            android:layout_margin="8dp"
             android:layout_centerHorizontal="true"
-            android:maxLines="2"
-            android:maxLength="64"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="15dp"
+            android:maxLength="86"
+            android:inputType="textMultiLine"
             android:textAlignment="center"
             android:visibility="invisible"
-            android:inputType="text"
-            android:imeOptions="actionDone"
             android:hint="@string/write_description"
             android:textSize="14dp"
             >
@@ -139,8 +141,8 @@
             android:id="@+id/tvMyLanguages"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvDescription"
-            android:layout_marginTop="30dp"
+            android:layout_below="@+id/etDescription"
+            android:layout_marginTop="15dp"
             android:layout_alignParentStart="true"
             android:layout_marginStart="15dp"
             android:textSize="18dp"

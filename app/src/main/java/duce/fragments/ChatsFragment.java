@@ -118,7 +118,6 @@ public class ChatsFragment extends Fragment {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     String text = textView.getText().toString();
                     getSearchedChats(text);
-                    return true;
                 }
                 return false;
             }

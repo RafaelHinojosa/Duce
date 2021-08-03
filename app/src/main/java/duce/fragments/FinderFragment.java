@@ -79,7 +79,6 @@ public class FinderFragment extends Fragment {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     String text = textView.getText().toString();
                     getSearchedUsers(text);
-                    return true;
                 }
                 return false;
             }

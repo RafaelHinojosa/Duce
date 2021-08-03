@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.InputType;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -195,6 +196,10 @@ public class MyProfileTabFragment extends Fragment {
             mEtUsername.setText(mUser.getUsername());
             mEtAge.setText(age);
             mEtSelfDescription.setText(mUser.getSelfDescription());
+
+            mEtSelfDescription.setImeOptions(EditorInfo.IME_ACTION_DONE);
+            mEtSelfDescription.setRawInputType(InputType.TYPE_CLASS_TEXT);
+            mEtSelfDescription.setMaxLines(2);
 
             mEtUsername.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override

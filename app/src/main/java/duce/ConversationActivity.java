@@ -7,8 +7,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -59,7 +61,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     private ImageButton mBtnSettings;
     private RecyclerView mRvMessages;
     private EditText mEtCompose;
-    private FloatingActionButton fabSend;
+    private com.google.android.material.floatingactionbutton.FloatingActionButton fabSend;
 
     private Messages mConversation;
     private List<Messages> mMessages;
