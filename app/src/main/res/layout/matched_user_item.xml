@@ -35,39 +35,39 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textColor="@android:color/white"
-            android:textSize="26dp"
+            android:textColor="@color/honeydew"
+            android:textSize="20dp"
             />
 
         <TextView
             android:id="@+id/tvScore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:textSize="18dp"
+            android:textColor="@color/honeydew"
+            android:textSize="16dp"
             />
 
         <TextView
             android:id="@+id/tvLanguages"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:textSize="18dp"
+            android:textColor="@color/honeydew"
+            android:textSize="16dp"
             />
 
         <TextView
             android:id="@+id/tvInterests"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:textSize="18dp"
+            android:textColor="@color/honeydew"
+            android:textSize="16dp"
             />
 
         <TextView
             android:id="@+id/tvAge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
+            android:textColor="@color/honeydew"
             android:textSize="14dp"
             />
 
@@ -75,7 +75,7 @@
             android:id="@+id/tvAvailability"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
+            android:textColor="@color/honeydew"
             android:textSize="12dp"
             />
 

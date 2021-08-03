@@ -10,7 +10,7 @@
     <string name="password">Password</string>
     <string name="login">Log In</string>
     <string name="signup">Sign Up</string>
-    <string name="signup_welcome">Welcome to Duce,</string>
+    <string name="signup_welcome">Welcome to Duce</string>
     <string name="sp_country_prompt">"Select your Country"</string>
     <string name="sp_first_language_prompt">"Select your First Language"</string>
     <string name="basic_conversation">Hello! How are you?</string>

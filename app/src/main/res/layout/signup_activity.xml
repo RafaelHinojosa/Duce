@@ -16,9 +16,10 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="100dp"
+        android:fontFamily="@font/breadley_sans_regular"
         android:text="@string/signup_welcome"
         android:textColor="@color/black"
-        android:textSize="40dp"
+        android:textSize="50dp"
         />
 
     <!-- Username -->
@@ -28,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tvTitle"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="40dp"
         android:ems="10"
         android:hint="@string/username"
         android:inputType="textPersonName"
@@ -135,7 +136,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/tvInterests"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="40dp"
         android:text="@string/signup"
         android:textColor="@color/honeydew"
         android:backgroundTint="@color/sender_green"

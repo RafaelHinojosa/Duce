@@ -38,7 +38,9 @@
         android:layout_marginStart="5dp"
         android:layout_toEndOf="@+id/tvFlag"
         android:hint="@string/username_sample_1"
-        android:textColor="@color/black"
+        android:textColor="@color/rich_black_fogra_29"
+        android:textStyle="bold"
+        android:textSize="16dp"
         />
 
     <!-- Sender Last Message -->
@@ -49,6 +51,7 @@
         android:layout_below="@+id/tvFlag"
         android:layout_marginTop="15dp"
         android:layout_toEndOf="@+id/ivProfilePicture"
+        android:textStyle="bold"
         android:hint="@string/username_sample_1"
         />
 
@@ -61,7 +64,7 @@
         android:layout_marginStart="2dp"
         android:layout_toEndOf="@+id/tvSender"
         android:hint="@string/description_sample"
-        android:maxLines="3"
+        android:maxLines="2"
         />
 
     <!-- Date Sent -->

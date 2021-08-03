@@ -16,9 +16,10 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="100dp"
-        android:textSize="40dp"
+        android:fontFamily="@font/breadley_sans_regular"
         android:textColor="@color/black"
-        android:text="@string/login_welcome"
+        android:textSize="50dp"
+        android:text="@string/login"
         />
 
     <!-- Username -->

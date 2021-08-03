@@ -506,7 +506,6 @@ public class MyProfileTabFragment extends Fragment {
         mTvAddLanguage.setPadding(20,10,20,10);
         mTvAddLanguage.setCompoundDrawablePadding(5);
         mTvAddLanguage.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.add_language_box));
-        mTvAddLanguage.setTextColor(R.color.add_blue);
 
         FlexboxLayout.LayoutParams params = new FlexboxLayout.LayoutParams(
                 FlexboxLayout.LayoutParams.WRAP_CONTENT,
@@ -533,7 +532,6 @@ public class MyProfileTabFragment extends Fragment {
         mTvAddInterest.setPadding(20,10,20,10);
         mTvAddInterest.setCompoundDrawablePadding(5);
         mTvAddInterest.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.add_language_box));
-        mTvAddInterest.setTextColor(R.color.add_blue);
 
         FlexboxLayout.LayoutParams params = new FlexboxLayout.LayoutParams(
                 FlexboxLayout.LayoutParams.WRAP_CONTENT,
@@ -560,7 +558,6 @@ public class MyProfileTabFragment extends Fragment {
         mTvDeleteLanguage.setPadding(20,10,20,10);
         mTvDeleteLanguage.setCompoundDrawablePadding(5);
         mTvDeleteLanguage.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.delete_language_box));
-        mTvDeleteLanguage.setTextColor(R.color.signup_red);
 
         FlexboxLayout.LayoutParams params = new FlexboxLayout.LayoutParams(
                 FlexboxLayout.LayoutParams.WRAP_CONTENT,
@@ -587,7 +584,6 @@ public class MyProfileTabFragment extends Fragment {
         mTvDeleteInterest.setPadding(20,10,20,10);
         mTvDeleteInterest.setCompoundDrawablePadding(5);
         mTvDeleteInterest.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.delete_language_box));
-        mTvDeleteInterest.setTextColor(R.color.signup_red);
 
         FlexboxLayout.LayoutParams params = new FlexboxLayout.LayoutParams(
                 FlexboxLayout.LayoutParams.WRAP_CONTENT,

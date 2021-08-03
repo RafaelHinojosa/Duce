@@ -11,12 +11,13 @@
     <!-- Layout Title -->
     <TextView
         android:id="@+id/tvTitle"
+        android:fontFamily="@font/breadley_sans_regular"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="130dp"
-        android:textSize="40dp"
+        android:textSize="70dp"
         android:textColor="@color/black"
         android:text="@string/duce"
         />
@@ -24,7 +25,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_centerVertical="true"
+        android:layout_below="@+id/tvTitle"
+        android:layout_marginTop="100dp"
         >
 
         <androidx.constraintlayout.widget.Guideline
