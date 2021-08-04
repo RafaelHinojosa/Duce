@@ -48,7 +48,7 @@
             android:layout_centerHorizontal="true"
             android:textAlignment="center"
             android:visibility="invisible"
-            android:textSize="22dp"
+            android:textSize="18dp"
             android:hint="@string/username_sample_1"
             android:textColor="@color/rich_black_fogra_29"
             android:textStyle="bold"
@@ -66,11 +66,12 @@
             android:layout_marginTop="8dp"
             android:hint="@string/username_sample_1"
             android:textAlignment="center"
-            android:textSize="22dp"
+            android:textSize="18dp"
             android:inputType="text"
             android:imeOptions="actionDone"
             android:visibility="invisible"
             android:textColor="@color/rich_black_fogra_29"
+            android:fontFamily="sans-serif-light"
             android:textStyle="bold"
             >
         </EditText>
@@ -83,7 +84,7 @@
             android:layout_below="@+id/tvUsername"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="15dp"
-            android:textSize="16dp"
+            android:textSize="14dp"
             android:visibility="invisible"
             android:hint="@string/age_sample_1"
             android:textColor="@color/rich_black_fogra_29"
@@ -97,7 +98,7 @@
             android:layout_below="@+id/etUsername"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="8dp"
-            android:textSize="16dp"
+            android:textSize="14dp"
             android:visibility="invisible"
             android:inputType="text"
             android:imeOptions="actionDone"
@@ -117,6 +118,7 @@
             android:maxLines="2"
             android:textAlignment="center"
             android:visibility="invisible"
+            android:textSize="14dp"
             android:hint="@string/description_sample"
             android:textColor="@color/rich_black_fogra_29"
             />
@@ -152,6 +154,7 @@
             android:layout_marginTop="15dp"
             android:text="@string/my_languages"
             android:textColor="@color/rich_black_fogra_29"
+            android:fontFamily="sans-serif-light"
             android:textSize="18dp"
             android:textStyle="bold"
             />
@@ -159,7 +162,7 @@
         <!-- My Languages Layout -->
         <com.google.android.flexbox.FlexboxLayout
             android:id="@+id/flMyLanguages"
-            android:layout_width="wrap_content"
+            android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvMyLanguages"
             android:layout_alignStart="@+id/tvMyLanguages"
@@ -167,8 +170,8 @@
             android:paddingBottom="10dp"
             android:layout_marginEnd="30dp"
             app:flexWrap="wrap"
-            app:alignItems="stretch"
-            app:alignContent="stretch"
+            app:alignContent="flex_start"
+            app:justifyContent="flex_start"
             />
 
         <!-- Language Interests -->
@@ -183,6 +186,7 @@
             android:textSize="18dp"
             android:text="@string/my_interests"
             android:textColor="@color/rich_black_fogra_29"
+            android:fontFamily="sans-serif-light"
             android:textStyle="bold"
             />
 
@@ -197,8 +201,8 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             app:flexWrap="wrap"
-            app:alignItems="stretch"
-            app:alignContent="stretch"
+            app:alignContent="flex_start"
+            app:justifyContent="flex_start"
             />
 
         <!-- Log Out Button -->
@@ -213,6 +217,7 @@
             android:layout_marginBottom="10dp"
             android:text="@string/logout"
             android:backgroundTint="@color/imperial_red"
+            android:textSize="14dp"
             android:clickable="true"
             />
 

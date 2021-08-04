@@ -11,8 +11,9 @@
     <RelativeLayout
         android:id="@+id/rlChat"
         android:layout_width="match_parent"
-        android:layout_height="90dp"
+        android:layout_height="80dp"
         android:elevation="10dp"
+        android:background="@color/baby_powder"
         >
 
         <!-- Chat/Profile Picture -->
@@ -22,11 +23,11 @@
             android:layout_height="60dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:layout_marginStart="15dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="15dp"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="10dp"
             app:srcCompat="@drawable/cristiano"
             tools:srcCompat="@tools:sample/avatars"
             />
@@ -38,9 +39,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_toEndOf="@+id/ivProfilePicture"
-            android:layout_marginTop="32dp"
+            android:layout_centerVertical="true"
             android:hint="@string/username_sample_1"
             android:textColor="@color/rich_black_fogra_29"
+            android:fontFamily="sans-serif-light"
             android:textSize="18dp"
             android:textStyle="bold"
             />
@@ -50,10 +52,10 @@
             android:id="@+id/btnSettings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_centerVertical="true"
             android:layout_toEndOf="@+id/tvUsername"
-            android:layout_marginTop="24dp"
-            android:layout_marginStart="40dp"
-            android:backgroundTint="@color/white"
+            android:backgroundTint="@color/baby_powder"
             android:clickable="true"
             app:srcCompat="@drawable/settings"
             app:tint="@color/prussian_blue"

@@ -13,8 +13,8 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="15dp"
         android:layout_marginStart="15dp"
         tools:srcCompat="@tools:sample/avatars"
         />
@@ -24,13 +24,14 @@
         android:id="@+id/tvUsername"
         android:layout_width="205dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
         android:layout_alignTop="@+id/ivProfilePicture"
+        android:layout_marginStart="5dp"
         android:layout_toEndOf="@+id/ivProfilePicture"
+        android:fontFamily="sans-serif-light"
         android:hint="@string/username_sample_1"
         android:textColor="@color/rich_black_fogra_29"
+        android:textSize="18dp"
         android:textStyle="bold"
-        android:textSize="16dp"
         />
 
 
@@ -41,11 +42,12 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvUsername"
         android:layout_alignStart="@+id/tvUsername"
+        android:layout_alignBottom="@+id/ivProfilePicture"
         android:layout_toEndOf="@+id/ivProfilePicture"
         android:layout_alignEnd="@+id/tvDate"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
         android:hint="@string/description_sample"
-        android:maxLines="2"
+        android:maxLines="1"
         android:textSize="14dp"
         />
 
@@ -55,7 +57,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="15dp"
+        android:layout_alignBottom="@+id/tvUsername"
         android:layout_marginEnd="30dp"
         android:hint="@string/date_sample"
         android:textAlignment="viewEnd"

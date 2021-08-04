@@ -30,6 +30,7 @@
         android:hint="@string/username_sample_1"
         android:textSize="18dp"
         android:textColor="@color/rich_black_fogra_29"
+        android:fontFamily="sans-serif-light"
         android:textStyle="bold"
         />
 
@@ -56,6 +57,9 @@
         android:layout_alignStart="@+id/ivProfilePicture"
         android:text="@string/my_languages"
         android:textColor="@color/rich_black_fogra_29"
+        android:fontFamily="sans-serif-light"
+        android:textStyle="bold"
+        android:textSize="14dp"
         />
 
     <!-- My Languages -->
@@ -91,6 +95,9 @@
         android:layout_marginStart="10dp"
         android:text="@string/my_interests"
         android:textColor="@color/rich_black_fogra_29"
+        android:fontFamily="sans-serif-light"
+        android:textStyle="bold"
+        android:textSize="14dp"
         />
 
     <!-- My Interests -->
