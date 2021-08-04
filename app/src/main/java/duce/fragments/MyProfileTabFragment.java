@@ -62,7 +62,6 @@ import duce.models.Languages;
 import duce.models.UserLanguages;
 import es.dmoral.toasty.Toasty;
 
-import static com.duce.R.layout.language_proficency_demo;
 import static com.duce.R.layout.my_profile_tab_fragment;
 
 public class MyProfileTabFragment extends Fragment {
@@ -218,16 +217,7 @@ public class MyProfileTabFragment extends Fragment {
                     if (actionId == EditorInfo.IME_ACTION_DONE) {
                         mUser.setSelfDescription(tvDescription.getText().toString());
                         mUser.getCustomUser().saveInBackground();
-                        Toasty.custom(
-                                getContext(),
-                                (CharSequence) getString(R.string.description_updated),
-                                R.drawable.check,
-                                R.color.prussian_blue,
-                                Toast.LENGTH_SHORT,
-                                true,
-                                true
-                                )
-                                .show();
+
                         return false;   // This makes the keyboard hide
                     }
                     return false;
@@ -265,16 +255,6 @@ public class MyProfileTabFragment extends Fragment {
                 } else {
                     mUser.getCustomUser().setUsername(username);
                     mUser.getCustomUser().saveInBackground();
-                    Toasty.custom(
-                            getContext(),
-                            (CharSequence) getString(R.string.username_updated),
-                            R.drawable.check,
-                            R.color.prussian_blue,
-                            Toast.LENGTH_SHORT,
-                            true,
-                            true
-                            )
-                            .show();
                 }
             }
         });
@@ -314,16 +294,6 @@ public class MyProfileTabFragment extends Fragment {
                     Date birthDate = new Date(year - 1900, month, dayOfMonth, 0, 0, 0);
                     mUser.setBirthdate(birthDate);
                     mUser.getCustomUser().saveInBackground();
-                    Toasty.custom(
-                            getContext(),
-                            (CharSequence) getString(R.string.birthdate_updated),
-                            R.drawable.check,
-                            R.color.prussian_blue,
-                            Toast.LENGTH_SHORT,
-                            true,
-                            true
-                            )
-                            .show();
                 }
             }
         };
@@ -402,6 +372,12 @@ public class MyProfileTabFragment extends Fragment {
                     if (e != null) {
                         Log.e(TAG, "Error: " + e.getMessage());
                         Toast.makeText(getContext(), "Could not change the profile picture", Toast.LENGTH_SHORT).show();
+                        Toasty.normal(
+                            getContext(),
+                            R.string.profile_pic_error,
+                            Toast.LENGTH_SHORT
+                            )
+                            .show();
                         return;
                     }
                     Glide.with(getContext())
@@ -409,16 +385,6 @@ public class MyProfileTabFragment extends Fragment {
                             .centerCrop()
                             .transform(new CircleCrop())
                             .into(mIvProfilePicture);
-                    Toasty.custom(
-                        getContext(),
-                        (CharSequence) getString(R.string.profile_pic_updated),
-                        R.drawable.check,
-                        R.color.prussian_blue,
-                        Toast.LENGTH_SHORT,
-                        true,
-                        true
-                        )
-                        .show();
                 }
             });
         }
@@ -685,16 +651,6 @@ public class MyProfileTabFragment extends Fragment {
                     userLanguages.saveInBackground();
                 }
 
-                Toasty.custom(
-                    getContext(),
-                    (CharSequence) getString(R.string.language_added),
-                    R.drawable.add,
-                    R.color.prussian_blue,
-                    Toast.LENGTH_SHORT,
-                    true,
-                    true
-                    )
-                    .show();
                 // Reload the languages lists
                 setLanguages();
             }
@@ -738,17 +694,6 @@ public class MyProfileTabFragment extends Fragment {
                         }
                     }
                 }
-
-                Toasty.custom(
-                        getContext(),
-                        (CharSequence) getString(R.string.language_deleted),
-                        R.drawable.delete,
-                        R.color.prussian_blue,
-                        Toast.LENGTH_SHORT,
-                        true,
-                        true
-                        )
-                        .show();
 
                 // Reload the languages lists
                 setLanguages();

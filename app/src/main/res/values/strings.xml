@@ -489,4 +489,5 @@
     <string name="empty_message">Message can\'t be empty</string>
     <string name="user_not_found">Could not found this user</string>
     <string name="find_users">Find Users</string>
+    <string name="profile_pic_error">Could not update profile picture</string>
 </resources>

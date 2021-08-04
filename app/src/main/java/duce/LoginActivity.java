@@ -64,14 +64,10 @@ public class LoginActivity extends AppCompatActivity {
             public void done(ParseUser user, ParseException e) {
                 if (e != null) {
                     Log.e(TAG, "Issue with login", e);
-                    Toasty.custom(
+                    Toasty.normal(
                         LoginActivity.this,
-                        (CharSequence) getString(R.string.incorrect_credentials),
-                        android.R.drawable.ic_menu_close_clear_cancel,
-                        R.color.imperial_red,
-                        Toast.LENGTH_SHORT,
-                        true,
-                        true
+                        R.string.incorrect_credentials,
+                        Toast.LENGTH_SHORT
                         )
                         .show();
                     return;
@@ -79,17 +75,6 @@ public class LoginActivity extends AppCompatActivity {
                 CustomUser mUser = new CustomUser(ParseUser.getCurrentUser());
                 mUser.setOnline(true);
                 mUser.getCustomUser().saveInBackground();
-
-                Toasty.custom(
-                    LoginActivity.this,
-                    (CharSequence) getString(R.string.login_welcome) + " " + mUser.getUsername(),
-                    R.drawable.person_outline,
-                    R.color.celadon_blue,
-                    Toast.LENGTH_SHORT,
-                    false,
-                    true
-                    )
-                    .show();
 
                 Intent toMainActivity = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(toMainActivity);

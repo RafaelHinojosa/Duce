@@ -184,16 +184,6 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ViewHolder> 
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 ChatsFragment.deleteChat(message.getChatsId(), position);
                                 deleteItem(position);
-                                Toasty.custom(
-                                    mContext,
-                                    R.string.conversation_deleted,
-                                    R.drawable.delete,
-                                    R.color.teal_700,
-                                    Toast.LENGTH_SHORT,
-                                    true,
-                                    true
-                                    )
-                                    .show();
                             }
                         })
                         .setNegativeButton(R.string.cancel, null).show();

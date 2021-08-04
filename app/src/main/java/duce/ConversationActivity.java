@@ -112,19 +112,6 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
             @Override
             public void onClick(View v) {
                 String description = mEtCompose.getText().toString();
-                if (isBlank(description)) {
-                    Toasty.custom(
-                        ConversationActivity.this,
-                        (CharSequence) getString(R.string.empty_message),
-                        android.R.drawable.ic_menu_close_clear_cancel,
-                        R.color.imperial_red,
-                        Toast.LENGTH_SHORT,
-                        true,
-                        true
-                        )
-                        .show();
-                    return;
-                }
                 // The original for me the sender
                 uploadMessage("me", description);
                 // The copy for the receiver
@@ -395,27 +382,8 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     // Extract data put in the interface in the Settings Dialog
     @Override
     public void onFinishSettingsDialog(String language) {
-        Toasty.custom(
-            ConversationActivity.this,
-            (CharSequence) getString(R.string.language_changed) + language,
-            R.drawable.translate,
-            R.color.receiver_blue,
-            Toast.LENGTH_SHORT,
-            true,
-            true
-            )
-            .show();
         mScrollListener.resetState();
         updateConversationLanguage(language);
-    }
-
-    public boolean isBlank(String word) {
-        for (int i = 0; i < word.length(); i++) {
-            if (word.charAt(i) != ' ') {
-                return false;
-            }
-        }
-        return true;
     }
 
     public void getTranslateService() {

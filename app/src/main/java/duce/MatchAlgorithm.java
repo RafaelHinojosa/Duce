@@ -101,16 +101,7 @@ public class MatchAlgorithm extends AppCompatActivity {
 
                         Intent intent = new Intent(MatchAlgorithm.this, MainActivity.class);
                         intent.putExtra("user", Parcels.wrap(customUser.getCustomUser()));
-                        Toasty.custom(
-                            MatchAlgorithm.this,
-                            (CharSequence) customUser.getUsername() + " " + getString(R.string.profile),
-                            R.drawable.person_outline,
-                            R.color.prussian_blue,
-                            Toast.LENGTH_SHORT,
-                            true,
-                            true
-                            )
-                            .show();
+
                         startActivity(intent);
                     }
                 }
@@ -469,13 +460,7 @@ public class MatchAlgorithm extends AppCompatActivity {
 
         Intent toMessages = new Intent(MatchAlgorithm.this, ConversationActivity.class);
         toMessages.putExtra("conversation", Parcels.wrap(message));
-        StyleableToast.makeText(
-            MatchAlgorithm.this,
-            customUser.getUsername() + " " + getString(R.string.conversation),
-            Toast.LENGTH_SHORT,
-            R.style.to_conversation
-            )
-            .show();
+
         startActivity(toMessages);
     }
 }
