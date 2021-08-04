@@ -59,6 +59,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     private TextView mTvUsername;
     private ImageButton mBtnSettings;
     private RecyclerView mRvMessages;
+    private EndlessRecyclerViewScrollListener mScrollListener;
     private EditText mEtCompose;
     private com.google.android.material.floatingactionbutton.FloatingActionButton fabSend;
 
@@ -96,6 +97,17 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         linearLayoutManager.setStackFromEnd(true);
         mRvMessages.setLayoutManager(linearLayoutManager);
 
+        mScrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager,
+                EndlessRecyclerViewScrollListener.ScrollDirection.UP) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+                int skipper = mAdapter.getItemCount();
+                getMessages(skipper, false);
+            }
+        };
+
+        mRvMessages.addOnScrollListener(mScrollListener);
+
         fabSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,7 +143,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
 
         bind();
         setTargetLanguage();
-        getMessages();
+        getMessages(0, false);
         setLiveMessages();
         getTranslateService();
     }
@@ -166,10 +178,11 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         });
     }
 
-    public void getMessages() {
+    public void getMessages(int skipper, boolean translate) {
         ParseQuery<Messages> messagesQuery = ParseQuery.getQuery("Messages");
         messagesQuery.whereEqualTo(Messages.CHATS_ID, mConversation.getChatsId());
         messagesQuery.whereEqualTo(Messages.OWNER_USER, ParseUser.getCurrentUser());
+        messagesQuery.setSkip(skipper);
         messagesQuery.setLimit(MAX_MESSAGES_TO_SHOW);
         messagesQuery.orderByDescending("createdAt");
 
@@ -180,11 +193,16 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
                     Log.d(TAG, "Error: " + e);
                     return;
                 }
+
                 if (messages.size() > 0) {
-                    mMessages.clear();
+                    if (translate) {
+                        mMessages.clear();
+                        mAdapter.notifyDataSetChanged();
+                    } else {
+                        mRvMessages.smoothScrollToPosition(0);
+                    }
                     mMessages.addAll(messages);
                     mAdapter.notifyDataSetChanged();
-                    mRvMessages.scrollToPosition(0);
                 }
             }
         });
@@ -262,7 +280,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
                                 // Update conversation's language
                                 chat.setLanguage(targetLanguage);
                                 chat.saveInBackground();
-                                getMessages();
+                                getMessages(0, true);
                                 Log.i(TAG, "Language code of this conversation is now: " + languageCode);
                             }
                         }
@@ -387,6 +405,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
             true
             )
             .show();
+        mScrollListener.resetState();
         updateConversationLanguage(language);
     }
 

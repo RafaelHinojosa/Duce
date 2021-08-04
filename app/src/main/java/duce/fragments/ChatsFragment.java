@@ -102,9 +102,10 @@ public class ChatsFragment extends Fragment {
         mRvChats.setAdapter(mChatsAdapter);
         mLoadChats = true;
 
-        mScrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+        mScrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager,
+            EndlessRecyclerViewScrollListener.ScrollDirection.DOWN) {
             @Override
-            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+            public void onLoadMore(int page, int totalItemsCount) {
                 int skipper = mChatsAdapter.getItemCount();
                 if (mLoadChats) {
                     getLastMessages(skipper, false);
