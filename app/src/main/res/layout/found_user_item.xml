@@ -46,7 +46,8 @@
         android:backgroundTint="@color/white"
         android:clickable="true"
         android:src="@drawable/message"
-        app:tint="@color/teal_700" />
+        app:tint="@color/teal_700"
+        />
 
     <!-- My Languages -->
     <TextView

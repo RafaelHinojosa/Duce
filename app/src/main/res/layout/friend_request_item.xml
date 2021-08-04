@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <!-- Profile Picture -->
+    <ImageView
+        android:id="@+id/ivProfilePicture"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="10dp"
+        tools:srcCompat="@tools:sample/avatars"
+        />
+
+    <!-- Username -->
+    <TextView
+        android:id="@+id/tvUsername"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/ivProfilePicture"
+        android:layout_marginStart="5dp"
+        android:hint="@string/username_sample_1"
+        android:textSize="18dp"
+        android:textColor="@color/rich_black_fogra_29"
+        android:fontFamily="sans-serif-light"
+        android:textStyle="bold"
+        />
+
+    <!-- Accept Request -->
+    <ImageButton
+        android:id="@+id/btnAccept"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/tvUsername"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="10dp"
+        android:backgroundTint="@color/white"
+        app:tint="@color/prussian_blue"
+        android:clickable="true"
+        android:src="@drawable/check"
+        />
+
+    <!-- Reject Request -->
+    <ImageButton
+        android:id="@+id/btnReject"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/btnAccept"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="10dp"
+        android:backgroundTint="@color/white"
+        app:tint="@color/prussian_blue"
+        android:clickable="true"
+        android:src="@drawable/reject"
+        />
+
+    <!-- Conversation Divider -->
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/ivProfilePicture"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="?android:attr/listDivider"
+        />
+
+</RelativeLayout>
