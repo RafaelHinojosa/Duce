@@ -44,6 +44,7 @@ import java.util.List;
 
 import bolts.Task;
 import duce.ConversationActivity;
+import duce.EndlessRecyclerViewScrollListener;
 import duce.LoginActivity;
 import duce.MainActivity;
 import duce.MatchAlgorithm;
@@ -65,6 +66,8 @@ public class ChatsFragment extends Fragment {
     private FloatingActionButton mBtnMatch;
     private ChatsAdapter mChatsAdapter;
     protected SwipeRefreshLayout mSwipeContainer;
+    private EndlessRecyclerViewScrollListener mScrollListener;
+    private boolean mLoadChats;
 
     public static ChatsFragment newInstance() {
         return new ChatsFragment();
@@ -90,19 +93,35 @@ public class ChatsFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstance) {
         super.onViewCreated(view, savedInstance);
 
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+
         mLastMessages = new ArrayList<>();
         mChatsAdapter = new ChatsAdapter(getContext(), mLastMessages);
-        mRvChats.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRvChats.setLayoutManager(linearLayoutManager);
         mBtnMatch = view.findViewById(R.id.btnMatchGen);
         mRvChats.setAdapter(mChatsAdapter);
+        mLoadChats = true;
+
+        mScrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                int skipper = mChatsAdapter.getItemCount();
+                if (mLoadChats) {
+                    getLastMessages(skipper, false);
+                }
+            }
+        };
+
+        mRvChats.addOnScrollListener(mScrollListener);
 
         mSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getLastMessages(true);
+                getLastMessages(0, true);
                 mSwipeContainer.setRefreshing(false);
             }
         });
+
         mSwipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
@@ -120,21 +139,23 @@ public class ChatsFragment extends Fragment {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    String text = textView.getText().toString();
-                    getSearchedChats(text);
+                    mLoadChats = false;
+                    String search = textView.getText().toString();
+                    getSearchedChats(search);
                 }
                 return false;
             }
         });
 
-        getLastMessages(false);
+        getLastMessages(0, false);
         setLiveChats();
     }
 
     // Select the last messages from conversations where the user appears
-    public void getLastMessages(boolean refreshChats) {
+    public void getLastMessages(int skipper, boolean refreshChats) {
         ParseQuery<Messages> mainQuery = queryMyMessages();
         mainQuery.addDescendingOrder(Messages.CREATED_AT);
+        mainQuery.setSkip(skipper);
         mainQuery.setLimit(20);
 
         mainQuery.findInBackground(new FindCallback<Messages>() {
@@ -145,12 +166,13 @@ public class ChatsFragment extends Fragment {
                 }
                 Log.i(TAG, String.valueOf(messages.size()));
                 for (Messages message : messages) {
-                    Log.i(TAG, String.valueOf(message));
+                    Log.i(TAG, String.valueOf(message) + " mensajes");
                 }
                 if (refreshChats) {
                     mLastMessages.clear();
                     mChatsAdapter.clear();
                     mChatsAdapter.addAll(messages);
+                    mScrollListener.resetState();
                 } else {
                     mLastMessages.addAll(messages);
                     mChatsAdapter.notifyDataSetChanged();
@@ -180,7 +202,7 @@ public class ChatsFragment extends Fragment {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    getLastMessages(true);
+                    getLastMessages(0, true);
                 }
             });
         });
@@ -246,8 +268,12 @@ public class ChatsFragment extends Fragment {
                 for (Messages message : messages) {
                     Log.i(TAG, message.getDescription());
                 }
+
+                mLastMessages.clear();
                 mChatsAdapter.clear();
                 mChatsAdapter.addAll(messages);
+                mScrollListener.resetState();
+
                 if (messages.size() == 0) {
                     Toasty.normal(
                         getContext(),
