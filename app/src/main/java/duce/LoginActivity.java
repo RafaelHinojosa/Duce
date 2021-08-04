@@ -11,11 +11,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.duce.R;
 import com.duce.databinding.LoginActivityBinding;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
+
+import org.joda.time.Seconds;
+
+import java.util.concurrent.TimeUnit;
 
 import duce.models.CustomUser;
 import es.dmoral.toasty.Toasty;

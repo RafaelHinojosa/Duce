@@ -63,4 +63,16 @@
         android:backgroundTint="@color/receiver_blue"
         />
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/avLanguagesPeople"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_below="@+id/btnLogIn"
+        android:layout_marginTop="114dp"
+        android:visibility="visible"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/languages_people_lottie"
+        />
+
 </RelativeLayout>

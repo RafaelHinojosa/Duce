@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.duce.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -44,6 +45,7 @@ public class FinderFragment extends Fragment {
 
     private List<CustomUser> mUsers = new ArrayList<>();
     private EditText mEtSearch;
+    private LottieAnimationView mAvWorldSpinning;
     private RecyclerView mRvUsers;
     private FoundUsersAdapter mUsersAdapter;
 
@@ -59,6 +61,7 @@ public class FinderFragment extends Fragment {
         View view = inflater.inflate(finder_fragment, container, false);
 
         mEtSearch = view.findViewById(R.id.etSearch);
+        mAvWorldSpinning = view.findViewById(R.id.avWorldSpinning);
         mRvUsers = view.findViewById(R.id.rvUsers);
 
         return view;
@@ -76,6 +79,7 @@ public class FinderFragment extends Fragment {
         mEtSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
+                mAvWorldSpinning.setVisibility(View.INVISIBLE);
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     String text = textView.getText().toString();
                     getSearchedUsers(text);
