@@ -2,14 +2,12 @@ package duce;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
-import android.widget.Toast;
 
 import com.duce.R;
 import com.parse.FindCallback;
@@ -40,8 +38,6 @@ import duce.models.MatchingUser;
 import duce.models.Messages;
 import duce.models.UserChats;
 import duce.models.UserLanguages;
-import es.dmoral.toasty.Toasty;
-import io.github.muddz.styleabletoast.StyleableToast;
 
 public class MatchAlgorithm extends AppCompatActivity {
 
@@ -103,6 +99,7 @@ public class MatchAlgorithm extends AppCompatActivity {
                         intent.putExtra("user", Parcels.wrap(customUser.getCustomUser()));
 
                         startActivity(intent);
+                        overridePendingTransition(R.anim.slide_in_to_down, R.anim.slide_out_to_down);
                     }
                 }
             }
@@ -460,7 +457,13 @@ public class MatchAlgorithm extends AppCompatActivity {
 
         Intent toMessages = new Intent(MatchAlgorithm.this, ConversationActivity.class);
         toMessages.putExtra("conversation", Parcels.wrap(message));
-
         startActivity(toMessages);
+        overridePendingTransition(R.anim.slide_in_to_up, R.anim.slide_out_to_up);
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }

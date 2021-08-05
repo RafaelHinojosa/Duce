@@ -272,4 +272,10 @@ public class SignupActivity extends AppCompatActivity {
         Intent toMainActivity = new Intent(SignupActivity.this, MainActivity.class);
         startActivity(toMainActivity);
     }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
 }

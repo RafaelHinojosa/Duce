@@ -133,6 +133,7 @@ public class ChatsFragment extends Fragment {
             public void onClick(View v) {
                 Intent toMatch = new Intent(getContext(), MatchAlgorithm.class);
                 startActivity(toMatch);
+                getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
 

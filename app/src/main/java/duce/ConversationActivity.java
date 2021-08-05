@@ -415,4 +415,10 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     public static String getTargetLanguage() {
         return mTargetLanguage;
     }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
 }

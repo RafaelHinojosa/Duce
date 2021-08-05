@@ -6,6 +6,8 @@
         parent="Theme.MaterialComponents.DayNight.DarkActionBar"
         >
 
+        <item name="android:windowActivityTransitions">true</item>
+
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/receiver_blue</item>
         <item name="colorPrimaryVariant">@color/prussian_blue</item>

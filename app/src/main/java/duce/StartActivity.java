@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.duce.R;
 import com.duce.databinding.StartActivityBinding;
 import com.parse.ParseUser;
 
@@ -37,6 +38,7 @@ public class StartActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent toLogIn = new Intent(StartActivity.this, LoginActivity.class);
                 startActivity(toLogIn);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
 
@@ -46,6 +48,7 @@ public class StartActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent toSignUp = new Intent(StartActivity.this, SignupActivity.class);
                 startActivity(toSignUp);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
     }

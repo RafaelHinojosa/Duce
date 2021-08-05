@@ -72,6 +72,7 @@
         android:visibility="visible"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
+        app:lottie_speed="1.5"
         app:lottie_rawRes="@raw/languages_people_lottie"
         />
 

@@ -193,6 +193,7 @@ public class MyProfileTabFragment extends Fragment {
                 return false;
             }
         });
+
         mEtSelfDescription.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView tvDescription, int actionId, KeyEvent event) {
@@ -205,6 +206,7 @@ public class MyProfileTabFragment extends Fragment {
                 return false;
             }
         });
+
         mIbEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -288,7 +290,7 @@ public class MyProfileTabFragment extends Fragment {
             age--;
         }
 
-        if (age < 0) {
+        if (age < 15) {
             return "Invalid birthdate";
         }
 
