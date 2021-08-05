@@ -36,7 +36,6 @@
         android:textSize="14dp"
         android:maxLines="10"
         android:textColor="@color/honeydew"
-        android:hint="@string/short_message_sample"
         />
 
     <ImageView

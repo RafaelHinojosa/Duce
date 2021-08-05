@@ -34,6 +34,7 @@ import java.util.Date;
 import java.util.List;
 
 import duce.ConversationActivity;
+import duce.MainActivity;
 import duce.fragments.ChatsFragment;
 import duce.models.CustomUser;
 import duce.models.Friends;
@@ -107,7 +108,14 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
         @Override
         public void onClick(View v) {
-            return;
+            int position = getAdapterPosition();
+            if (position != RecyclerView.NO_POSITION) {
+                CustomUser customUser = mFriendsUsers.get(position);
+
+                Intent intent = new Intent(mContext, MainActivity.class);
+                intent.putExtra("user", Parcels.wrap(customUser.getCustomUser()));
+                mContext.startActivity(intent);
+            }
         }
 
         @Override

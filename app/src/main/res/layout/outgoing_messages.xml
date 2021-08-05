@@ -25,7 +25,6 @@
         android:textSize="14dp"
         android:maxLines="10"
         android:textColor="@color/white"
-        android:hint="@string/short_message_sample"
         />
 
 </RelativeLayout>

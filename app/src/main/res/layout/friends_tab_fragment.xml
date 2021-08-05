@@ -7,12 +7,50 @@
     xmlns:tools="http://schemas.android.com/tools"
     >
 
+  <!-- Friend Requests with maxHeight -->
+  <androidx.constraintlayout.widget.ConstraintLayout
+      android:id="@+id/clRequests"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="15dp"
+      >
+
+    <TextView
+        android:id="@+id/tvRequestsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@+id/clRequests"
+        app:layout_constraintStart_toStartOf="@+id/clRequests"
+        app:layout_constraintBottom_toTopOf="@+id/rvRequests"
+        android:layout_marginStart="20dp"
+        android:textSize="18dp"
+        android:textColor="@color/rich_black_fogra_29"
+        android:fontFamily="sans-serif-light"
+        android:textStyle="bold"
+        android:hint="@string/requests_title"
+        android:visibility="gone"
+        />
+
+      <androidx.recyclerview.widget.RecyclerView
+          android:id="@+id/rvRequests"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:scrollbars="vertical"
+          app:layout_constrainedHeight="true"
+          app:layout_constraintBottom_toBottomOf="@+id/clRequests"
+          app:layout_constraintHeight_max="150dp"
+          android:visibility="gone"
+          >
+      </androidx.recyclerview.widget.RecyclerView>
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
   <!-- Friends -->
   <TextView
       android:id="@+id/tvFriendsTitle"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_alignParentTop="true"
+      android:layout_below="@+id/clRequests"
       android:layout_marginStart="20dp"
       android:layout_marginTop="20dp"
       android:textSize="18dp"
@@ -26,8 +64,10 @@
       android:id="@+id/rvFriends"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:layout_alignParentBottom="true"
       android:layout_below="@+id/tvFriendsTitle"
       >
   </androidx.recyclerview.widget.RecyclerView>
 
 </RelativeLayout>
+

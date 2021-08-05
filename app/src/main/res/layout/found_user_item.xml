@@ -5,57 +5,67 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="7dp"
-    android:paddingBottom="5dp"
     >
 
-    <!-- Profile Picture -->
-    <ImageView
-        android:id="@+id/ivProfilePicture"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_margin="15dp"
-        tools:srcCompat="@tools:sample/avatars"
-        />
-
-    <!-- Username -->
-    <TextView
-        android:id="@+id/tvUsername"
-        android:layout_width="180dp"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="45dp"
-        android:layout_toEndOf="@+id/ivProfilePicture"
-        android:layout_marginStart="10dp"
-        android:hint="@string/username_sample_1"
-        android:textSize="18dp"
-        android:textColor="@color/rich_black_fogra_29"
-        android:fontFamily="sans-serif-light"
-        android:textStyle="bold"
-        />
+        android:id="@+id/rlUser"
+        >
 
-    <!-- Message -->
-    <ImageButton
-        android:id="@+id/btnMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/tvUsername"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="35dp"
-        android:backgroundTint="@color/white"
-        android:clickable="true"
-        android:src="@drawable/message"
-        app:tint="@color/teal_700"
-        />
+        <!-- Profile Picture -->
+        <ImageView
+            android:id="@+id/ivProfilePicture"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="10dp"
+            tools:srcCompat="@tools:sample/avatars"
+            />
+
+        <!-- Username -->
+        <TextView
+            android:id="@+id/tvUsername"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/ivProfilePicture"
+            android:layout_marginStart="5dp"
+            android:hint="@string/username_sample_1"
+            android:textSize="18dp"
+            android:textColor="@color/rich_black_fogra_29"
+            android:fontFamily="sans-serif-light"
+            android:textStyle="bold"
+            />
+
+        <!-- Message -->
+        <ImageButton
+            android:id="@+id/btnMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="15dp"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="35dp"
+            android:backgroundTint="@color/white"
+            android:clickable="true"
+            android:src="@drawable/message"
+            app:tint="@color/teal_700"
+            />
+
+    </RelativeLayout>
 
     <!-- My Languages -->
     <TextView
         android:id="@+id/tvMyLanguages"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ivProfilePicture"
-        android:layout_alignStart="@+id/ivProfilePicture"
+        android:layout_below="@+id/rlUser"
+        android:layout_marginStart="15dp"
         android:text="@string/my_languages"
         android:textColor="@color/rich_black_fogra_29"
         android:fontFamily="sans-serif-light"
@@ -71,6 +81,7 @@
         android:layout_below="@id/tvMyLanguages"
         android:layout_alignStart="@+id/tvMyLanguages"
         android:layout_marginTop="5dp"
+        android:layout_marginBottom="15dp"
         android:orientation="vertical"
         android:scrollIndicators="bottom"
         />
@@ -91,7 +102,7 @@
         android:id="@+id/tvMyInterests"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ivProfilePicture"
+        android:layout_below="@+id/rlUser"
         android:layout_alignStart="@+id/divider"
         android:layout_marginStart="10dp"
         android:text="@string/my_interests"
@@ -109,8 +120,20 @@
         android:layout_below="@id/tvMyInterests"
         android:layout_alignStart="@+id/tvMyInterests"
         android:layout_marginTop="5dp"
+        android:layout_marginBottom="15dp"
         android:orientation="vertical"
         android:scrollIndicators="bottom"
+        />
+
+    <!-- Found User Divider -->
+    <View
+        android:id="@+id/lastDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="?android:attr/listDivider"
         />
 
 </RelativeLayout>

@@ -25,9 +25,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 import duce.adapters.FriendsAdapter;
+import duce.adapters.RequestsAdapter;
 import duce.models.CustomUser;
 import duce.models.Friends;
 import duce.models.Messages;
+import kotlin.io.LineReader;
 
 import static com.duce.R.layout.my_profile_tab_fragment;
 
@@ -37,10 +39,15 @@ public class FriendsTabFragment extends Fragment {
 
     private CustomUser mUser;
     private List<CustomUser> mFriendsUsers;
+    private List<CustomUser> mRequestsUsers;
     private List<Friends> mFriends;
+    private List<Friends> mRequests;
     private FriendsAdapter mFriendsAdapter;
+    private RequestsAdapter mRequestsAdapter;
     private RecyclerView mRvFriends;
+    private RecyclerView mRvRequests;
     private TextView mTvFriendsTitle;
+    private TextView mTvRequestsTitle;
 
     public static FriendsTabFragment newInstance() {
         FriendsTabFragment fragment = new FriendsTabFragment();
@@ -72,13 +79,35 @@ public class FriendsTabFragment extends Fragment {
 
         mRvFriends.setAdapter(mFriendsAdapter);
 
+        if (mUser.getObjectId().equals(ParseUser.getCurrentUser().getObjectId())) {
+            mTvRequestsTitle = view.findViewById(R.id.tvRequestsTitle);
+            mRvRequests = view.findViewById(R.id.rvRequests);
+            mRvRequests.setLayoutManager(new LinearLayoutManager(getContext()));
+
+            mTvRequestsTitle.setText(R.string.requests_title);
+            mTvRequestsTitle.setVisibility(View.VISIBLE);
+            mRvRequests.setVisibility(View.VISIBLE);
+
+            mRequests = new ArrayList<>();
+            mRequestsUsers = new ArrayList<>();
+            mRequestsAdapter = new RequestsAdapter(getContext(), mRequestsUsers, mUser);
+
+            mRvRequests.setAdapter(mRequestsAdapter);
+
+            getRequests();
+        }
+
         getFriends(0);
+    }
+
+    public void setUpRequests(View view) {
     }
 
     public void getFriends(int skipper) {
         ParseQuery<Friends> friendsQuery = getFriendsQuery();
         friendsQuery.include(Friends.USER_ONE);
         friendsQuery.include(Friends.USER_TWO);
+        friendsQuery.whereEqualTo(Friends.ARE_FRIENDS, true);
         friendsQuery.setSkip(skipper);
         friendsQuery.setLimit(50);
 
@@ -100,15 +129,43 @@ public class FriendsTabFragment extends Fragment {
                     friendOne = new CustomUser(friend.getUserOne());
                     friendTwo = new CustomUser(friend.getUserTwo());
 
-                    if (friend.areFriends()) {
-                        if (!friendOne.getObjectId().equals(mUser.getObjectId())) {
-                            mFriendsUsers.add(friendOne);
-                        } else {
-                            mFriendsUsers.add(friendTwo);
-                        }
-                        mFriendsAdapter.notifyDataSetChanged();
+                    if (!friendOne.getObjectId().equals(mUser.getObjectId())) {
+                        mFriendsUsers.add(friendOne);
+                    } else {
+                        mFriendsUsers.add(friendTwo);
                     }
-                    // Todo: If not friends, then save it in friend requests
+                    mFriendsAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+    }
+
+    // Get the requests made to current User.
+    // User One is the sender of the request and User Two is the current User and receiver
+    public void getRequests() {
+        ParseQuery<Friends> requestsQuery = ParseQuery.getQuery("Friends");
+        requestsQuery.whereEqualTo(Friends.USER_TWO, mUser.getCustomUser());
+        requestsQuery.include(Friends.USER_ONE);
+        requestsQuery.whereEqualTo(Friends.ARE_FRIENDS, false);
+
+        requestsQuery.findInBackground(new FindCallback<Friends>() {
+            @Override
+            public void done(List<Friends> requests, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error: " +  e.getMessage());
+                    return;
+                }
+
+                Log.i(TAG, String.valueOf(requests.size()));
+                mRequests.addAll(requests);
+
+                CustomUser sender;
+                for (Friends request : requests) {
+                    Log.i(TAG, request.getUserOne().getUsername());
+                    sender = new CustomUser(request.getUserOne());
+
+                    mRequestsUsers.add(sender);
+                    mRequestsAdapter.notifyDataSetChanged();
                 }
             }
         });
