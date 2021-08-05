@@ -1,75 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    >
 
-  <!-- Title -->
+  <!-- Friends -->
   <TextView
       android:id="@+id/tvFriendsTitle"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_centerHorizontal="true"
       android:layout_alignParentTop="true"
+      android:layout_marginStart="20dp"
       android:layout_marginTop="20dp"
+      android:textSize="18dp"
+      android:textColor="@color/rich_black_fogra_29"
+      android:fontFamily="sans-serif-light"
+      android:textStyle="bold"
       android:hint="@string/friends_title"
       />
 
-  <!-- Recycler View for friends
   <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/rvFriends"
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:layout_marginTop="50dp"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/tvFriendsTitle"
       >
   </androidx.recyclerview.widget.RecyclerView>
-  -->
-
-    <RelativeLayout
-        android:id="@+id/rlMessiItem"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvFriendsTitle"
-        android:layout_marginTop="30dp"
-        >
-
-        <!-- Profile Picture -->
-        <ImageView
-            android:id="@+id/ivProfilePicture"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginBottom="15dp"
-            app:srcCompat="@drawable/messi"
-            tools:srcCompat="@drawable/messi"
-            />
-
-        <TextView
-            android:id="@+id/tvUsername"
-            android:layout_width="108dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="27dp"
-            android:layout_marginTop="40dp"
-            android:layout_toEndOf="@+id/ivProfilePicture"
-            android:hint="@string/username_sample_2"
-            android:textSize="20dp"
-            />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btnChat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="43dp"
-            android:layout_marginTop="25dp"
-            android:layout_toEndOf="@+id/tvUsername"
-            android:clickable="true"
-            app:srcCompat="@drawable/message" />
-
-    </RelativeLayout>
 
 </RelativeLayout>

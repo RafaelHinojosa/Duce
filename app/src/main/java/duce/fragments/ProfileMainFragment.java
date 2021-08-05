@@ -73,8 +73,8 @@ public class ProfileMainFragment extends Fragment {
 
         mFriendsTab = new FriendsTabFragment();
         Bundle friendsBundle = new Bundle();
-        friendsBundle.putParcelable("user", Parcels.wrap(mUser.getCustomUser()));
-        mMyProfileTab.setArguments(friendsBundle);
+        friendsBundle.putParcelable("friend", Parcels.wrap(mUser.getCustomUser()));
+        mFriendsTab.setArguments(friendsBundle);
         adapter.addFragment(mFriendsTab, "Friends");
 
         viewPager.setAdapter(adapter);

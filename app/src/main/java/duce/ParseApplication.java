@@ -10,6 +10,7 @@ import java.net.URISyntaxException;
 
 import duce.models.Chats;
 import duce.models.Countries;
+import duce.models.Friends;
 import duce.models.Languages;
 import duce.models.Messages;
 import duce.models.UserChats;
@@ -28,6 +29,7 @@ public class ParseApplication extends Application {
         ParseObject.registerSubclass(Messages.class);
         ParseObject.registerSubclass(Countries.class);
         ParseObject.registerSubclass(UserChats.class);
+        ParseObject.registerSubclass(Friends.class);
 
         // Http library that handles HTTP requests
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
