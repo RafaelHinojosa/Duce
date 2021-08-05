@@ -38,7 +38,7 @@
           android:scrollbars="vertical"
           app:layout_constrainedHeight="true"
           app:layout_constraintBottom_toBottomOf="@+id/clRequests"
-          app:layout_constraintHeight_max="150dp"
+          app:layout_constraintHeight_max="200dp"
           android:visibility="gone"
           >
       </androidx.recyclerview.widget.RecyclerView>

@@ -90,7 +90,7 @@ public class FriendsTabFragment extends Fragment {
 
             mRequests = new ArrayList<>();
             mRequestsUsers = new ArrayList<>();
-            mRequestsAdapter = new RequestsAdapter(getContext(), mRequestsUsers, mUser);
+            mRequestsAdapter = new RequestsAdapter(getContext(), mRequestsUsers, mRequests, mUser);
 
             mRvRequests.setAdapter(mRequestsAdapter);
 
@@ -98,9 +98,6 @@ public class FriendsTabFragment extends Fragment {
         }
 
         getFriends(0);
-    }
-
-    public void setUpRequests(View view) {
     }
 
     public void getFriends(int skipper) {
@@ -157,7 +154,6 @@ public class FriendsTabFragment extends Fragment {
                 }
 
                 Log.i(TAG, String.valueOf(requests.size()));
-                mRequests.addAll(requests);
 
                 CustomUser sender;
                 for (Friends request : requests) {
@@ -165,6 +161,7 @@ public class FriendsTabFragment extends Fragment {
                     sender = new CustomUser(request.getUserOne());
 
                     mRequestsUsers.add(sender);
+                    mRequests.add(request);
                     mRequestsAdapter.notifyDataSetChanged();
                 }
             }
@@ -186,6 +183,5 @@ public class FriendsTabFragment extends Fragment {
 
         return mainQuery;
     }
-
 }
 

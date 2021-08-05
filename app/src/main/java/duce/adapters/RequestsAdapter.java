@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.duce.databinding.FriendRequestItemBinding;
+import com.parse.ParseQuery;
 
 import org.jetbrains.annotations.NotNull;
 import org.parceler.Parcels;
@@ -22,7 +23,9 @@ import org.parceler.Parcels;
 import java.util.List;
 
 import duce.MainActivity;
+import duce.fragments.FriendsTabFragment;
 import duce.models.CustomUser;
+import duce.models.Friends;
 
 public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHolder> {
 
@@ -32,10 +35,13 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
     private FriendRequestItemBinding mBinding;
     private final Context mContext;
     List<CustomUser> mRequestsUsers;
+    List<Friends> mRequests;
 
-    public RequestsAdapter(Context context, List<CustomUser> requests, CustomUser user) {
+    public RequestsAdapter(Context context, List<CustomUser> requestsUsers,
+                           List<Friends> requests, CustomUser user) {
         this.mContext = context;
-        this.mRequestsUsers = requests;
+        this.mRequestsUsers = requestsUsers;
+        this.mRequests = requests;
         this.mUser = user;
     }
 
@@ -68,16 +74,16 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
 
         private ImageView mIvProfilePicture;
         private TextView mTvUsername;
-        private ImageButton mAccept;
-        private ImageButton mReject;
+        private ImageButton mBtnAccept;
+        private ImageButton mBtnReject;
 
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
 
             mIvProfilePicture = mBinding.ivProfilePicture;
             mTvUsername = mBinding.tvUsername;
-            mAccept = mBinding.btnAccept;
-            mReject = mBinding.btnReject;
+            mBtnAccept = mBinding.btnAccept;
+            mBtnReject = mBinding.btnReject;
 
             itemView.setOnClickListener(this);
         }
@@ -89,6 +95,36 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
                     .transform(new CircleCrop())
                     .into(mIvProfilePicture);
             mTvUsername.setText(sender.getUsername());
+
+            mBtnAccept.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        Friends request = mRequests.get(position);
+                        mRequestsUsers.remove(position);
+                        notifyDataSetChanged();
+
+                        request.setAreFriends(true);
+                        request.saveInBackground();
+                    }
+                }
+            });
+
+            mBtnReject.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        Friends request = mRequests.get(position);
+
+                        mRequestsUsers.remove(position);
+                        notifyDataSetChanged();
+
+                        request.deleteInBackground();
+                    }
+                }
+            });
         }
 
         @Override
