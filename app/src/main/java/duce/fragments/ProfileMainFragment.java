@@ -35,7 +35,9 @@ public class ProfileMainFragment extends Fragment {
 
     private CustomUser mUser;
     private Fragment mMyProfileTab;
+    private Fragment mOtherProfileTab;
     private Fragment mFriendsTab;
+    private boolean isMe;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,12 @@ public class ProfileMainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         assert getArguments() != null;
         mUser = new CustomUser(Parcels.unwrap(getArguments().getParcelable("user")));
+        if (mUser.getObjectId().equals(ParseUser.getCurrentUser().getObjectId())) {
+            isMe = true;
+        } else {
+            isMe = false;
+        }
+
         Log.i(TAG, mUser.getObjectId());
         getCompleteUser();
 
@@ -65,11 +73,18 @@ public class ProfileMainFragment extends Fragment {
     private void setupViewPager(ViewPager viewPager) {
         ProfileTabsAdapter adapter = new ProfileTabsAdapter(getChildFragmentManager());
 
-        mMyProfileTab = new MyProfileTabFragment();
-        Bundle myProfileBundle = new Bundle();
-        myProfileBundle.putParcelable("user", Parcels.wrap(mUser.getCustomUser()));
-        mMyProfileTab.setArguments(myProfileBundle);
-        adapter.addFragment(mMyProfileTab, "Profile");
+        Bundle profileBundle = new Bundle();
+        profileBundle.putParcelable("user", Parcels.wrap(mUser.getCustomUser()));
+
+        if (isMe) {
+            mMyProfileTab = new MyProfileTabFragment();
+            adapter.addFragment(mMyProfileTab, "Profile");
+            mMyProfileTab.setArguments(profileBundle);
+        } else {
+            mOtherProfileTab = new OtherProfileTabFragment();
+            adapter.addFragment(mOtherProfileTab, "Profile");
+            mOtherProfileTab.setArguments(profileBundle);
+        }
 
         mFriendsTab = new FriendsTabFragment();
         Bundle friendsBundle = new Bundle();

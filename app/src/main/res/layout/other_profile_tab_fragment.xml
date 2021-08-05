@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="duce.fragments.OtherProfileTabFragment"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <!-- Profile Picture -->
+        <ImageView
+            android:id="@+id/ivProfilePicture"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="70dp"
+            tools:srcCompat="@tools:sample/avatars"
+            />
+
+        <!-- Username -->
+        <TextView
+            android:id="@+id/tvUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ivProfilePicture"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:textAlignment="center"
+            android:textSize="18dp"
+            android:hint="@string/username_sample_1"
+            android:textColor="@color/rich_black_fogra_29"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-light"
+            />
+
+        <!-- Age -->
+        <TextView
+            android:id="@+id/tvAge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvUsername"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:textSize="14dp"
+            android:hint="@string/age_sample_1"
+            android:textColor="@color/rich_black_fogra_29"
+            />
+
+        <!-- Description -->
+        <TextView
+            android:id="@+id/tvDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvAge"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:maxLines="2"
+            android:textAlignment="center"
+            android:textSize="14dp"
+            android:hint="@string/description_sample"
+            android:textColor="@color/rich_black_fogra_29"
+            />
+
+        <!-- Friend -->
+        <Button
+            android:id="@+id/btnFriends"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/tvDescription"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="@color/baby_powder"
+            android:drawableLeft="@android:drawable/arrow_down_float"
+            android:drawableTint="@color/prussian_blue"
+            android:textColor="@color/prussian_blue"
+            android:text="@string/friends"
+            android:visibility="invisible"
+            />
+
+        <!-- Add Friend -->
+        <Button
+            android:id="@+id/btnAddFriend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/tvDescription"
+            android:layout_marginTop="15dp"
+            android:drawableLeft="@drawable/add_friend"
+            android:drawableTint="@color/white"
+            android:textColor="@color/baby_powder"
+            android:text="@string/add_friend"
+            android:visibility="invisible"
+            />
+
+        <!-- Cancel Request -->
+        <Button
+            android:id="@+id/btnCancelRequest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/tvDescription"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="@color/baby_powder"
+            android:drawableLeft="@drawable/cancel_friend_request"
+            android:drawableTint="@color/prussian_blue"
+            android:textColor="@color/prussian_blue"
+            android:text="@string/cancel"
+            android:visibility="invisible"
+            />
+
+        <RelativeLayout
+            android:id="@+id/rlActions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/tvDescription"
+            android:layout_marginTop="15dp"
+            android:visibility="invisible"
+            >
+
+            <!-- Accept Request -->
+            <Button
+                android:id="@+id/btnAcceptRequest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/check"
+                android:drawableTint="@color/baby_powder"
+                android:textColor="@color/baby_powder"
+                android:text="@string/accept"
+                />
+
+            <!-- Reject Request -->
+            <Button
+                android:id="@+id/btnRejectRequest"
+                android:layout_width="54dp"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/btnAcceptRequest"
+                android:layout_marginStart="5dp"
+                android:backgroundTint="@color/white"
+                android:drawableLeft="@drawable/reject"
+                android:drawableTint="@color/prussian_blue"
+                />
+
+        </RelativeLayout>
+
+        <!-- My Languages -->
+        <TextView
+            android:id="@+id/tvMyLanguages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btnAddFriend"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="25dp"
+            android:text="@string/my_languages"
+            android:textColor="@color/rich_black_fogra_29"
+            android:fontFamily="sans-serif-light"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            />
+
+        <!-- My Languages Layout -->
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/flMyLanguages"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvMyLanguages"
+            android:layout_alignStart="@+id/tvMyLanguages"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_marginEnd="30dp"
+            app:flexWrap="wrap"
+            app:alignContent="flex_start"
+            app:justifyContent="flex_start"
+            />
+
+        <!-- Language Interests -->
+        <TextView
+            android:id="@+id/tvMyInterests"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/flMyLanguages"
+            android:layout_marginTop="15dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="15dp"
+            android:textSize="18dp"
+            android:text="@string/my_interests"
+            android:textColor="@color/rich_black_fogra_29"
+            android:fontFamily="sans-serif-light"
+            android:textStyle="bold"
+            />
+
+        <!-- My Interests Layout -->
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/flMyInterests"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvMyInterests"
+            android:layout_alignStart="@+id/tvMyInterests"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="15dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            app:flexWrap="wrap"
+            app:alignContent="flex_start"
+            app:justifyContent="flex_start"
+            />
+
+    </RelativeLayout>
+
+</ScrollView>

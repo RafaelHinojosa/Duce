@@ -70,14 +70,10 @@ public class MyProfileTabFragment extends Fragment {
     public final static int PICK_PHOTO_CODE = 100;
     private final String photoFileName = "photo.png";
 
-    private boolean isMe;
     private ImageView mIvProfilePicture;
     private ImageButton mIbEditProfile;
-    private TextView mTvUsername;
     private EditText mEtUsername;
-    private TextView mTvAge;
     private EditText mEtAge;
-    private TextView mTvSelfDescription;
     private EditText mEtSelfDescription;
     private TextView mTvAddLanguage;
     private TextView mTvAddInterest;
@@ -116,35 +112,22 @@ public class MyProfileTabFragment extends Fragment {
         assert bundle != null;
         mUser = new CustomUser(Parcels.unwrap(bundle.getParcelable("user")));
 
-        isMe = mUser.getObjectId().equals(ParseUser.getCurrentUser().getObjectId());
-
         mIvProfilePicture = view.findViewById(R.id.ivProfilePicture);
         mLanSelector = new AlertDialog.Builder(getContext());
         mLanAdapter = new LanguagesAdapter();
         mLanSelected = "";
 
-        // The Current User enters to an edit mode
-        if (isMe) {
-            mIbEditProfile = view.findViewById(R.id.ibEditProfilePicture);
-            mEtUsername = view.findViewById(R.id.etUsername);
-            mEtAge = view.findViewById(R.id.etAge);
-            mEtSelfDescription = view.findViewById(R.id.etDescription);
+        mIbEditProfile = view.findViewById(R.id.ibEditProfilePicture);
+        mEtUsername = view.findViewById(R.id.etUsername);
+        mEtAge = view.findViewById(R.id.etAge);
+        mEtSelfDescription = view.findViewById(R.id.etDescription);
 
-            mIbEditProfile.setVisibility(View.VISIBLE);
-            mEtUsername.setVisibility(View.VISIBLE);
-            mEtAge.setVisibility(View.VISIBLE);
-            mEtSelfDescription.setVisibility(View.VISIBLE);
+        mIbEditProfile.setVisibility(View.VISIBLE);
+        mEtUsername.setVisibility(View.VISIBLE);
+        mEtAge.setVisibility(View.VISIBLE);
+        mEtSelfDescription.setVisibility(View.VISIBLE);
 
-            setAgeClickListener();
-        } else {
-            mTvUsername = view.findViewById(R.id.tvUsername);
-            mTvAge = view.findViewById(R.id.tvAge);
-            mTvSelfDescription = view.findViewById(R.id.tvDescription);
-
-            mTvUsername.setVisibility(View.VISIBLE);
-            mTvAge.setVisibility(View.VISIBLE);
-            mTvSelfDescription.setVisibility(View.VISIBLE);
-        }
+        setAgeClickListener();
 
         mFlMyLanguages = view.findViewById(R.id.flMyLanguages);
         mFlMyInterests = view.findViewById(R.id.flMyInterests);
@@ -191,49 +174,43 @@ public class MyProfileTabFragment extends Fragment {
             age = getAge(year, month, day);
         }
 
-        if (isMe) {
-            mEtUsername.setText(mUser.getUsername());
-            mEtAge.setText(age);
-            mEtSelfDescription.setText(mUser.getSelfDescription());
+        mEtUsername.setText(mUser.getUsername());
+        mEtAge.setText(age);
+        mEtSelfDescription.setText(mUser.getSelfDescription());
 
-            mEtSelfDescription.setImeOptions(EditorInfo.IME_ACTION_DONE);
-            mEtSelfDescription.setRawInputType(InputType.TYPE_CLASS_TEXT);
-            mEtSelfDescription.setMaxLines(2);
+        mEtSelfDescription.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        mEtSelfDescription.setRawInputType(InputType.TYPE_CLASS_TEXT);
+        mEtSelfDescription.setMaxLines(2);
 
-            mEtUsername.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                @Override
-                public boolean onEditorAction(TextView tvUsername, int actionId, KeyEvent event) {
-                    if (actionId == EditorInfo.IME_ACTION_DONE) {
-                        String username = tvUsername.getText().toString();
-                        updateUsername(username);
-                        return false;
-                    }
+        mEtUsername.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView tvUsername, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    String username = tvUsername.getText().toString();
+                    updateUsername(username);
                     return false;
                 }
-            });
-            mEtSelfDescription.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                @Override
-                public boolean onEditorAction(TextView tvDescription, int actionId, KeyEvent event) {
-                    if (actionId == EditorInfo.IME_ACTION_DONE) {
-                        mUser.setSelfDescription(tvDescription.getText().toString());
-                        mUser.getCustomUser().saveInBackground();
+                return false;
+            }
+        });
+        mEtSelfDescription.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView tvDescription, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    mUser.setSelfDescription(tvDescription.getText().toString());
+                    mUser.getCustomUser().saveInBackground();
 
-                        return false;   // This makes the keyboard hide
-                    }
-                    return false;
+                    return false;   // This makes the keyboard hide
                 }
-            });
-            mIbEditProfile.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onPickPhoto();
-                }
-            });
-        } else {
-            mTvUsername.setText(mUser.getUsername());
-            mTvAge.setText(age);
-            mTvSelfDescription.setText(mUser.getSelfDescription());
-        }
+                return false;
+            }
+        });
+        mIbEditProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onPickPhoto();
+            }
+        });
 
         setLanguages();
     }
@@ -410,12 +387,10 @@ public class MyProfileTabFragment extends Fragment {
         mFlMyLanguages.removeAllViews();
         mFlMyInterests.removeAllViews();
 
-        if (isMe) {
-            setAddLanguageTV();
-            setAddInterestTV();
-            setDeleteLanguageTV();
-            setDeleteInterestTV();
-        }
+        setAddLanguageTV();
+        setAddInterestTV();
+        setDeleteLanguageTV();
+        setDeleteInterestTV();
 
         ParseQuery<UserLanguages> userLanguagesQuery = ParseQuery.getQuery("UserLanguages");
         userLanguagesQuery.whereEqualTo("userId", mUser.getCustomUser());
