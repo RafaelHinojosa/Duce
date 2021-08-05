@@ -12,6 +12,7 @@ public class Friends extends ParseObject {
     public static final String USER_ONE = "userOne";
     public static final String USER_TWO = "userTwo";
     public static final String ARE_FRIENDS = "areFriends";
+    public static final String CREATED_AT = "createdAt";
 
     public ParseUser getUserOne() {
         return (ParseUser) getParseUser(USER_ONE);

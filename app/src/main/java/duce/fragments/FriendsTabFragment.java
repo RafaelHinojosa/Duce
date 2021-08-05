@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import duce.EndlessRecyclerViewScrollListener;
 import duce.adapters.FriendsAdapter;
 import duce.adapters.RequestsAdapter;
 import duce.models.CustomUser;
@@ -48,6 +50,8 @@ public class FriendsTabFragment extends Fragment {
     private RecyclerView mRvRequests;
     private TextView mTvFriendsTitle;
     private TextView mTvRequestsTitle;
+    private SwipeRefreshLayout mSwipeContainer;
+    private EndlessRecyclerViewScrollListener mScrollListener;
 
     public static FriendsTabFragment newInstance() {
         FriendsTabFragment fragment = new FriendsTabFragment();
@@ -70,11 +74,13 @@ public class FriendsTabFragment extends Fragment {
         mUser = new CustomUser(Parcels.unwrap(bundle.getParcelable("friend")));
         mFriendsUsers = new ArrayList<>();
         mFriends = new ArrayList<>();
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
 
         mTvFriendsTitle = view.findViewById(R.id.tvFriendsTitle);
         mTvFriendsTitle.setText(R.string.friends_title);
+        mSwipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
         mRvFriends = view.findViewById(R.id.rvFriends);
-        mRvFriends.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRvFriends.setLayoutManager(linearLayoutManager);
         mFriendsAdapter = new FriendsAdapter(getContext(), mFriendsUsers, mUser);
 
         mRvFriends.setAdapter(mFriendsAdapter);
@@ -97,16 +103,39 @@ public class FriendsTabFragment extends Fragment {
             getRequests();
         }
 
-        getFriends(0);
+        mScrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager,
+            EndlessRecyclerViewScrollListener.ScrollDirection.DOWN) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+                int skipper = mFriendsAdapter.getItemCount();
+                getFriends(skipper, false);
+            }
+        };
+
+        mSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getFriends(0, true);
+                mSwipeContainer.setRefreshing(false);
+            }
+        });
+
+        mSwipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
+        getFriends(0, false);
     }
 
-    public void getFriends(int skipper) {
+    public void getFriends(int skipper, boolean refresh) {
         ParseQuery<Friends> friendsQuery = getFriendsQuery();
         friendsQuery.include(Friends.USER_ONE);
         friendsQuery.include(Friends.USER_TWO);
         friendsQuery.whereEqualTo(Friends.ARE_FRIENDS, true);
+        friendsQuery.addDescendingOrder(Friends.CREATED_AT);
         friendsQuery.setSkip(skipper);
-        friendsQuery.setLimit(50);
+        friendsQuery.setLimit(25);
 
         friendsQuery.findInBackground(new FindCallback<Friends>() {
             @Override
@@ -114,6 +143,13 @@ public class FriendsTabFragment extends Fragment {
                 if (e != null) {
                     Log.e(TAG, "Error: " +  e.getMessage());
                     return;
+                }
+
+                if (refresh) {
+                    mFriends.clear();
+                    mFriendsUsers.clear();
+                    mFriendsAdapter.clear();
+                    mScrollListener.resetState();
                 }
 
                 Log.i(TAG, String.valueOf(friends.size()));

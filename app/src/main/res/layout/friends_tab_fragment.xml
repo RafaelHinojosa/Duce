@@ -59,15 +59,24 @@
       android:textStyle="bold"
       android:hint="@string/friends_title"
       />
-
-  <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/rvFriends"
+  <!-- SwipeRefresh + RecyclerView -->
+  <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+      android:id="@+id/swipeContainer"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_alignParentBottom="true"
+      android:layout_height="match_parent"
       android:layout_below="@+id/tvFriendsTitle"
+      android:layout_marginTop="5dp"
       >
-  </androidx.recyclerview.widget.RecyclerView>
+
+    <!-- Results in Recycler View -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvFriends"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/tvFriendsTitle"
+        />
+  </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </RelativeLayout>
 
