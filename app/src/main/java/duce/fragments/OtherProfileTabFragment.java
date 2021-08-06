@@ -283,7 +283,6 @@ public class OtherProfileTabFragment extends Fragment {
         return ageString;
     }
 
-
     public void setLanguages() {
         mFlMyLanguages.removeAllViews();
         mFlMyInterests.removeAllViews();
@@ -324,6 +323,7 @@ public class OtherProfileTabFragment extends Fragment {
         textView.setIncludeFontPadding(true);
         textView.setPadding(20,10,20,10);
         textView.setCompoundDrawablePadding(5);
+        textView.setTextColor(ContextCompat.getColor(getContext(), R.color.rich_black_fogra_29));
         textView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.language_box));
         FlexboxLayout.LayoutParams params = new FlexboxLayout.LayoutParams(
                 FlexboxLayout.LayoutParams.WRAP_CONTENT,

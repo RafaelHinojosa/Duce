@@ -11,11 +11,11 @@
         android:width="1dp"
         />
 
-    <solid android:color="@color/white"/>
+    <solid android:color="@color/add_blue" />
 
     <size
         android:height="20dp"
-        android:width="70dp"
+        android:width="95dp"
         />
 
 </shape>

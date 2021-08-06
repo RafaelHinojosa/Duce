@@ -163,7 +163,7 @@
         <!-- My Languages Layout -->
         <com.google.android.flexbox.FlexboxLayout
             android:id="@+id/flMyLanguages"
-            android:layout_width="350dp"
+            android:layout_width="380dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvMyLanguages"
             android:layout_alignStart="@+id/tvMyLanguages"
@@ -194,7 +194,7 @@
         <!-- My Interests Layout -->
         <com.google.android.flexbox.FlexboxLayout
             android:id="@+id/flMyInterests"
-            android:layout_width="350dp"
+            android:layout_width="380dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvMyInterests"
             android:layout_alignStart="@+id/tvMyInterests"

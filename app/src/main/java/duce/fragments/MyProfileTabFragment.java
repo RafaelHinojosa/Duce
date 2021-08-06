@@ -433,6 +433,8 @@ public class MyProfileTabFragment extends Fragment {
         textView.setIncludeFontPadding(true);
         textView.setPadding(20,10,20,10);
         textView.setCompoundDrawablePadding(5);
+        textView.setTextColor(ContextCompat.getColor(getContext(), R.color.rich_black_fogra_29));
+        //textView.setTextAlignment(0);
         textView.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.language_box));
         FlexboxLayout.LayoutParams params = new FlexboxLayout.LayoutParams(
                 FlexboxLayout.LayoutParams.WRAP_CONTENT,
@@ -451,6 +453,7 @@ public class MyProfileTabFragment extends Fragment {
         mTvAddLanguage.setIncludeFontPadding(true);
         mTvAddLanguage.setPadding(20,10,20,10);
         mTvAddLanguage.setCompoundDrawablePadding(5);
+        mTvAddLanguage.setTextColor(ContextCompat.getColor(getContext(), R.color.baby_powder));
         mTvAddLanguage.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.add_language_box));
 
         FlexboxLayout.LayoutParams params = new FlexboxLayout.LayoutParams(
@@ -477,6 +480,7 @@ public class MyProfileTabFragment extends Fragment {
         mTvAddInterest.setIncludeFontPadding(true);
         mTvAddInterest.setPadding(20,10,20,10);
         mTvAddInterest.setCompoundDrawablePadding(5);
+        mTvAddInterest.setTextColor(ContextCompat.getColor(getContext(), R.color.baby_powder));
         mTvAddInterest.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.add_language_box));
 
         FlexboxLayout.LayoutParams params = new FlexboxLayout.LayoutParams(
@@ -503,6 +507,7 @@ public class MyProfileTabFragment extends Fragment {
         mTvDeleteLanguage.setIncludeFontPadding(true);
         mTvDeleteLanguage.setPadding(20,10,20,10);
         mTvDeleteLanguage.setCompoundDrawablePadding(5);
+        mTvDeleteLanguage.setTextColor(ContextCompat.getColor(getContext(), R.color.baby_powder));
         mTvDeleteLanguage.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.delete_language_box));
 
         FlexboxLayout.LayoutParams params = new FlexboxLayout.LayoutParams(
@@ -529,6 +534,7 @@ public class MyProfileTabFragment extends Fragment {
         mTvDeleteInterest.setIncludeFontPadding(true);
         mTvDeleteInterest.setPadding(20,10,20,10);
         mTvDeleteInterest.setCompoundDrawablePadding(5);
+        mTvDeleteInterest.setTextColor(ContextCompat.getColor(getContext(), R.color.baby_powder));
         mTvDeleteInterest.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.delete_language_box));
 
         FlexboxLayout.LayoutParams params = new FlexboxLayout.LayoutParams(

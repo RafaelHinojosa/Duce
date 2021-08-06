@@ -13,8 +13,8 @@
     <solid android:color="@color/white"/>
 
     <size
-        android:height="20dp"
-        android:width="70dp"
+        android:height="25dp"
+        android:width="95dp"
         />
 
 </shape>
