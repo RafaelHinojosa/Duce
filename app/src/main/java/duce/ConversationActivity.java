@@ -197,7 +197,12 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
                     mMessages.addAll(messages);
                     mAdapter.notifyDataSetChanged();
                     if (!translate) {
-                        mRvMessages.scrollToPosition(0);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mRvMessages.scrollToPosition(0);
+                            }
+                        });
                     }
                 }
             }

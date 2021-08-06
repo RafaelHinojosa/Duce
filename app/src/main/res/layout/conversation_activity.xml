@@ -12,7 +12,6 @@
         android:id="@+id/rlChat"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:elevation="10dp"
         android:background="@color/baby_powder"
         >
 
@@ -79,12 +78,11 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvMessages"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/rlSend"
         android:layout_below="@+id/rlChat"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:screenReaderFocusable="true"
         android:transcriptMode="alwaysScroll"
         />
 
@@ -94,7 +92,7 @@
         android:layout_width="match_parent"
         android:paddingBottom="10dp"
         android:layout_height="wrap_content"
-        android:elevation="10dp"
+        android:visibility="visible"
         >
 
         <EditText

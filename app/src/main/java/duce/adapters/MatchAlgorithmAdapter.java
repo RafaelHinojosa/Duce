@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.duce.R;
 import com.duce.databinding.MatchedUserItemBinding;
 import com.squareup.picasso.Picasso;
 
@@ -83,10 +84,9 @@ public class MatchAlgorithmAdapter extends RecyclerView.Adapter<MatchAlgorithmAd
         @SuppressLint("SetTextI18n")
         public void bind(MatchingUser user) {
             Glide.with(mContext)
-                 .load(user.getUser().getProfilePicture().getUrl())
-                 .transform(new CircleCrop())
-                 .centerCrop()
-                 .into(mIvProfilePicture);
+                    .load(user.getUser().getProfilePicture().getUrl())
+                    .fitCenter()
+                    .into(mIvProfilePicture);
 
             mTvUsername.setText(user.getUser().getUsername());
             if (user.getAge() >= 15) {
@@ -94,12 +94,11 @@ public class MatchAlgorithmAdapter extends RecyclerView.Adapter<MatchAlgorithmAd
             } else {
                 mTvAge.setVisibility(View.GONE);
             }
-            mTvLanguages.setText("Languages: " + user.commonLanguagesToString());
-            mTvInterests.setText("Interest: " + user.getCrossedLanguages());
-            mTvInterests.setText("Interests: " + user.crossedLanguagesToString());
-            mTvScore.setText("Matching Score: " + user.getScore() + " points");
+            mTvLanguages.setText(mContext.getString(R.string.spoken_languages) + " "
+                    + user.commonLanguagesToString() + "\n");
+            mTvInterests.setText(mContext.getString(R.string.languages_you_speak) +
+                    " " + user.getUser().getUsername() + ": " + user.crossedLanguagesToString() + "\n");
             mTvAvailability.setText("Available: " + user.getLastConnection());
         }
     }
 }
-

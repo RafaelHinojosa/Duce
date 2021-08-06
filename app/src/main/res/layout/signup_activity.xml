@@ -109,7 +109,7 @@
         android:layout_below="@+id/tvFirstLanguage"
         android:layout_alignStart="@+id/etPassword"
         android:layout_marginTop="30dp"
-        android:text="@string/select_first_languages"
+        android:text="@string/select_interests"
         />
 
     <!-- Select Interests -->

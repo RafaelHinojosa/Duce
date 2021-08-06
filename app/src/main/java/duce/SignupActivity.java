@@ -145,19 +145,21 @@ public class SignupActivity extends AppCompatActivity {
             int index = mSelectedLanguages.get(i);
             Languages languageObject = mLanAdapter.getLanguageObject(index);
             if (languageObject != null) {
-                UserLanguages userLanguages = new UserLanguages();
-                userLanguages.setUser(ParseUser.getCurrentUser());
-                userLanguages.setLanguage(languageObject);
-                userLanguages.setMyLanguage(true);
-                userLanguages.setInterestedIn(false);
-                userLanguages.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if (e != null) {
-                            Log.i(TAG, "Could not register languages");
+                if (!languageObject.equals("Original")) {
+                    UserLanguages userLanguages = new UserLanguages();
+                    userLanguages.setUser(ParseUser.getCurrentUser());
+                    userLanguages.setLanguage(languageObject);
+                    userLanguages.setMyLanguage(true);
+                    userLanguages.setInterestedIn(false);
+                    userLanguages.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e != null) {
+                                Log.i(TAG, "Could not register languages");
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
         }
 
@@ -166,19 +168,21 @@ public class SignupActivity extends AppCompatActivity {
             int index = mInterestLanguages.get(i);
             Languages languageObject = mLanAdapter.getLanguageObject(index);
             if (languageObject != null) {
-                UserLanguages userLanguages = new UserLanguages();
-                userLanguages.setUser(ParseUser.getCurrentUser());
-                userLanguages.setLanguage(languageObject);
-                userLanguages.setMyLanguage(false);
-                userLanguages.setInterestedIn(true);
-                userLanguages.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if (e != null) {
-                            Log.i(TAG, "Could not register languages");
+                if (!languageObject.getLanguageName().equals("Original")) {
+                    UserLanguages userLanguages = new UserLanguages();
+                    userLanguages.setUser(ParseUser.getCurrentUser());
+                    userLanguages.setLanguage(languageObject);
+                    userLanguages.setMyLanguage(false);
+                    userLanguages.setInterestedIn(true);
+                    userLanguages.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e != null) {
+                                Log.i(TAG, "Could not register languages");
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
         }
     }

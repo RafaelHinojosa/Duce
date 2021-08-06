@@ -588,6 +588,10 @@ public class MyProfileTabFragment extends Fragment {
     }
 
     private void addLanguage(Languages mLanguageSelected, String type) {
+        if (mLanguageSelected.getLanguageName().equals("Original")) {
+            return;
+        }
+
         ParseQuery<UserLanguages> userLanguages = ParseQuery.getQuery("UserLanguages");
         userLanguages.whereEqualTo("userId", ParseUser.getCurrentUser());
         userLanguages.whereEqualTo("languageId", mLanguageSelected);
@@ -638,6 +642,10 @@ public class MyProfileTabFragment extends Fragment {
     }
 
     private void deleteLanguage(Languages mLanguageSelected, String type) {
+        if (mLanguageSelected.getLanguageName().equals("Original")) {
+            return;
+        }
+
         ParseQuery<UserLanguages> userLanguages = ParseQuery.getQuery("UserLanguages");
         userLanguages.whereEqualTo("userId", ParseUser.getCurrentUser());
         userLanguages.whereEqualTo("languageId", mLanguageSelected);
