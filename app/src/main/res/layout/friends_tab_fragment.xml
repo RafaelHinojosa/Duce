@@ -58,7 +58,9 @@
       android:fontFamily="sans-serif-light"
       android:textStyle="bold"
       android:hint="@string/friends_title"
+      android:visibility="gone"
       />
+
   <!-- SwipeRefresh + RecyclerView -->
   <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
       android:id="@+id/swipeContainer"
@@ -75,8 +77,58 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_below="@+id/tvFriendsTitle"
+        android:visibility="gone"
         />
   </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+  <com.airbnb.lottie.LottieAnimationView
+      android:id="@+id/avNoFriendsMe"
+      android:layout_width="wrap_content"
+      android:layout_height="300dp"
+      android:layout_centerHorizontal="true"
+      android:layout_marginTop="70dp"
+      android:visibility="gone"
+      app:lottie_autoPlay="true"
+      app:lottie_loop="true"
+      app:lottie_speed="1.3"
+      app:lottie_rawRes="@raw/connecting_people"
+      />
+
+  <TextView
+      android:id="@+id/tvNoFriends"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/avNoFriendsMe"
+      android:layout_centerHorizontal="true"
+      android:textSize="14dp"
+      android:visibility="gone"
+      />
+
+  <com.airbnb.lottie.LottieAnimationView
+      android:id="@+id/avSendRequest"
+      android:layout_width="wrap_content"
+      android:layout_height="250dp"
+      android:layout_alignParentTop="true"
+      android:layout_marginTop="70dp"
+      android:layout_centerHorizontal="true"
+      android:layout_centerVertical="true"
+      android:visibility="gone"
+      app:lottie_autoPlay="true"
+      app:lottie_loop="true"
+      app:lottie_speed="1.3"
+      app:lottie_rawRes="@raw/send"
+      />
+
+  <TextView
+      android:id="@+id/tvNoFriendsOther"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/avSendRequest"
+      android:layout_centerHorizontal="true"
+      android:textSize="14dp"
+      android:textAlignment="center"
+      android:visibility="gone"
+      />
 
 </RelativeLayout>
 

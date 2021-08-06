@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
@@ -31,6 +32,7 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
 
@@ -40,10 +42,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import duce.ConversationActivity;
 import duce.StartActivity;
 import duce.adapters.LanguagesAdapter;
+import duce.models.Chats;
 import duce.models.CustomUser;
 import duce.models.Friends;
+import duce.models.Messages;
+import duce.models.UserChats;
 import duce.models.UserLanguages;
 
 import static com.duce.R.layout.other_profile_tab_fragment;
@@ -62,6 +68,7 @@ public class OtherProfileTabFragment extends Fragment {
     private RelativeLayout mRlActions;
     private Button mBtnAcceptRequest;
     private Button mBtnRejectRequest;
+    private Button mBtnSendMessage;
     private com.google.android.flexbox.FlexboxLayout mFlMyLanguages;
     private com.google.android.flexbox.FlexboxLayout mFlMyInterests;
     private CustomUser mUser;
@@ -103,6 +110,7 @@ public class OtherProfileTabFragment extends Fragment {
         mRlActions = view.findViewById(R.id.rlActions);
         mBtnAcceptRequest = view.findViewById(R.id.btnAcceptRequest);
         mBtnRejectRequest = view.findViewById(R.id.btnRejectRequest);
+        mBtnSendMessage = view.findViewById(R.id.btnSendMessage);
 
         mFlMyLanguages = view.findViewById(R.id.flMyLanguages);
         mFlMyInterests = view.findViewById(R.id.flMyInterests);
@@ -226,6 +234,13 @@ public class OtherProfileTabFragment extends Fragment {
             }
         });
 
+        mBtnSendMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setUpConversation();
+            }
+        });
+
         setLanguages();
     }
 
@@ -317,5 +332,85 @@ public class OtherProfileTabFragment extends Fragment {
         textView.setLayoutParams(params);
 
         return textView;
+    }
+
+    public void setUpConversation() {
+        ParseQuery<UserChats> userChatsQuery = ParseQuery.getQuery("UserChats");
+        userChatsQuery.whereEqualTo("userId", ParseUser.getCurrentUser());
+        userChatsQuery.whereEqualTo("otherUserId", mUser.getCustomUser());
+
+        userChatsQuery.findInBackground(new FindCallback<UserChats>() {
+            @Override
+            public void done(List<UserChats> userChats, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error: " + e.getMessage());
+                    return;
+                }
+                if (userChats.size() == 0) {
+                    createChat(mUser.getCustomUser());
+                } else {
+                    UserChats userChat = userChats.get(0);
+                    Chats chat = userChat.getChat();
+                    goToMessages(chat, ParseUser.getCurrentUser(), mUser.getCustomUser());
+                }
+            }
+        });
+    }
+
+    public void createChat(ParseUser otherUser) {
+        Chats newChat = new Chats();
+        newChat.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error: " + e.getMessage());
+                    return;
+                }
+                ParseQuery<Chats> lastChat = ParseQuery.getQuery("Chats");
+                lastChat.setLimit(1);
+                lastChat.addDescendingOrder("createdAt");
+                lastChat.findInBackground(new FindCallback<Chats>() {
+                    @Override
+                    public void done(List<Chats> chats, ParseException e) {
+                        if (e != null) {
+                            Log.e(TAG, "Error: " + e.getMessage());
+                            return;
+                        }
+                        if (chats.size() > 0) {
+                            Chats lastChat = chats.get(0);
+
+                            // My conversation copy
+                            UserChats userChats = new UserChats();
+                            userChats.setChat(lastChat);
+                            userChats.setUser(ParseUser.getCurrentUser());
+                            userChats.setOtherUser(otherUser);
+                            userChats.saveInBackground();
+
+                            // The other's profile copy
+                            UserChats otherUserCopy = new UserChats();
+                            otherUserCopy.setChat(lastChat);
+                            otherUserCopy.setUser(otherUser);
+                            otherUserCopy.setOtherUser(ParseUser.getCurrentUser());
+                            otherUserCopy.saveInBackground();
+
+                            goToMessages(lastChat, ParseUser.getCurrentUser(), otherUser);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    public void goToMessages(Chats chat, ParseUser sender, ParseUser receiver) {
+        Messages message = new Messages();
+        message.setChatsId(chat);
+        message.setOwnerUser(sender);
+        message.setSender(sender);
+        message.setReceiver(receiver);
+        message.setDescription("Hello");
+
+        Intent toMessages = new Intent(getContext(), ConversationActivity.class);
+        toMessages.putExtra("conversation", Parcels.wrap(message));
+        getContext().startActivity(toMessages);
     }
 }

@@ -89,14 +89,12 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
         private ImageView mIvProfilePicture;
         private TextView mTvUsername;
-        private ImageButton mIbMessage;
 
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
 
             mIvProfilePicture = mBinding.ivProfilePicture;
             mTvUsername = mBinding.tvUsername;
-            mIbMessage = mBinding.btnMessage;
 
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.duce.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -50,6 +51,10 @@ public class FriendsTabFragment extends Fragment {
     private RecyclerView mRvRequests;
     private TextView mTvFriendsTitle;
     private TextView mTvRequestsTitle;
+    private TextView mTvNoFriends;
+    private TextView mTvNoFriendsOther;
+    private LottieAnimationView mAvNoFriendsMe;
+    private LottieAnimationView mAvNoFriendsOther;
     private SwipeRefreshLayout mSwipeContainer;
     private EndlessRecyclerViewScrollListener mScrollListener;
 
@@ -78,6 +83,10 @@ public class FriendsTabFragment extends Fragment {
 
         mTvFriendsTitle = view.findViewById(R.id.tvFriendsTitle);
         mTvFriendsTitle.setText(R.string.friends_title);
+        mTvNoFriends = view.findViewById(R.id.tvNoFriends);
+        mAvNoFriendsMe = view.findViewById(R.id.avNoFriendsMe);
+        mTvNoFriendsOther = view.findViewById(R.id.tvNoFriendsOther);
+        mAvNoFriendsOther = view.findViewById(R.id.avSendRequest);
         mSwipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
         mRvFriends = view.findViewById(R.id.rvFriends);
         mRvFriends.setLayoutManager(linearLayoutManager);
@@ -91,8 +100,6 @@ public class FriendsTabFragment extends Fragment {
             mRvRequests.setLayoutManager(new LinearLayoutManager(getContext()));
 
             mTvRequestsTitle.setText(R.string.requests_title);
-            mTvRequestsTitle.setVisibility(View.VISIBLE);
-            mRvRequests.setVisibility(View.VISIBLE);
 
             mRequests = new ArrayList<>();
             mRequestsUsers = new ArrayList<>();
@@ -152,6 +159,24 @@ public class FriendsTabFragment extends Fragment {
                     mScrollListener.resetState();
                 }
 
+                if (friends.size() > 0) {
+                    mTvFriendsTitle.setVisibility(View.VISIBLE);
+                    mRvFriends.setVisibility(View.VISIBLE);
+                } else if (mUser.getObjectId().equals(ParseUser.getCurrentUser().getObjectId())) {
+                    mAvNoFriendsMe.setVisibility(View.VISIBLE);
+                    mTvNoFriends.setText(getString(R.string.connect_with_people));
+                    mTvNoFriends.setVisibility(View.VISIBLE);
+                } else {
+                    mAvNoFriendsOther.setVisibility(View.VISIBLE);
+                    String text = "";
+                    text += getString(R.string.looks_like);
+                    text += " " + mUser.getUsername() + " ";
+                    text += getString(R.string.has_no_friends) + "\n";
+                    text += getString(R.string.send_a_request);
+                    mTvNoFriendsOther.setText(text);
+                    mTvNoFriendsOther.setVisibility(View.VISIBLE);
+                }
+
                 Log.i(TAG, String.valueOf(friends.size()));
                 mFriends.addAll(friends);
 
@@ -190,6 +215,10 @@ public class FriendsTabFragment extends Fragment {
                 }
 
                 Log.i(TAG, String.valueOf(requests.size()));
+                if (requests.size() > 0) {
+                    mTvRequestsTitle.setVisibility(View.VISIBLE);
+                    mRvRequests.setVisibility(View.VISIBLE);
+                }
 
                 CustomUser sender;
                 for (Friends request : requests) {

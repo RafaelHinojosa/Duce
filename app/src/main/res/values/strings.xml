@@ -501,4 +501,9 @@
     <string name="set_birthday">Set your birthdate</string>
     <string name="spoken_languages">Spoken languages you want to learn: </string>
     <string name="languages_you_speak">Languages you speak that interest </string>
+    <string name="chat">Chat</string>
+    <string name="connect_with_people">Connect with other users from Finder!</string>
+    <string name="looks_like">Looks like</string>
+    <string name="has_no_friends">has no friends...</string>
+    <string name="send_a_request">Swipe right and send a friend request!</string>
 </resources>
