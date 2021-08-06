@@ -89,7 +89,11 @@ public class MatchAlgorithmAdapter extends RecyclerView.Adapter<MatchAlgorithmAd
                  .into(mIvProfilePicture);
 
             mTvUsername.setText(user.getUser().getUsername());
-            mTvAge.setText(String.valueOf(user.getAge()) + " years");
+            if (user.getAge() >= 15) {
+                mTvAge.setText(String.valueOf(user.getAge()) + " years");
+            } else {
+                mTvAge.setVisibility(View.GONE);
+            }
             mTvLanguages.setText("Languages: " + user.commonLanguagesToString());
             mTvInterests.setText("Interest: " + user.getCrossedLanguages());
             mTvInterests.setText("Interests: " + user.crossedLanguagesToString());

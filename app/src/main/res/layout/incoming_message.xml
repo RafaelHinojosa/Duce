@@ -8,6 +8,8 @@
     android:paddingLeft="15dp"
     android:paddingRight="40dp"
     android:clipToPadding="false"
+    android:id="@+id/rlMessage"
+    android:visibility="invisible"
     >
 
     <TextView

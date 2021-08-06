@@ -496,4 +496,7 @@
     <string name="accept">Accept</string>
     <string name="delete_friend">Delete friend</string>
     <string name="delete_friendship_confirmation">Delete this user of your friends?</string>
+    <string name="incoming_messages_language">"Incoming messages language: "</string>
+    <string name="incoming_language">"Incoming language: "</string>
+    <string name="set_birthday">Set your birthdate</string>
 </resources>

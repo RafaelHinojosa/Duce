@@ -1,6 +1,7 @@
 package duce.adapters;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -133,6 +135,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     }
 
     public class IncomingMessageViewHolder extends MessageViewHolder {
+        private RelativeLayout mRlMessage;
         private ImageView mIvProfileOther;
         private TextView mTvDescription;
         private TextView mTvUsername;
@@ -142,6 +145,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         public IncomingMessageViewHolder(View itemView) {
             super(itemView);
 
+            mRlMessage = (RelativeLayout) itemView.findViewById(R.id.rlMessage);
             mIvProfileOther = (ImageView) itemView.findViewById(R.id.ivProfileOther);
             mTvDescription = (TextView) itemView.findViewById(R.id.tvDescription);
             mTvUsername = (TextView) itemView.findViewById(R.id.tvUsername);
@@ -173,17 +177,13 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                                     Log.i(TAG, "Current Code " + currentCode);
                                     Log.i(TAG, "Target Code " + targetCode);
 
-                                    // If I am in target, go back to original
-                                    if (targetCode.equals(currentCode) || targetCode.equals("original")) {
-                                        Log.i(TAG, "iguales");
-                                        mTvDescription.setText(message.getDescription());
-                                        changeLanguage(position, "original");
-                                    } else if (!targetCode.equals(currentCode)) {
-                                        Log.i(TAG, "simon");
+                                    if (currentCode.equals("original") && !targetCode.equals("original")) {
                                         String translatedText = ConversationActivity.translate(message.getDescription(), targetCode);
-                                        Log.i(TAG, translatedText);
                                         mTvDescription.setText(translatedText);
                                         changeLanguage(position, targetCode);
+                                    } else if (currentCode.equals(targetCode) && !targetCode.equals("original")) {
+                                        mTvDescription.setText(message.getDescription());
+                                        changeLanguage(position, "original");
                                     }
                                 }
                             }
@@ -197,6 +197,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         @Override
         void bindMessage(Messages message) {
             String targetCode = ConversationActivity.getTargetLanguage();
+            Languages targetCodeObj = ConversationActivity.getTargetLanguageObj();
             String userId = message.getSender().getObjectId();
 
             ParseQuery<ParseUser> sender = ParseUser.getQuery();
@@ -222,7 +223,12 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                             String translatedText = ConversationActivity.translate(message.getDescription(), targetCode);
                             Log.i(TAG, translatedText);
                             mTvDescription.setText(translatedText);
+                            if (targetCodeObj != null) {
+                                message.setLanguage(targetCodeObj);
+                                message.saveInBackground();
+                            }
                         }
+                        mRlMessage.setVisibility(View.VISIBLE);
                     }
                 }
             });
@@ -230,6 +236,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     }
 
     public class OutgoingMessageViewHolder extends MessageViewHolder {
+        private RelativeLayout mRlMessage;
         private TextView mTvDescription;
         private CustomUser mSender;
 
@@ -237,6 +244,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             super(itemView);
 
             mTvDescription = (TextView) itemView.findViewById(R.id.tvDescription);
+            mRlMessage = (RelativeLayout) itemView.findViewById(R.id.rlMessage);
             mSender = new CustomUser();
         }
 
@@ -257,6 +265,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                     if (users.size() > 0) {
                         mSender.setCustomUser(users.get(0));
                         mTvDescription.setText(message.getDescription());
+                        mRlMessage.setVisibility(View.VISIBLE);
                     }
                 }
             });

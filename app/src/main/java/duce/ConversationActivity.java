@@ -5,10 +5,13 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.InputType;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -57,6 +60,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
 
     private ImageView mIvProfilePicture;
     private TextView mTvUsername;
+    private TextView mTvIncomingLanguage;
     private ImageButton mBtnSettings;
     private RecyclerView mRvMessages;
     private EndlessRecyclerViewScrollListener mScrollListener;
@@ -69,6 +73,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     private ConversationAdapter mAdapter;
     static com.google.cloud.translate.Translate mTranslate;
     private static String mTargetLanguage;
+    private static Languages mTargetLanguageObj;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +85,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
 
         mIvProfilePicture = binding.ivProfilePicture;
         mTvUsername = binding.tvUsername;
+        mTvIncomingLanguage = binding.tvIncomingLanguage;
         mRvMessages = binding.rvMessages;
         mEtCompose = binding.etComposeMessage;
         fabSend = binding.fabSend;
@@ -88,6 +94,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         mMessages = new ArrayList<>();
         mOtherUser = new CustomUser();
         mTargetLanguage = "original";
+        mTargetLanguageObj = new Languages();
 
         mAdapter = new ConversationAdapter(ConversationActivity.this, mMessages);
         mRvMessages.setAdapter(mAdapter);
@@ -130,9 +137,9 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
 
         bind();
         setTargetLanguage();
+        getTranslateService();
         getMessages(0, false);
         setLiveMessages();
-        getTranslateService();
     }
 
     protected void bind() {
@@ -171,6 +178,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         messagesQuery.whereEqualTo(Messages.OWNER_USER, ParseUser.getCurrentUser());
         messagesQuery.setSkip(skipper);
         messagesQuery.setLimit(MAX_MESSAGES_TO_SHOW);
+        messagesQuery.include(Messages.LANGUAGE);
         messagesQuery.orderByDescending("createdAt");
 
         messagesQuery.findInBackground(new FindCallback<Messages>() {
@@ -185,16 +193,18 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
                     if (translate) {
                         mMessages.clear();
                         mAdapter.notifyDataSetChanged();
-                    } else {
-                        mRvMessages.smoothScrollToPosition(0);
                     }
                     mMessages.addAll(messages);
                     mAdapter.notifyDataSetChanged();
+                    if (!translate) {
+                        mRvMessages.scrollToPosition(0);
+                    }
                 }
             }
         });
     }
 
+    // Gets the language of the incoming messages for the user in a specific conversation
     public void setTargetLanguage() {
         ParseQuery<UserChats> chatQuery = ParseQuery.getQuery("UserChats");
         chatQuery.whereEqualTo(UserChats.CHATS_ID, mConversation.getChatsId());
@@ -215,6 +225,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
                     codeQuery.whereEqualTo("objectId", languageId);
 
                     codeQuery.findInBackground(new FindCallback<Languages>() {
+                        @SuppressLint("SetTextI18n")
                         @Override
                         public void done(List<Languages> languages, ParseException e) {
                             if (e != null) {
@@ -225,7 +236,11 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
                                 Languages targetLanguage = languages.get(0);
                                 String languageCode = targetLanguage.getTranslateCode();
                                 mTargetLanguage = languageCode;
-                                Log.i(TAG, "Language code of this conversation is: " + languageCode);
+                                mTargetLanguageObj = targetLanguage;
+                                mTvIncomingLanguage.setText(getString(
+                                        R.string.incoming_language)
+                                        + " "
+                                        + targetLanguage.getLanguageName());
                             }
                         }
                     });
@@ -254,6 +269,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
                     codeQuery.whereEqualTo("languageName", languageName);
 
                     codeQuery.findInBackground(new FindCallback<Languages>() {
+                        @SuppressLint("SetTextI18n")
                         @Override
                         public void done(List<Languages> languages, ParseException e) {
                             if (e != null) {
@@ -264,6 +280,11 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
                                 Languages targetLanguage = languages.get(0);
                                 String languageCode = targetLanguage.getTranslateCode();
                                 mTargetLanguage = languageCode;
+                                mTargetLanguageObj = targetLanguage;
+                                mTvIncomingLanguage.setText(getString(
+                                                            R.string.incoming_language)
+                                                            + " "
+                                                            + targetLanguage.getLanguageName());
                                 // Update conversation's language
                                 chat.setLanguage(targetLanguage);
                                 chat.saveInBackground();
@@ -414,6 +435,10 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
 
     public static String getTargetLanguage() {
         return mTargetLanguage;
+    }
+
+    public static Languages getTargetLanguageObj() {
+        return mTargetLanguageObj;
     }
 
     @Override

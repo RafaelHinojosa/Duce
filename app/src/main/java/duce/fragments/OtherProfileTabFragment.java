@@ -158,8 +158,14 @@ public class OtherProfileTabFragment extends Fragment {
             int month = birthdate.getMonth() + 1;
             int day = birthdate.getDate();
             age = getAge(year, month, day);
+            if (age != "-1") {
+                mTvAge.setText(age);
+            }
         }
-        mTvAge.setText(age);
+        if (age.equals("-1") || birthdate == null) {
+            mTvAge.setVisibility(View.GONE);
+        }
+
         mTvSelfDescription.setText(mUser.getSelfDescription());
 
         mBtnAddFriend.setOnClickListener(new View.OnClickListener() {

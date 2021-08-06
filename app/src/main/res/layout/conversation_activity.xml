@@ -61,6 +61,18 @@
             app:tint="@color/prussian_blue"
             />
 
+        <TextView
+            android:id="@+id/tvIncomingLanguage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvUsername"
+            android:layout_alignEnd="@+id/tvUsername"
+            android:layout_alignStart="@+id/tvUsername"
+            android:layout_marginTop="2dp"
+            android:textSize="10dp"
+            android:hint="@string/incoming_language"
+            />
+
     </RelativeLayout>
 
     <!-- Messages -->
@@ -72,7 +84,6 @@
         android:layout_below="@+id/rlChat"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="0dp"
         android:screenReaderFocusable="true"
         android:transcriptMode="alwaysScroll"
         />

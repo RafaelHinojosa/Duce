@@ -174,8 +174,11 @@ public class MyProfileTabFragment extends Fragment {
             age = getAge(year, month, day);
         }
 
+        if (birthdate == null || !age.equals("-1")) {
+            mEtAge.setText(getString(R.string.set_birthday));
+        }
+
         mEtUsername.setText(mUser.getUsername());
-        mEtAge.setText(age);
         mEtSelfDescription.setText(mUser.getSelfDescription());
 
         mEtSelfDescription.setImeOptions(EditorInfo.IME_ACTION_DONE);
