@@ -1,5 +1,6 @@
 package duce.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Message;
@@ -139,7 +140,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         private ImageView mIvProfileOther;
         private TextView mTvDescription;
         private TextView mTvUsername;
-        private ImageButton mIbDuce;    // Translate button
+        private TextView mTvDuce;    // Translate button
         private CustomUser mSender;
 
         public IncomingMessageViewHolder(View itemView) {
@@ -149,8 +150,8 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             mIvProfileOther = (ImageView) itemView.findViewById(R.id.ivProfileOther);
             mTvDescription = (TextView) itemView.findViewById(R.id.tvDescription);
             mTvUsername = (TextView) itemView.findViewById(R.id.tvUsername);
-            mIbDuce = (ImageButton) itemView.findViewById(R.id.ibDuce);
-            mIbDuce.setOnClickListener(new View.OnClickListener() {
+            mTvDuce = (TextView) itemView.findViewById(R.id.tvDuce);
+            mTvDuce.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int position = getAdapterPosition();
@@ -162,6 +163,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                         languageQuery.whereEqualTo("objectId", message.getLanguage().getObjectId());
 
                         languageQuery.findInBackground(new FindCallback<Languages>() {
+                            @SuppressLint("SetTextI18n")
                             @Override
                             public void done(List<Languages> languages, ParseException e) {
                                 if (e != null) {
@@ -173,6 +175,8 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                                     String currentLanguage = language.getLanguageName();
                                     String currentCode = language.getTranslateCode();
                                     String targetCode = ConversationActivity.getTargetLanguage();
+                                    Languages targetLanguageObj =
+                                        ConversationActivity.getTargetLanguageObj();
 
                                     Log.i(TAG, "Current Code " + currentCode);
                                     Log.i(TAG, "Target Code " + targetCode);
@@ -180,9 +184,13 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                                     if (currentCode.equals("original") && !targetCode.equals("original")) {
                                         String translatedText = ConversationActivity.translate(message.getDescription(), targetCode);
                                         mTvDescription.setText(translatedText);
+                                        mTvDuce.setText(mContext.getString(R.string.change_to)
+                                                + " Original text");
                                         changeLanguage(position, targetCode);
                                     } else if (currentCode.equals(targetCode) && !targetCode.equals("original")) {
                                         mTvDescription.setText(message.getDescription());
+                                        mTvDuce.setText(mContext.getString(R.string.translate_to)
+                                                + " " + targetLanguageObj.getLanguageName());
                                         changeLanguage(position, "original");
                                     }
                                 }
@@ -204,6 +212,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             sender.whereEqualTo("objectId", userId);
 
             sender.findInBackground(new FindCallback<ParseUser>() {
+                @SuppressLint("SetTextI18n")
                 @Override
                 public void done(List<ParseUser> users, ParseException e) {
                     if (e != null) {
@@ -219,11 +228,14 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                         mTvUsername.setText(mSender.getUsername());
                         if (targetCode.equals("original")) {
                             mTvDescription.setText(message.getDescription());
+                            mTvDuce.setText(mContext.getString(R.string.select_to_translate));
                         } else {
                             String translatedText = ConversationActivity.translate(message.getDescription(), targetCode);
                             Log.i(TAG, translatedText);
                             mTvDescription.setText(translatedText);
                             if (targetCodeObj != null) {
+                                mTvDuce.setText(mContext.getString(R.string.change_to)
+                                        + " original text");
                                 message.setLanguage(targetCodeObj);
                                 message.saveInBackground();
                             }

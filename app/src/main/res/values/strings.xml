@@ -506,4 +506,7 @@
     <string name="looks_like">Looks like</string>
     <string name="has_no_friends">has no friends...</string>
     <string name="send_a_request">Swipe right and send a friend request!</string>
+    <string name="translate_to">"Translate to "</string>
+    <string name="change_to">"Change to "</string>
+    <string name="select_to_translate">Select a language to translate this message</string>
 </resources>

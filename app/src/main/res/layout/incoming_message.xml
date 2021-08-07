@@ -20,7 +20,6 @@
         android:layout_height="wrap_content"
         android:textSize="10dp"
         android:paddingBottom="4dp"
-        android:hint="@string/username_sample_1"
         />
 
     <TextView
@@ -40,6 +39,20 @@
         android:textColor="@color/honeydew"
         />
 
+    <TextView
+        android:id="@+id/tvDuce"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxWidth="200dp"
+        android:layout_below="@+id/tvDescription"
+        android:layout_alignLeft="@+id/tvUsername"
+        android:gravity="left"
+        android:textColor="@color/receiver_blue"
+        android:textSize="10dp"
+        android:maxLines="1"
+        android:clickable="true"
+        />
+
     <ImageView
         android:id="@+id/ivProfileOther"
         android:layout_width="25dp"
@@ -49,19 +62,6 @@
         android:layout_alignParentLeft="true"
         android:contentDescription="@string/profile_pic_other"
         android:src="@mipmap/ic_launcher"
-        />
-
-    <ImageButton
-        android:id="@+id/ibDuce"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/tvDescription"
-        android:layout_toEndOf="@+id/tvDescription"
-        android:contentDescription="@string/duce_description"
-        android:gravity="center"
-        android:src="@drawable/translate"
-        android:backgroundTint="@color/white"
-        app:tint="@color/prussian_blue"
         />
 
 </RelativeLayout>

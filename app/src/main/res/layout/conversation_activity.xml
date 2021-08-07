@@ -27,7 +27,6 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="15dp"
             android:layout_marginBottom="10dp"
-            app:srcCompat="@drawable/cristiano"
             tools:srcCompat="@tools:sample/avatars"
             />
 
@@ -39,7 +38,6 @@
             android:layout_marginStart="10dp"
             android:layout_toEndOf="@+id/ivProfilePicture"
             android:layout_centerVertical="true"
-            android:hint="@string/username_sample_1"
             android:textColor="@color/rich_black_fogra_29"
             android:fontFamily="sans-serif-light"
             android:textSize="18dp"
@@ -69,6 +67,7 @@
             android:layout_alignStart="@+id/tvUsername"
             android:layout_marginTop="2dp"
             android:textSize="10dp"
+            android:visibility="gone"
             android:hint="@string/incoming_language"
             />
 

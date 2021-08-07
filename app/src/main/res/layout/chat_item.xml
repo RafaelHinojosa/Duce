@@ -28,7 +28,6 @@
         android:layout_marginStart="5dp"
         android:layout_toEndOf="@+id/ivProfilePicture"
         android:fontFamily="sans-serif-light"
-        android:hint="@string/username_sample_1"
         android:textColor="@color/rich_black_fogra_29"
         android:textSize="18dp"
         android:textStyle="bold"
@@ -46,7 +45,6 @@
         android:layout_toEndOf="@+id/ivProfilePicture"
         android:layout_alignEnd="@+id/tvDate"
         android:layout_marginTop="10dp"
-        android:hint="@string/description_sample"
         android:maxLines="1"
         android:textSize="14dp"
         />
