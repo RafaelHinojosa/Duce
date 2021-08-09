@@ -1,9 +1,10 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.parse-community:ParseLiveQuery-Android:1.1.0@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/9594e3c6d8e031d73c197b47b32713b3/jetified-ParseLiveQuery-Android-1.1.0/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/9594e3c6d8e031d73c197b47b32713b3/jetified-ParseLiveQuery-Android-1.1.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/9594e3c6d8e031d73c197b47b32713b3/jetified-ParseLiveQuery-Android-1.1.0/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/e650615488e9a1838101504818e7ae98/jetified-ParseLiveQuery-Android-1.1.0/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/e650615488e9a1838101504818e7ae98/jetified-ParseLiveQuery-Android-1.1.0/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/e650615488e9a1838101504818e7ae98/jetified-ParseLiveQuery-Android-1.1.0/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.parse-community/ParseLiveQuery-Android/1.1.0/c335b11743f688b2621c2b995fb6b196cc1e4d9a/ParseLiveQuery-Android-1.1.0-javadoc.jar!/" />
