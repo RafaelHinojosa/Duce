@@ -74,6 +74,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     static com.google.cloud.translate.Translate mTranslate;
     private static String mTargetLanguage;
     private static Languages mTargetLanguageObj;
+    private boolean mFirstTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +96,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         mOtherUser = new CustomUser();
         mTargetLanguage = "original";
         mTargetLanguageObj = new Languages();
+        mFirstTime = true;
 
         mAdapter = new ConversationAdapter(ConversationActivity.this, mMessages);
         mRvMessages.setAdapter(mAdapter);
@@ -136,9 +138,9 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         });
 
         bind();
-        setTargetLanguage();
         getTranslateService();
-        getMessages(0, false);
+        setTargetLanguage();
+        //getMessages(0, false);
         setLiveMessages();
     }
 
@@ -236,8 +238,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
                             if (e != null) {
                                 Log.e(TAG, "Error: " + e.getMessage());
                                 return;
-                            }
-                            if (languages.size() > 0) {
+                            } else if (languages.size() > 0) {
                                 Languages targetLanguage = languages.get(0);
                                 String languageCode = targetLanguage.getTranslateCode();
                                 mTargetLanguage = languageCode;
@@ -246,6 +247,10 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
                                         R.string.incoming_language)
                                         + " "
                                         + targetLanguage.getLanguageName());
+                            }
+                            if (mFirstTime) {
+                                mFirstTime = false;
+                                getMessages(0, false);
                             }
                         }
                     });
